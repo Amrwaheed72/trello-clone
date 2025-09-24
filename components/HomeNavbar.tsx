@@ -4,11 +4,16 @@ import { SignInButton, SignUpButton, useUser } from '@clerk/nextjs';
 import { ArrowRight, Trello } from 'lucide-react';
 import { Button } from './ui/button';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-const Navbar = () => {
+const HomeNavbar = () => {
   const { isSignedIn, user } = useUser();
-  console.log(isSignedIn);
-  console.log(user);
+  const pathname = usePathname();
+  const isHomePage = pathname === '/';
+  const isDashboardPage = pathname === '/dashboard';
+  const isBoardPage = pathname.startsWith('/boards/');
+
+  if(isHomePage)
   return (
     <nav className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-sm">
       <div className="container mx-auto flex items-center justify-between px-4 py-3 sm:py-4">
@@ -54,4 +59,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default HomeNavbar;
