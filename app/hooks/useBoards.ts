@@ -1,17 +1,31 @@
 'use client';
-import { createBoardWithDefaultColumns } from '@/lib/services';
+import { createBoardWithDefaultColumns, getUserBoards } from '@/lib/services';
 import { Board } from '@/lib/supabase/models';
-import { useSupabase } from '@/lib/supabase/supabaseProvider';
 import { useUser } from '@clerk/nextjs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export const useBoards = () => {
   const { user } = useUser();
-console.log(user)
   const [boards, setBoards] = useState<Board[]>([]);
   const [loading, setLoading] = useState(true);
-  const { supabase } = useSupabase();
   const [error, setError] = useState<string | null>(null);
+  useEffect(() => {
+    if (user) {
+      loadBoards();
+    }
+  }, [user]);
+  const loadBoards = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const { data } = await getUserBoards(user.id);
+      setBoards(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load board');
+    } finally {
+      setLoading(false);
+    }
+  };
   // if (!user) throw new Error('user is not logged in');
   const createBoard = async (boardData: {
     title: string;
@@ -19,7 +33,7 @@ console.log(user)
     color?: string;
   }) => {
     try {
-      const newBoard = await createBoardWithDefaultColumns(supabase!, {
+      const newBoard = await createBoardWithDefaultColumns({
         ...boardData,
         userId: user.id,
       });

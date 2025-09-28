@@ -20,9 +20,7 @@ const HomeNavbar = () => {
         <div className="container mx-auto flex items-center justify-between px-4 py-3 sm:py-4">
           <div className="flex items-center space-x-2">
             <Trello className="h-6 w-6 text-blue-600 sm:h-8 sm:w-8" />
-            <span className="text-xl font-bold text-gray-900 sm:text-2xl dark:text-gray-50">
-              Trello
-            </span>
+            <span className="text-xl font-bold sm:text-2xl">Trello</span>
           </div>
           <div className="flex items-center space-x-2 sm:space-x-4">
             {isSignedIn ? (
