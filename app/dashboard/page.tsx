@@ -1,3 +1,4 @@
+
 import CreateBoardComponent from '@/components/CreateBoardComponent';
 import { currentUser } from '@clerk/nextjs/server';
 
