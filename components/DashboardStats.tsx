@@ -3,7 +3,6 @@ import { currentUser } from '@clerk/nextjs/server';
 import {
   Bubbles,
   ChartNoAxesColumnDecreasing,
-  FolderOpenDot,
   Rocket,
   Trello,
 } from 'lucide-react';

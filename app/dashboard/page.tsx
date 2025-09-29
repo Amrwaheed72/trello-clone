@@ -1,7 +1,12 @@
+import BoardsComponent from '@/components/BoardsComponent';
+import ChangeViewButtons from '@/components/ChangeViewButtons';
 import CreateBoardComponent from '@/components/CreateBoardComponent';
 import DashboardStats from '@/components/DashboardStats';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinner';
 import { currentUser } from '@clerk/nextjs/server';
+import { Filter, Search } from 'lucide-react';
 import { Suspense } from 'react';
 
 const Page = async () => {
@@ -20,13 +25,51 @@ const Page = async () => {
         {/* stats */}
         <Suspense
           fallback={
-            <div className="flex h-[50vh] items-center justify-center">
+            <div className="flex items-center justify-center">
               <Spinner size="xl" variant="ring" />
             </div>
           }
         >
           <DashboardStats />
         </Suspense>
+        {/* Boards */}
+        <div className="mb-6 sm:mb-8">
+          <div className="mb-4 flex flex-col space-y-4 sm:mb-6 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+            <div>
+              <h2 className="text-2xl font-bold sm:text-2xl">Your Boards</h2>
+              <p className="text-gray-600 dark:text-gray-300">
+                Manage Your Projects and Tasks
+              </p>
+            </div>
+            {/* helper buttons like change shape and filtering the boards */}
+            <div className="flex flex-col items-stretch space-y-2 sm:flex-row sm:items-center sm:space-y-0">
+              <ChangeViewButtons />
+              <Button variant={'outline'} size={'sm'}>
+                <Filter />
+                Filter
+              </Button>
+              <CreateBoardComponent />
+            </div>
+          </div>
+          {/* search */}
+          <div className="relative mb-4 sm:mb-6">
+            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
+            <Input
+              id="search"
+              placeholder="Search Boards..."
+              className="pl-10"
+            />
+          </div>
+          <Suspense
+            fallback={
+              <div className="flex items-center justify-center">
+                <Spinner size="xl" variant="ring" />
+              </div>
+            }
+          >
+            <BoardsComponent />
+          </Suspense>
+        </div>
       </main>
     </div>
   );
