@@ -2,7 +2,7 @@
 import { Plus } from 'lucide-react';
 import { Button } from './ui/button';
 import { createBoardWithDefaultColumns } from '@/lib/services';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
 import { useTransition } from 'react';
 import { Spinner } from './ui/spinner';
@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 const CreateBoardComponent = () => {
   const [isPending, startTransition] = useTransition();
   const { user } = useUser();
+  if (!user) redirect('/');
   const router = useRouter();
   const handleCreateBoard = async () => {
     startTransition(async () => {
