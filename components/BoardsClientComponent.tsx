@@ -1,6 +1,6 @@
 'use client';
 
-import { useViewModeStore } from '@/app/store/DashboardStore';
+import { DashboardStore } from '@/app/store/DashboardStore';
 import { Board } from '@/lib/supabase/models';
 import BoardsInGrid from './BoardsInGrid';
 import BoardsInList from './BoardsInList';
@@ -10,7 +10,7 @@ interface BoardsClientComponentProps {
 }
 
 const BoardsClientComponent = ({ boards }: BoardsClientComponentProps) => {
-  const viewMode = useViewModeStore((state) => state.viewMode);
+  const viewMode = DashboardStore((state) => state.viewMode);
   return (
     <div>
       {viewMode === 'grid' ? (

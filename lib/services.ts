@@ -11,6 +11,31 @@ export const getUserBoards = async (userId: string): Promise<Board[]> => {
   if (error) throw error;
   return data;
 };
+export const getBoard = async (boardId: string): Promise<Board> => {
+  const { data, error } = await supabase
+    .from('boards')
+    .select('*')
+    .eq('id', boardId)
+    .single();
+  if (error) throw error;
+  return data;
+};
+export const updateBoard = async (
+  boardData: { title: string; color: string },
+  boardId: string,
+) => {
+  const { data, error } = await supabase
+    .from('boards')
+    .update({
+      ...boardData,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', boardId)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+};
 export const createBoard = async (
   board: Omit<Board, 'id' | 'created_at' | 'updated_at'>,
 ): Promise<Board> => {
@@ -19,6 +44,16 @@ export const createBoard = async (
     .insert(board)
     .select()
     .single();
+  if (error) throw error;
+  return data;
+};
+
+export const getColumns = async (boardId: string): Promise<BoardColumns[]> => {
+  const { data, error } = await supabase
+    .from('board_columns')
+    .select('*')
+    .eq('board_id', boardId)
+    .order('sort_order', { ascending: true });
   if (error) throw error;
   return data;
 };
@@ -33,6 +68,18 @@ export const createColumn = async (
     .single();
   if (error) throw error;
   return data;
+};
+
+export const getBoardWithColumns = async (boardId: string) => {
+  const [board, columns] = await Promise.all([
+    getBoard(boardId),
+    getColumns(boardId),
+  ]);
+  if (!board) throw new Error('Board not found');
+  return {
+    board,
+    columns,
+  };
 };
 
 export const createBoardWithDefaultColumns = async (boardData: {
