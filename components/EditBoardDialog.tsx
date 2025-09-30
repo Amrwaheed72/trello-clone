@@ -123,6 +123,7 @@ const EditBoardDialog = ({
               <Button
                 onClick={() => setOpen(false)}
                 variant={'outline'}
+                type='button'
                 className="cursor-pointer"
               >
                 Cancel
