@@ -30,13 +30,13 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          <Toaster position="top-right" closeButton={true} richColors />
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
           >
+            <Toaster position="top-right" closeButton={true} richColors />
             <main>{children}</main>
           </ThemeProvider>
         </Providers>

@@ -1,5 +1,5 @@
 'use server';
-import { Board, BoardColumns } from './supabase/models';
+import { Board, BoardColumns, Task } from './supabase/models';
 import { supabase } from './supabase/supabase';
 
 export const getUserBoards = async (userId: string): Promise<Board[]> => {
@@ -111,4 +111,28 @@ export const createBoardWithDefaultColumns = async (boardData: {
     ),
   );
   return board;
+};
+
+export const getTasksForBoard = async (boardId: string): Promise<Task[]> => {
+  const { data, error } = await supabase
+    .from('tasks')
+    .select('*, column:board_columns!inner(board_id)')
+    .eq('column.board_id', boardId)
+    .order('sort_order', { ascending: true });
+
+  if (error) throw error;
+  return data;
+};
+
+export const createTask = async (
+  taskData: Omit<Task, 'id' | 'created_at' | 'updated_at'>,
+) => {
+  const { data, error } = await supabase
+    .from('tasks')
+    .insert(taskData)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
 };

@@ -55,8 +55,12 @@ const BoardNavbar = ({ boardTitle }: Props) => {
             className={`text-xs sm:text-sm`}
           >
             <Filter className="mr-1 h-3 w-3 sm:mr-2 sm:h-4 sm:w-4" />
-            <span className='hidden sm:inline'>Filter</span>
-            {filterCount > 0 && <Badge variant={'secondary'} className='text-xs ml-1 sm:ml-2'>{filterCount}</Badge>}
+            <span className="hidden sm:inline">Filter</span>
+            {filterCount > 0 && (
+              <Badge variant={'secondary'} className="ml-1 text-xs sm:ml-2">
+                {filterCount}
+              </Badge>
+            )}
           </Button>
           <UserButton />
           <ThemeToggle />

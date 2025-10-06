@@ -1,7 +1,17 @@
 'use client';
 import { DashboardStore } from '@/app/store/DashboardStore';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from './ui/dialog';
+import { Label } from './ui/label';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
 
+const priorityOptions = ['low', 'medium', 'high'];
 const FilterBoardDialog = () => {
   const openFilter = DashboardStore((state) => state.openFilter);
   const setOpenFilter = DashboardStore((state) => state.setOpenFilter);
@@ -10,9 +20,49 @@ const FilterBoardDialog = () => {
       <DialogContent className="mx-auto w-[95vw] max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Filter Tasks</DialogTitle>
-          <DialogDescription>Filter tasks by priority, assignee, or due date</DialogDescription>
+          <DialogDescription>
+            Filter tasks by priority, assignee, or due date
+          </DialogDescription>
         </DialogHeader>
-        
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Priority</Label>
+            <div className="flex flex-wrap gap-2">
+              {priorityOptions.map((priority, i) => (
+                <Button variant={'outline'} size={'sm'} key={i}>
+                  {priority.charAt(0).toUpperCase() + priority.slice(1)}
+                </Button>
+              ))}
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label>Assignee</Label>
+            <div className="flex flex-wrap gap-2">
+              {priorityOptions.map((priority, i) => (
+                <Button variant={'outline'} size={'sm'} key={i}>
+                  {priority.charAt(0).toUpperCase() + priority.slice(1)}
+                </Button>
+              ))}
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label>Due Date</Label>
+            <Input type="date" />
+          </div>
+          <div className="flex justify-between pt-4">
+            <Button type="button" variant={'outline'}>
+              Clear Filter
+            </Button>
+            <Button
+              type="button"
+              onClick={() => {
+                setOpenFilter(false);
+              }}
+            >
+              Apply Filter
+            </Button>
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );

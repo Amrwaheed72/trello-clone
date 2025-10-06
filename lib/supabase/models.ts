@@ -14,11 +14,11 @@ export interface BoardColumns {
   board_id: string;
   title: string;
   sort_order: number;
-  user_id:string
+  user_id: string;
 }
 export interface Task {
   id: string;
-  column_id: string;
+  board_column_id: string;
   title: string;
   description: string | null;
   assignee: string | null;
@@ -27,4 +27,14 @@ export interface Task {
   sort_order: number;
   created_at: string;
   updated_at: string;
+}
+
+export interface ColumnsWithTasks {
+  id: string;
+  created_at: string;
+  board_id: string;
+  title: string;
+  sort_order: number;
+  tasks: Task[];
+  user_id: string;
 }

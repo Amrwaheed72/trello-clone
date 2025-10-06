@@ -57,7 +57,7 @@ const EditBoardDialog = ({
         boardId,
       );
       router.refresh();
-      toast('Board Updated Successfully!');
+      toast.success('Board Updated Successfully!');
       form.reset({
         boardTitle: values.boardTitle,
         boardColor: values.boardColor,
@@ -65,7 +65,7 @@ const EditBoardDialog = ({
       setOpen(false);
     } catch (error) {
       console.error(error);
-      toast('Failed to update board!');
+      toast.error('Failed to update board!');
     }
   };
   return (
@@ -123,7 +123,7 @@ const EditBoardDialog = ({
               <Button
                 onClick={() => setOpen(false)}
                 variant={'outline'}
-                type='button'
+                type="button"
                 className="cursor-pointer"
               >
                 Cancel
