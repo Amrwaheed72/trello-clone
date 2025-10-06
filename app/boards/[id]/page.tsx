@@ -14,7 +14,7 @@ const Page = async ({ params }: Params) => {
   const { board } = await getBoardWithColumns(id);
 
   return (
-    <div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:bg-gradient-to-br dark:from-blue-950 dark:via-black dark:to-purple-950">
       <BoardNavbar boardTitle={board.title} />
       <EditBoardDialog
         boardColor={board.color}
