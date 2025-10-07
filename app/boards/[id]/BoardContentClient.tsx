@@ -44,7 +44,10 @@ const BoardContentClient = ({
   const [columns, setColumns] = useState<ColumnsWithTasks[]>(columnsWithTasks);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const router = useRouter();
-  const setOpen = DashboardStore((state) => state.setOpenDeleteColumn);
+  const setOpenDeleteColumn = DashboardStore(
+    (state) => state.setOpenDeleteColumn,
+  );
+  const setOpenAddColumn = DashboardStore((state) => state.setOpenAddColumn);
   const setSelectedColumn = DashboardStore((state) => state.setSelectedColumn);
   const selectedColumn = DashboardStore((state) => state.selectedColumn);
 
@@ -187,7 +190,7 @@ const BoardContentClient = ({
                     id: column.id,
                     board_id: column.board_id,
                   });
-                  setOpen(true);
+                  setOpenDeleteColumn(true);
                 }}
                 column={column}
                 key={column.id}
@@ -212,7 +215,7 @@ const BoardContentClient = ({
               <Button
                 variant={'outline'}
                 className="h-full min-h-[200px] w-full border-2 border-dashed text-gray-400"
-                onClick={() => setOpen(true)}
+                onClick={() => setOpenAddColumn(true)}
               >
                 <Plus />
                 Add another list
