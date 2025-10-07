@@ -10,7 +10,7 @@ const DashboardNavbar = () => {
         <Link href={'/'}>
           <div className="flex items-center space-x-2">
             <Trello className="h-6 w-6 text-blue-600 sm:h-8 sm:w-8" />
-            <span className="text-xl font-bold sm:text-2xl">Trello</span>
+            <span className="text-xl font-bold sm:text-2xl">Planify</span>
           </div>
         </Link>
         <div className="flex items-center space-x-2 sm:space-x-4">
