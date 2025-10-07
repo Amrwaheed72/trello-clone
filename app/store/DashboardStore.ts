@@ -19,9 +19,13 @@ interface ViewModeState {
   setOpenDeleteBoard: (state: boolean) => void;
   openDeleteColumn: boolean;
   setOpenDeleteColumn: (state: boolean) => void;
+  openEditColumn: boolean;
+  setOpenEditColumn: (state: boolean) => void;
 
-  selectedColumn: { id: string; board_id: string } | null;
-  setSelectedColumn: (column: { id: string; board_id: string } | null) => void;
+  selectedColumn: { id: string; board_id: string; title?: string } | null;
+  setSelectedColumn: (
+    column: { id: string; board_id: string; title?: string } | null,
+  ) => void;
 }
 
 export const DashboardStore = create<ViewModeState>((set) => ({
@@ -48,4 +52,6 @@ export const DashboardStore = create<ViewModeState>((set) => ({
     set((prev) => ({ openDeleteColumn: !prev.openDeleteColumn })),
   selectedColumn: null,
   setSelectedColumn: (column) => set({ selectedColumn: column }),
+  openEditColumn: false,
+  setOpenEditColumn: (state) => set({ openEditColumn: state }),
 }));

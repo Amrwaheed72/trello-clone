@@ -11,13 +11,13 @@ interface ColProps {
   column: ColumnsWithTasks;
   children: React.ReactNode;
   onDelete: () => void;
+  onEdit: () => void;
   // onCreateTask: (taskData: any) => Promise<void>;
   // onEditColumn: (column: ColumnsWithTasks) => void;
 }
 
-const Column = ({ column, children, onDelete }: ColProps) => {
+const Column = ({ column, children, onDelete, onEdit }: ColProps) => {
   const { setNodeRef, isOver } = useDroppable({ id: column.id });
-  const setOpen = DashboardStore((state) => state.setOpenDeleteColumn);
   return (
     <div
       ref={setNodeRef}
@@ -45,7 +45,12 @@ const Column = ({ column, children, onDelete }: ColProps) => {
               >
                 <Trash />
               </Button>
-              <Button variant={'outline'} size={'sm'} className="flex-shrink-0">
+              <Button
+                onClick={onEdit}
+                variant={'outline'}
+                size={'sm'}
+                className="flex-shrink-0"
+              >
                 <MoreHorizontalIcon />
               </Button>
             </div>

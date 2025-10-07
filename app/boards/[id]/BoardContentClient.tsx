@@ -29,6 +29,7 @@ import { Plus } from 'lucide-react';
 import { DashboardStore } from '@/app/store/DashboardStore';
 import DeleteBoardDialog from './DeleteBoardDialog';
 import DeleteColumnDialog from './DeleteColumnDialog';
+import EditColumnDialog from './EditColumnDialog';
 
 interface BoardClientViewProps {
   columnsWithTasks: ColumnsWithTasks[];
@@ -48,6 +49,7 @@ const BoardContentClient = ({
     (state) => state.setOpenDeleteColumn,
   );
   const setOpenAddColumn = DashboardStore((state) => state.setOpenAddColumn);
+  const setOpenEditColumn = DashboardStore((state) => state.setOpenEditColumn);
   const setSelectedColumn = DashboardStore((state) => state.setSelectedColumn);
   const selectedColumn = DashboardStore((state) => state.selectedColumn);
 
@@ -182,7 +184,7 @@ const BoardContentClient = ({
           onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
         >
-          <div className="flex flex-col space-y-4 lg:-mx-2 lg:flex-row lg:space-y-0 lg:space-x-6 lg:overflow-x-auto lg:px-2 lg:pb-6 lg:[&::-webkit-scrollbar]:h-2 lg:[&::-webkit-scrollbar-thumb]:rounded-full lg:[&::-webkit-scrollbar-thumb]:bg-gray-300 lg:[&::-webkit-scrollbar-track]:bg-gray-100">
+          <div className="flex flex-col space-y-4 lg:-mx-2 lg:flex-row lg:space-y-0 lg:space-x-6 lg:overflow-x-auto lg:px-2 lg:pb-6 lg:[&::-webkit-scrollbar]:h-2 lg:[&::-webkit-scrollbar-thumb]:rounded-full lg:[&::-webkit-scrollbar-thumb]:bg-gray-300 dark:lg:[&::-webkit-scrollbar-thumb]:bg-gray-700 lg:[&::-webkit-scrollbar-track]:bg-gray-100 dark:lg:[&::-webkit-scrollbar-track]:bg-gray-800">
             {columns.map((column) => (
               <Column
                 onDelete={() => {
@@ -191,6 +193,14 @@ const BoardContentClient = ({
                     board_id: column.board_id,
                   });
                   setOpenDeleteColumn(true);
+                }}
+                onEdit={() => {
+                  setSelectedColumn({
+                    title: column.title,
+                    id: column.id,
+                    board_id: column.board_id,
+                  });
+                  setOpenEditColumn(true);
                 }}
                 column={column}
                 key={column.id}
@@ -210,6 +220,10 @@ const BoardContentClient = ({
             <DeleteColumnDialog
               columnId={selectedColumn?.id ?? ''}
               boardId={selectedColumn?.board_id ?? ''}
+            />
+            <EditColumnDialog
+              title={selectedColumn?.title ?? ''}
+              id={selectedColumn?.id ?? ''}
             />
             <div className="w-full flex-shrink-0 lg:w-80">
               <Button

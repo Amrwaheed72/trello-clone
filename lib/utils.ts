@@ -30,3 +30,9 @@ export const addColumnFormSchema = z.object({
     .min(1, { message: 'a Column must have a Title' })
     .max(25, { message: 'Column Title is Too long' }),
 });
+export const editColumnFormSchema = z.object({
+  title: z
+    .string()
+    .min(1, { message: 'You must give this Column a Title' })
+    .max(25, { message: 'Too long Title' }),
+});

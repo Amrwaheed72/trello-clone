@@ -188,3 +188,21 @@ export const deleteColumn = async ({
   if (error) throw error;
   return true;
 };
+
+export const editColumn = async ({
+  title,
+  ColumnId,
+}: {
+  title: string;
+  ColumnId: string;
+}) => {
+  const { data, error } = await supabase
+    .from('board_columns')
+    .update({ title: title })
+    .eq('id', ColumnId)
+    .select()
+    .single();
+  revalidatePath(`/boards`);
+  if (error) throw error;
+  return data;
+};
