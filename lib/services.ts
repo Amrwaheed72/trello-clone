@@ -172,17 +172,11 @@ export const deleteBoard = async (boardId: string) => {
   revalidatePath('/dashboard');
   return true;
 };
-export const deleteColumn = async ({
-  ColumnId,
-  boardId,
-}: {
-  ColumnId: string;
-  boardId: string;
-}) => {
+export const deleteColumn = async (columnId: string) => {
   const { error } = await supabase
     .from('board_columns')
     .delete()
-    .eq('id', ColumnId);
+    .eq('id', columnId);
 
   revalidatePath(`/boards`);
   if (error) throw error;

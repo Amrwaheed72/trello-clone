@@ -1,6 +1,11 @@
 'use client';
 import { DashboardStore } from '@/app/store/DashboardStore';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -132,7 +137,6 @@ const EditBoardDialog = ({
                 disabled={
                   !form.formState.isDirty || form.formState.isSubmitting
                 }
-                variant={'outline'}
                 type="submit"
                 className="cursor-pointer"
               >

@@ -4,8 +4,6 @@ import { Badge } from '../../../components/ui/badge';
 import { Button } from '../../../components/ui/button';
 import { MoreHorizontalIcon, Trash } from 'lucide-react';
 import { useDroppable } from '@dnd-kit/core';
-import { DashboardStore } from '@/app/store/DashboardStore';
-import DeleteColumnDialog from './DeleteColumnDialog';
 
 interface ColProps {
   column: ColumnsWithTasks;

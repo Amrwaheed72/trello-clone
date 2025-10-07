@@ -51,11 +51,7 @@ const AddTaskDialog = ({ columns }: { columns: ColumnsWithTasks[] }) => {
       due_date: undefined,
     },
   });
-  const firstColumn = columns[0];
-  if (!firstColumn) {
-    toast.error('No columns found in this board');
-    return;
-  }
+
   const onSubmit = async (values: z.infer<typeof addTaskFormSchema>) => {
     try {
       const firstColumn = columns[0];

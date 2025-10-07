@@ -28,7 +28,7 @@ const DeleteColumnDialog = ({
   const handleDeleteBoard = () => {
     startTransition(async () => {
       try {
-        await deleteColumn({ ColumnId: columnId, boardId });
+        await deleteColumn( columnId );
         toast.success('Column Deleted Successfully!');
         setOpen(false);
         router.refresh();

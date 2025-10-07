@@ -46,7 +46,7 @@ const EditColumnDialog = ({ id, title }: { id: string; title: string }) => {
       });
       toast.success('Column Edited successfully!');
       router.refresh();
-      form.reset();
+      form.reset({ title: values.title });
       setOpen(false);
     } catch (error) {
       toast.error('Could not edit a Column');
