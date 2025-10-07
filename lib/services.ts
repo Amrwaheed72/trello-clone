@@ -1,4 +1,5 @@
 'use server';
+import { revalidatePath } from 'next/cache';
 import { Board, BoardColumns, Task } from './supabase/models';
 import { supabase } from './supabase/supabase';
 
@@ -67,6 +68,7 @@ export const createColumn = async (
     .select()
     .single();
   if (error) throw error;
+  revalidatePath(`/boards/${column.board_id}`);
   return data;
 };
 
@@ -136,11 +138,11 @@ export const createTask = async (
   if (error) throw error;
   return data;
 };
-export async function moveTask(
+export const moveTask = async (
   taskId: string,
   targetColumnId: string,
   newPosition: number,
-) {
+) => {
   const { error: shiftError } = await supabase.rpc('shift_task_positions', {
     column_id_input: targetColumnId,
     from_position: newPosition,
@@ -161,4 +163,28 @@ export async function moveTask(
 
   if (error) throw error;
   return data;
-}
+};
+
+export const deleteBoard = async (boardId: string) => {
+  const { error } = await supabase.from('boards').delete().eq('id', boardId);
+
+  if (error) throw error;
+  revalidatePath('/dashboard');
+  return true;
+};
+export const deleteColumn = async ({
+  ColumnId,
+  boardId,
+}: {
+  ColumnId: string;
+  boardId: string;
+}) => {
+  const { error } = await supabase
+    .from('board_columns')
+    .delete()
+    .eq('id', ColumnId);
+
+  revalidatePath(`/boards`);
+  if (error) throw error;
+  return true;
+};

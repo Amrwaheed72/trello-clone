@@ -1,25 +1,31 @@
-'use client'
+'use client';
 import { ColumnsWithTasks } from '@/lib/supabase/models';
 import { Badge } from '../../../components/ui/badge';
 import { Button } from '../../../components/ui/button';
-import { MoreHorizontalIcon } from 'lucide-react';
+import { MoreHorizontalIcon, Trash } from 'lucide-react';
 import { useDroppable } from '@dnd-kit/core';
+import { DashboardStore } from '@/app/store/DashboardStore';
+import DeleteColumnDialog from './DeleteColumnDialog';
 
 interface ColProps {
   column: ColumnsWithTasks;
   children: React.ReactNode;
+  onDelete: () => void;
   // onCreateTask: (taskData: any) => Promise<void>;
   // onEditColumn: (column: ColumnsWithTasks) => void;
 }
 
-const Column = ({ column, children }: ColProps) => {
+const Column = ({ column, children, onDelete }: ColProps) => {
   const { setNodeRef, isOver } = useDroppable({ id: column.id });
+  const setOpen = DashboardStore((state) => state.setOpenDeleteColumn);
   return (
     <div
       ref={setNodeRef}
-      className={`w-full lg:w-80 lg:flex-shrink-0 ${isOver ? 'rounded-lg bg-blue-500' : ''}`}
+      className={`w-full lg:w-80 lg:flex-shrink-0 ${isOver ? 'rounded-lg bg-blue-50 dark:bg-blue-950' : ''}`}
     >
-      <div className="rounded-lg border dark:border-gray-700 shadow-sm">
+      <div
+        className={`rounded-lg border shadow-sm ${isOver ? 'ring-2 ring-blue-300' : ''}`}
+      >
         <div className="border-b p-3 sm:p-4">
           <div className="flex items-center justify-between">
             <div className="flex min-w-0 items-center space-x-2">
@@ -30,9 +36,19 @@ const Column = ({ column, children }: ColProps) => {
                 {column.tasks.length}
               </Badge>
             </div>
-            <Button variant={'ghost'} size={'sm'} className="flex-shrink-0">
-              <MoreHorizontalIcon />
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                onClick={onDelete}
+                variant="outline"
+                size={'sm'}
+                className="flex-shrink-0"
+              >
+                <Trash />
+              </Button>
+              <Button variant={'outline'} size={'sm'} className="flex-shrink-0">
+                <MoreHorizontalIcon />
+              </Button>
+            </div>
           </div>
         </div>
         <div className="p-2">{children}</div>

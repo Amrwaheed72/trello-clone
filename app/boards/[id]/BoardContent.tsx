@@ -9,7 +9,7 @@ const BoardContent = async ({ id }: { id: string }) => {
     ...column,
     tasks: tasks.filter((task) => task.board_column_id === column.id),
   }));
-  return <BoardContentClient columnsWithTasks={columnsWithTasks} tasks={tasks} />;
+  return <BoardContentClient id={id} columnsWithTasks={columnsWithTasks} tasks={tasks} />;
 };
 
 export default BoardContent;

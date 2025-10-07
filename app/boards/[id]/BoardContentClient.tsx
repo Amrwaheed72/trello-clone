@@ -23,19 +23,31 @@ import { ColumnsWithTasks, Task } from '@/lib/supabase/models';
 import { moveTask } from '@/lib/services';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import AddColumnDialog from './AddColumnDialog';
+import { Button } from '@/components/ui/button';
+import { Plus } from 'lucide-react';
+import { DashboardStore } from '@/app/store/DashboardStore';
+import DeleteBoardDialog from './DeleteBoardDialog';
+import DeleteColumnDialog from './DeleteColumnDialog';
 
 interface BoardClientViewProps {
   columnsWithTasks: ColumnsWithTasks[];
   tasks: Task[];
+  id: string;
 }
 
 const BoardContentClient = ({
   columnsWithTasks,
   tasks,
+  id,
 }: BoardClientViewProps) => {
   const [columns, setColumns] = useState<ColumnsWithTasks[]>(columnsWithTasks);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const router = useRouter();
+  const setOpen = DashboardStore((state) => state.setOpenDeleteColumn);
+  const setSelectedColumn = DashboardStore((state) => state.setSelectedColumn);
+  const selectedColumn = DashboardStore((state) => state.selectedColumn);
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -136,7 +148,6 @@ const BoardContentClient = ({
     });
 
     try {
-      // Server update
       await moveTask(taskId, targetColumn.id, targetColumn.tasks.length);
       router.refresh();
       toast.success('Task moved successfully');
@@ -147,44 +158,74 @@ const BoardContentClient = ({
   };
 
   return (
-    <main className="container mx-auto px-2 py-4 sm:px-4 sm:py-6">
-      <div className="mb-6 flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
-        <div className="flex flex-wrap items-center gap-4 sm:gap-6">
-          <div className="text-sm text-gray-600">
-            <span className="font-medium">Total Tasks: {tasks.length}</span>
+    <>
+      <main className="container mx-auto px-2 py-4 sm:px-4 sm:py-6">
+        <div className="mb-6 flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6">
+            <div className="text-sm">
+              <span className="font-medium">Total Tasks: {tasks.length}</span>
+            </div>
+          </div>
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <DeleteBoardDialog boardId={id} />
+            <AddTaskDialog columns={columns} />
           </div>
         </div>
-        <AddTaskDialog columns={columns} />
-      </div>
 
-      <DndContext
-        sensors={sensors}
-        collisionDetection={rectIntersection}
-        onDragStart={handleDragStart}
-        onDragOver={handleDragOver}
-        onDragEnd={handleDragEnd}
-      >
-        <div className="flex flex-col space-y-4 lg:-mx-2 lg:flex-row lg:space-y-0 lg:space-x-6 lg:overflow-x-auto lg:px-2 lg:pb-6 lg:[&::-webkit-scrollbar]:h-2 lg:[&::-webkit-scrollbar-thumb]:rounded-full lg:[&::-webkit-scrollbar-thumb]:bg-gray-300 lg:[&::-webkit-scrollbar-track]:bg-gray-100">
-          {columns.map((column) => (
-            <Column column={column} key={column.id}>
-              <SortableContext
-                items={column.tasks.map((task) => task.id)}
-                strategy={verticalListSortingStrategy}
+        <DndContext
+          sensors={sensors}
+          collisionDetection={rectIntersection}
+          onDragStart={handleDragStart}
+          onDragOver={handleDragOver}
+          onDragEnd={handleDragEnd}
+        >
+          <div className="flex flex-col space-y-4 lg:-mx-2 lg:flex-row lg:space-y-0 lg:space-x-6 lg:overflow-x-auto lg:px-2 lg:pb-6 lg:[&::-webkit-scrollbar]:h-2 lg:[&::-webkit-scrollbar-thumb]:rounded-full lg:[&::-webkit-scrollbar-thumb]:bg-gray-300 lg:[&::-webkit-scrollbar-track]:bg-gray-100">
+            {columns.map((column) => (
+              <Column
+                onDelete={() => {
+                  setSelectedColumn({
+                    id: column.id,
+                    board_id: column.board_id,
+                  });
+                  setOpen(true);
+                }}
+                column={column}
+                key={column.id}
               >
-                <div className="space-y-3">
-                  {column.tasks.map((task) => (
-                    <TaskComponent task={task} key={task.id} />
-                  ))}
-                </div>
-              </SortableContext>
-            </Column>
-          ))}
-          <DragOverlay>
-            {activeTask ? <TaskOverlay task={activeTask} /> : null}
-          </DragOverlay>
-        </div>
-      </DndContext>
-    </main>
+                <SortableContext
+                  items={column.tasks.map((task) => task.id)}
+                  strategy={verticalListSortingStrategy}
+                >
+                  <div className="space-y-3">
+                    {column.tasks.map((task) => (
+                      <TaskComponent task={task} key={task.id} />
+                    ))}
+                  </div>
+                </SortableContext>
+              </Column>
+            ))}
+            <DeleteColumnDialog
+              columnId={selectedColumn?.id ?? ''}
+              boardId={selectedColumn?.board_id ?? ''}
+            />
+            <div className="w-full flex-shrink-0 lg:w-80">
+              <Button
+                variant={'outline'}
+                className="h-full min-h-[200px] w-full border-2 border-dashed text-gray-400"
+                onClick={() => setOpen(true)}
+              >
+                <Plus />
+                Add another list
+              </Button>
+            </div>
+            <DragOverlay>
+              {activeTask ? <TaskOverlay task={activeTask} /> : null}
+            </DragOverlay>
+          </div>
+        </DndContext>
+      </main>
+      <AddColumnDialog columnsWithTasks={columnsWithTasks} id={id} />
+    </>
   );
 };
 

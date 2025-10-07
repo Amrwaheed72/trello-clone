@@ -6,7 +6,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-
 export const addTaskFormSchema = z.object({
   title: z
     .string()
@@ -24,4 +23,10 @@ export const addTaskFormSchema = z.object({
       },
     ),
   priority: z.enum(['low', 'medium', 'high']).optional(),
+});
+export const addColumnFormSchema = z.object({
+  title: z
+    .string()
+    .min(1, { message: 'a Column must have a Title' })
+    .max(25, { message: 'Column Title is Too long' }),
 });
