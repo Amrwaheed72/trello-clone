@@ -136,3 +136,29 @@ export const createTask = async (
   if (error) throw error;
   return data;
 };
+export async function moveTask(
+  taskId: string,
+  targetColumnId: string,
+  newPosition: number,
+) {
+  const { error: shiftError } = await supabase.rpc('shift_task_positions', {
+    column_id_input: targetColumnId,
+    from_position: newPosition,
+  });
+
+  if (shiftError)
+    console.warn('Could not shift task positions:', shiftError.message);
+
+  const { data, error } = await supabase
+    .from('tasks')
+    .update({
+      board_column_id: targetColumnId,
+      sort_order: newPosition,
+    })
+    .eq('id', taskId)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+}

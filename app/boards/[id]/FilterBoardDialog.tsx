@@ -6,10 +6,10 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from './ui/dialog';
-import { Label } from './ui/label';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
+} from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 const priorityOptions = ['low', 'medium', 'high'];
 const FilterBoardDialog = () => {

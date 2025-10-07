@@ -1,6 +1,6 @@
 'use client';
 import { DashboardStore } from '@/app/store/DashboardStore';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -12,14 +12,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from './ui/form';
-import { Input } from './ui/input';
-import { Button } from './ui/button';
-import { BoardColors } from '@/lib/utils';
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { updateBoard } from '@/lib/services';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { Spinner } from './ui/spinner';
+import { Spinner } from '@/components/ui/spinner';
+import { BoardColors } from '@/lib/constants';
 const EditBoardDialog = ({
   boardTitle,
   boardColor,

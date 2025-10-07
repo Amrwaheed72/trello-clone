@@ -1,6 +1,6 @@
 'use client';
 import { Plus } from 'lucide-react';
-import { Button } from './ui/button';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from './ui/dialog';
+} from '@/components/ui/dialog';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -18,23 +18,23 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from './ui/form';
+} from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
-import { Input } from './ui/input';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from './ui/select';
+} from '@/components/ui/select';
 import { createTask } from '@/lib/services';
 import { toast } from 'sonner';
-import { Spinner } from './ui/spinner';
+import { Spinner } from '@/components/ui/spinner';
 import { ColumnsWithTasks } from '@/lib/supabase/models';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import ReusableFormField from './ReusableFormField';
+import ReusableFormField from '@/components/ReusableFormField';
 import { addTaskFormSchema } from '@/lib/utils';
 const priorityOptions = ['low', 'medium', 'high'];
 const AddTaskDialog = ({ columns }: { columns: ColumnsWithTasks[] }) => {

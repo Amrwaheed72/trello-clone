@@ -1,11 +1,11 @@
 'use client';
 import { Plus } from 'lucide-react';
-import { Button } from './ui/button';
+import { Button } from '@/components/ui/button';
 import { createBoardWithDefaultColumns } from '@/lib/services';
 import { redirect, useRouter } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
 import { useTransition } from 'react';
-import { Spinner } from './ui/spinner';
+import { Spinner } from '@/components/ui/spinner';
 import { toast } from 'sonner';
 
 const CreateBoardComponent = () => {
@@ -20,7 +20,7 @@ const CreateBoardComponent = () => {
         userId: user.id,
       });
       router.refresh();
-      toast('board created successfully');
+      toast.success('board created successfully');
     });
   };
   return (

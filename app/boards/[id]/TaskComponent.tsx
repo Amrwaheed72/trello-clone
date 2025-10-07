@@ -1,9 +1,19 @@
+'use client';
 import { Task } from '@/lib/supabase/models';
-import { Card, CardContent } from './ui/card';
+import { Card, CardContent } from '../../../components/ui/card';
 import { Calendar, User } from 'lucide-react';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 const TaskComponent = ({ task }: { task: Task }) => {
-  console.log(task);
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: task.id });
   const {
     assignee,
     description,
@@ -26,8 +36,14 @@ const TaskComponent = ({ task }: { task: Task }) => {
         return 'bg-yellow-500';
     }
   };
+
+  const styles = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
   return (
-    <div>
+    <div ref={setNodeRef} style={styles} {...listeners} {...attributes}>
       <Card className="cursor-pointer transition-shadow hover:shadow-md dark:shadow-gray-700">
         <CardContent className="p-3 sm:p-4">
           <div className="space-y-2 sm:space-y-3">

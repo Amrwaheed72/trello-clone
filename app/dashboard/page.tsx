@@ -1,7 +1,7 @@
 import BoardsComponent from '@/components/BoardsComponent';
 import ChangeViewButtons from '@/components/ChangeViewButtons';
-import CreateBoardComponent from '@/components/CreateBoardComponent';
-import DashboardStats from '@/components/DashboardStats';
+import CreateBoardComponent from './CreateBoardComponent';
+import DashboardStats from './DashboardStats';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinner';

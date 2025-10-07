@@ -6,7 +6,7 @@ import {
   Rocket,
   Trello,
 } from 'lucide-react';
-import ReusableCardComponent from './ReusableCardComponent';
+import ReusableCardComponent from '@/components/ReusableCardComponent';
 import { redirect } from 'next/navigation';
 
 const DashboardStats = async () => {
