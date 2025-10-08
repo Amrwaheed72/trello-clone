@@ -8,7 +8,6 @@ const BoardsComponent = async () => {
   const user = await currentUser();
   if (!user) redirect('/');
   const boards = await getUserBoards(user.id);
-  console.log(boards);
   if (!boards || boards.length === 0) {
     return <Empty message="No Boards Found, try to create some" />;
   }

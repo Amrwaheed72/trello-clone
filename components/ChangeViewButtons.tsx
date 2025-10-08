@@ -7,7 +7,7 @@ const ChangeViewButtons = () => {
   const viewMode = DashboardStore((state) => state.viewMode);
   const setViewMode = DashboardStore((state) => state.setViewMode);
   return (
-    <div className="flex items-center space-x-2 border p-1">
+    <div className="flex items-center space-x-2 rounded-lg border p-1">
       <Button
         size={'sm'}
         onClick={() => setViewMode('grid')}

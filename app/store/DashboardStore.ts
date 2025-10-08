@@ -32,6 +32,8 @@ interface ViewModeState {
   setOpenEditColumn: (state: boolean) => void;
   filteredColumn: [];
   setFilteredColumn: [];
+  openUpgradeDialog: boolean;
+  setOpenUpgradeDialog: (state: boolean) => void;
 
   selectedColumn: { id: string; board_id: string; title?: string } | null;
   setSelectedColumn: (
@@ -72,4 +74,6 @@ export const DashboardStore = create<ViewModeState>((set) => ({
   setOpenEditColumn: (state) => set({ openEditColumn: state }),
   filteredColumn: [],
   setFilteredColumn: [],
+  openUpgradeDialog: false,
+  setOpenUpgradeDialog: (state) => set({ openUpgradeDialog: state }),
 }));

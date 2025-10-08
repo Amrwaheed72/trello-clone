@@ -7,21 +7,33 @@ import { useUser } from '@clerk/nextjs';
 import { useTransition } from 'react';
 import { Spinner } from '@/components/ui/spinner';
 import { toast } from 'sonner';
+import { DashboardStore } from '../store/DashboardStore';
 
-const CreateBoardComponent = () => {
+const CreateBoardComponent = ({
+  canCreateBoard,
+}: {
+  canCreateBoard: boolean;
+}) => {
   const [isPending, startTransition] = useTransition();
+  const setOpenUpgradeDialog = DashboardStore(
+    (state) => state.setOpenUpgradeDialog,
+  );
   const router = useRouter();
   const { user } = useUser();
   if (!user) router.push('/');
   const handleCreateBoard = async () => {
-    startTransition(async () => {
-      await createBoardWithDefaultColumns({
-        title: 'New Board',
-        userId: user.id,
+    if (!canCreateBoard) {
+      setOpenUpgradeDialog(true);
+    } else {
+      startTransition(async () => {
+        await createBoardWithDefaultColumns({
+          title: 'New Board',
+          userId: user.id,
+        });
+        router.refresh();
+        toast.success('board created successfully');
       });
-      router.refresh();
-      toast.success('board created successfully');
-    });
+    }
   };
   return (
     <Button

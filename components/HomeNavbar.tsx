@@ -14,7 +14,6 @@ const HomeNavbar = () => {
   const isDashboardPage = pathname === '/dashboard';
   const isBoardPage = pathname.startsWith('/boards/');
 
-  if (isHomePage)
     return (
       <nav className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-sm dark:bg-black/80">
         <div className="container mx-auto flex items-center justify-between px-4 py-3 sm:py-4">
