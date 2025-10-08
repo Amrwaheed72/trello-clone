@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
 import { Spinner } from '@/components/ui/spinner';
-import { createColumn } from '@/lib/services';
+import { createColumn } from '@/lib/actions';
 import { ColumnsWithTasks } from '@/lib/supabase/models';
 import { addColumnFormSchema } from '@/lib/utils';
 import { useUser } from '@clerk/nextjs';
@@ -45,16 +45,15 @@ const AddColumnDialog = ({
       : 0;
   const onSubmit = async (values: z.infer<typeof addColumnFormSchema>) => {
     try {
-      const data = await createColumn({
+      await createColumn({
         board_id: id,
         title: values.title,
         sort_order: nextSortOrder,
         user_id: user?.id,
       });
-      toast.success('Column Created successfully!');
       router.refresh();
+      toast.success('Column Created successfully!');
       setOpen(false);
-      console.log(data);
     } catch (error) {
       toast.error('Could not create a Column');
     }

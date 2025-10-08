@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { useTransition } from 'react';
-import { deleteColumn } from '@/lib/services';
+import { deleteColumn } from '@/lib/actions';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { Spinner } from '@/components/ui/spinner';
@@ -28,10 +28,10 @@ const DeleteColumnDialog = ({
   const handleDeleteBoard = () => {
     startTransition(async () => {
       try {
-        await deleteColumn( columnId );
+        await deleteColumn(columnId,boardId);
+        router.refresh();
         toast.success('Column Deleted Successfully!');
         setOpen(false);
-        router.refresh();
       } catch (err) {
         toast.error('Could not delete this Column');
       }
@@ -50,7 +50,11 @@ const DeleteColumnDialog = ({
           <Button size={'sm'} onClick={() => setOpen(false)}>
             Cancel
           </Button>
-          <Button onClick={handleDeleteBoard} variant={'destructive'} size={'sm'}>
+          <Button
+            onClick={handleDeleteBoard}
+            variant={'destructive'}
+            size={'sm'}
+          >
             {isPending ? (
               <>
                 <Spinner size="sm" variant="ring" />

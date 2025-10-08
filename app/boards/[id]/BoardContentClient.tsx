@@ -20,14 +20,12 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { ColumnsWithTasks, Task } from '@/lib/supabase/models';
-import { moveTask } from '@/lib/services';
+import { moveTask } from '@/lib/actions';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import AddColumnDialog from './AddColumnDialog';
 import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
+import { Plus, Trash } from 'lucide-react';
 import { DashboardStore } from '@/app/store/DashboardStore';
-import DeleteBoardDialog from './DeleteBoardDialog';
 import DeleteColumnDialog from './DeleteColumnDialog';
 import EditColumnDialog from './EditColumnDialog';
 
@@ -49,7 +47,11 @@ const BoardContentClient = ({
     (state) => state.setOpenDeleteColumn,
   );
   const setOpenAddColumn = DashboardStore((state) => state.setOpenAddColumn);
+  const setOpenDeleteBoard = DashboardStore(
+    (state) => state.setOpenDeleteBoard,
+  );
   const setOpenEditColumn = DashboardStore((state) => state.setOpenEditColumn);
+  const setOpenAddTask = DashboardStore((state) => state.setOpenAddTask);
   const setSelectedColumn = DashboardStore((state) => state.setSelectedColumn);
   const selectedColumn = DashboardStore((state) => state.selectedColumn);
 
@@ -172,9 +174,32 @@ const BoardContentClient = ({
             </div>
           </div>
           <div className="flex flex-col gap-2 sm:flex-row">
-            <DeleteBoardDialog boardId={id} />
-            <AddTaskDialog columns={columns} />
+            <Button
+              variant={'destructive'}
+              onClick={() => setOpenDeleteBoard(true)}
+              className="w-full sm:w-auto"
+            >
+              <Trash />
+              Delete this Board
+            </Button>
+            <Button
+              onClick={() => setOpenAddTask(true)}
+              className="w-full sm:w-auto"
+            >
+              <Plus />
+              Add Task
+            </Button>
           </div>
+          <AddTaskDialog id={id} columns={columns} />
+          <DeleteColumnDialog
+            columnId={selectedColumn?.id ?? ''}
+            boardId={selectedColumn?.board_id ?? ''}
+          />
+          <EditColumnDialog
+            title={selectedColumn?.title ?? ''}
+            id={selectedColumn?.id ?? ''}
+            boardId={id}
+          />
         </div>
 
         <DndContext
@@ -217,14 +242,7 @@ const BoardContentClient = ({
                 </SortableContext>
               </Column>
             ))}
-            <DeleteColumnDialog
-              columnId={selectedColumn?.id ?? ''}
-              boardId={selectedColumn?.board_id ?? ''}
-            />
-            <EditColumnDialog
-              title={selectedColumn?.title ?? ''}
-              id={selectedColumn?.id ?? ''}
-            />
+
             <div className="w-full flex-shrink-0 lg:w-80">
               <Button
                 variant={'outline'}
@@ -241,7 +259,6 @@ const BoardContentClient = ({
           </div>
         </DndContext>
       </main>
-      <AddColumnDialog columnsWithTasks={columnsWithTasks} id={id} />
     </>
   );
 };

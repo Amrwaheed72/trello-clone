@@ -1,5 +1,4 @@
 'use client';
-import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -28,17 +27,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { createTask } from '@/lib/services';
+import { createTask } from '@/lib/actions';
 import { toast } from 'sonner';
 import { Spinner } from '@/components/ui/spinner';
 import { ColumnsWithTasks } from '@/lib/supabase/models';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 import ReusableFormField from '@/components/ReusableFormField';
 import { addTaskFormSchema } from '@/lib/utils';
+import { DashboardStore } from '@/app/store/DashboardStore';
 const priorityOptions = ['low', 'medium', 'high'];
-const AddTaskDialog = ({ columns }: { columns: ColumnsWithTasks[] }) => {
-  const [open, setOpen] = useState(false);
+const AddTaskDialog = ({
+  columns,
+  id,
+}: {
+  columns: ColumnsWithTasks[];
+  id: string;
+}) => {
+  const open = DashboardStore((state) => state.openAddTask);
+  const setOpen = DashboardStore((state) => state.setOpenAddTask);
   const router = useRouter();
 
   const form = useForm<z.infer<typeof addTaskFormSchema>>({
@@ -53,36 +59,37 @@ const AddTaskDialog = ({ columns }: { columns: ColumnsWithTasks[] }) => {
   });
 
   const onSubmit = async (values: z.infer<typeof addTaskFormSchema>) => {
+    const firstColumn = columns[0];
+    if (!firstColumn) {
+      toast.error('No columns found to add a task.');
+      return;
+    }
+
+    const currentTasks = firstColumn.tasks ?? [];
+    const nextSortOrder =
+      currentTasks.length > 0
+        ? Math.max(...currentTasks.map((t) => t.sort_order)) + 1
+        : 0;
+        console.log(id);
     try {
-      const firstColumn = columns[0];
-      if (!firstColumn) {
-        toast.error('No columns found to add a task.');
-        return;
-      }
-
-      const currentTasks = firstColumn.tasks ?? [];
-      const nextSortOrder =
-        currentTasks.length > 0
-          ? Math.max(...currentTasks.map((t) => t.sort_order)) + 1
-          : 0;
-
-      const data = await createTask({
-        board_column_id: firstColumn.id,
-        title: values.title,
-        description: values.description ?? null,
-        assignee: values.assignee ?? null,
-        due_date: values.due_date
-          ? values.due_date.toISOString().split('T')[0]
-          : null,
-        priority: values.priority ?? 'medium',
-        sort_order: nextSortOrder,
-      });
-
-      toast.success('Task created successfully!');
+      await createTask(
+        {
+          board_column_id: firstColumn.id,
+          title: values.title,
+          description: values.description ?? null,
+          assignee: values.assignee ?? null,
+          due_date: values.due_date
+            ? values.due_date.toISOString().split('T')[0]
+            : null,
+          priority: values.priority ?? 'medium',
+          sort_order: nextSortOrder,
+        },
+        id,
+      );
       router.refresh();
+      toast.success('Task created successfully!');
       form.reset();
       setOpen(false);
-      console.log(data);
     } catch (error) {
       console.error(error);
       toast.error('Could not create the task, please try again later.');
@@ -91,12 +98,7 @@ const AddTaskDialog = ({ columns }: { columns: ColumnsWithTasks[] }) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button onClick={() => setOpen(true)} className="w-full sm:w-auto">
-          <Plus />
-          Add Task
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild></DialogTrigger>
       <DialogContent className="mx-auto w-[95vw] max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Create New Task</DialogTitle>

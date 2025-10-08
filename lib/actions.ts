@@ -35,6 +35,8 @@ export const updateBoard = async (
     .select()
     .single();
   if (error) throw error;
+  revalidatePath(`/boards/${boardId}`);
+
   return data;
 };
 export const createBoard = async (
@@ -61,7 +63,7 @@ export const getColumns = async (boardId: string): Promise<BoardColumns[]> => {
 
 export const createColumn = async (
   column: Omit<BoardColumns, 'id' | 'created_at'>,
-): Promise<BoardColumns> => {
+) => {
   const { data, error } = await supabase
     .from('board_columns')
     .insert(column)
@@ -69,6 +71,7 @@ export const createColumn = async (
     .single();
   if (error) throw error;
   revalidatePath(`/boards/${column.board_id}`);
+
   return data;
 };
 
@@ -128,6 +131,7 @@ export const getTasksForBoard = async (boardId: string): Promise<Task[]> => {
 
 export const createTask = async (
   taskData: Omit<Task, 'id' | 'created_at' | 'updated_at'>,
+  id: string,
 ) => {
   const { data, error } = await supabase
     .from('tasks')
@@ -136,6 +140,7 @@ export const createTask = async (
     .single();
 
   if (error) throw error;
+  revalidatePath(`/boards/${id}`);
   return data;
 };
 export const moveTask = async (
@@ -169,34 +174,37 @@ export const deleteBoard = async (boardId: string) => {
   const { error } = await supabase.from('boards').delete().eq('id', boardId);
 
   if (error) throw error;
-  revalidatePath('/dashboard');
   return true;
 };
-export const deleteColumn = async (columnId: string) => {
+export const deleteColumn = async (columnId: string, boardId: string) => {
   const { error } = await supabase
     .from('board_columns')
     .delete()
     .eq('id', columnId);
 
-  revalidatePath(`/boards`);
   if (error) throw error;
+  revalidatePath(`boards/${boardId}`);
   return true;
 };
 
-export const editColumn = async ({
-  title,
-  ColumnId,
-}: {
-  title: string;
-  ColumnId: string;
-}) => {
+export const editColumn = async (
+  {
+    title,
+    ColumnId,
+  }: {
+    title: string;
+    ColumnId: string;
+  },
+  boardId: string,
+) => {
   const { data, error } = await supabase
     .from('board_columns')
     .update({ title: title })
     .eq('id', ColumnId)
     .select()
     .single();
-  revalidatePath(`/boards`);
   if (error) throw error;
+  revalidatePath(`/boards/${boardId}`);
+
   return data;
 };

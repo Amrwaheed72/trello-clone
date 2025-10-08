@@ -10,18 +10,25 @@ import {
 } from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
 import { Spinner } from '@/components/ui/spinner';
-import { editColumn } from '@/lib/services';
+import { editColumn } from '@/lib/actions';
 import { editColumnFormSchema } from '@/lib/utils';
 import { useUser } from '@clerk/nextjs';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {  useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
 
-const EditColumnDialog = ({ id, title }: { id: string; title: string }) => {
-  console.log(title);
+const EditColumnDialog = ({
+  id,
+  title,
+  boardId,
+}: {
+  id: string;
+  title: string;
+  boardId: string;
+}) => {
   const open = DashboardStore((state) => state.openEditColumn);
   const setOpen = DashboardStore((state) => state.setOpenEditColumn);
   const { user } = useUser();
@@ -40,12 +47,15 @@ const EditColumnDialog = ({ id, title }: { id: string; title: string }) => {
 
   const onSubmit = async (values: z.infer<typeof editColumnFormSchema>) => {
     try {
-      await editColumn({
-        title: values.title,
-        ColumnId: id,
-      });
-      toast.success('Column Edited successfully!');
+      await editColumn(
+        {
+          title: values.title,
+          ColumnId: id,
+        },
+        boardId,
+      );
       router.refresh();
+      toast.success('Column Edited successfully!');
       form.reset({ title: values.title });
       setOpen(false);
     } catch (error) {

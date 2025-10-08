@@ -1,4 +1,4 @@
-import { getBoard } from '@/lib/services';
+import { getBoard } from '@/lib/actions';
 import BoardNavbar from './BoardNavbar';
 import EditBoardDialog from './EditBoardDialog';
 import FilterBoardDialog from './FilterBoardDialog';

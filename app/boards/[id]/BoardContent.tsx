@@ -1,7 +1,8 @@
-import { getBoardWithColumns, getTasksForBoard } from '@/lib/services';
+import { getBoardWithColumns, getTasksForBoard } from '@/lib/actions';
 import BoardContentClient from './BoardContentClient';
+import AddColumnDialog from './AddColumnDialog';
+import DeleteBoardDialog from './DeleteBoardDialog';
 const BoardContent = async ({ id }: { id: string }) => {
-  
   const tasks = await getTasksForBoard(id);
   const { columns } = await getBoardWithColumns(id);
 
@@ -9,7 +10,17 @@ const BoardContent = async ({ id }: { id: string }) => {
     ...column,
     tasks: tasks.filter((task) => task.board_column_id === column.id),
   }));
-  return <BoardContentClient id={id} columnsWithTasks={columnsWithTasks} tasks={tasks} />;
+  return (
+    <>
+      <BoardContentClient
+        id={id}
+        columnsWithTasks={columnsWithTasks}
+        tasks={tasks}
+      />
+      <AddColumnDialog columnsWithTasks={columnsWithTasks} id={id} />
+      <DeleteBoardDialog boardId={id} />
+    </>
+  );
 };
 
 export default BoardContent;

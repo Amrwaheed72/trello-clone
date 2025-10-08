@@ -1,4 +1,4 @@
-import { getUserBoards } from '@/lib/services';
+import { getUserBoards } from '@/lib/actions';
 import { currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import Empty from './Empty';

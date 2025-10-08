@@ -7,11 +7,9 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
-import { Trash } from 'lucide-react';
 import { useTransition } from 'react';
-import { deleteBoard } from '@/lib/services';
+import { deleteBoard } from '@/lib/actions';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { Spinner } from '@/components/ui/spinner';
@@ -20,7 +18,7 @@ const DeleteBoardDialog = ({ boardId }: { boardId: string }) => {
   const setOpen = DashboardStore((state) => state.setOpenDeleteBoard);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
-  
+
   const handleDeleteBoard = () => {
     startTransition(async () => {
       try {
@@ -35,16 +33,6 @@ const DeleteBoardDialog = ({ boardId }: { boardId: string }) => {
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant={'destructive'}
-          onClick={() => setOpen(true)}
-          className="w-full sm:w-auto"
-        >
-          <Trash />
-          Delete this Board
-        </Button>
-      </DialogTrigger>
       <DialogContent className="mx-auto w-[95vw] max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Delete this board?</DialogTitle>

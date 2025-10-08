@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { updateBoard } from '@/lib/services';
+import { updateBoard } from '@/lib/actions';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { Spinner } from '@/components/ui/spinner';
@@ -34,8 +34,8 @@ const EditBoardDialog = ({
   boardColor: string;
   boardId: string;
 }) => {
-  const open = DashboardStore((state) => state.open);
-  const setOpen = DashboardStore((state) => state.setOpen);
+  const open = DashboardStore((state) => state.openEditBoard);
+  const setOpen = DashboardStore((state) => state.setOpenEditBoard);
   const router = useRouter();
 
   const formSchema = z.object({

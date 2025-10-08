@@ -6,13 +6,16 @@ type ViewMode = 'grid' | 'list';
 interface ViewModeState {
   viewMode: ViewMode;
   setViewMode: (mode: ViewMode) => void;
-  open: boolean;
-  setOpen: (state: boolean) => void;
-  toggleOpen: () => void;
+  openEditBoard: boolean;
+  setOpenEditBoard: (state: boolean) => void;
+  toggleOpenEditBoard: () => void;
   openFilter: boolean;
   setOpenFilter: (state: boolean) => void;
   toggleOpenFilter: () => void;
   filterCount: number;
+  openAddTask: boolean;
+  setOpenAddTask: (state: boolean) => void;
+  toggleOpenAddTask: () => void;
   openAddColumn: boolean;
   setOpenAddColumn: (state: boolean) => void;
   openDeleteBoard: boolean;
@@ -31,13 +34,16 @@ interface ViewModeState {
 export const DashboardStore = create<ViewModeState>((set) => ({
   viewMode: 'grid',
   setViewMode: (mode) => set({ viewMode: mode }),
-  open: false,
-  setOpen: (state) => set({ open: state }),
-  toggleOpen: () => set((prev) => ({ open: !prev.open })),
+  openEditBoard: false,
+  setOpenEditBoard: (state) => set({ openEditBoard: state }),
+  toggleOpenEditBoard: () => set((prev) => ({ openEditBoard: !prev.openEditBoard })),
   openFilter: false,
   setOpenFilter: (state) => set({ openFilter: state }),
   toggleOpenFilter: () => set((prev) => ({ openFilter: !prev.openFilter })),
   filterCount: 3,
+  openAddTask:false,
+  setOpenAddTask:(state) => set({ openAddTask: state }),
+  toggleOpenAddTask:() => set((prev) => ({ openAddTask: !prev.openAddTask })),
   openAddColumn: false,
   setOpenAddColumn: (state) => set({ openAddColumn: state }),
   toggleOpenAddColumn: () =>
