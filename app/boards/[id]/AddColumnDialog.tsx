@@ -38,7 +38,7 @@ const AddColumnDialog = ({
       title: '',
     },
   });
-  if (!user) throw new Error('You must login');
+  if (!user) router.push('/');
   const nextSortOrder =
     columnsWithTasks.length > 0
       ? Math.max(...columnsWithTasks.map((t) => t.sort_order)) + 1

@@ -14,7 +14,7 @@ import { editColumn } from '@/lib/services';
 import { editColumnFormSchema } from '@/lib/utils';
 import { useUser } from '@clerk/nextjs';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
+import {  useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -36,7 +36,7 @@ const EditColumnDialog = ({ id, title }: { id: string; title: string }) => {
       form.reset({ title });
     }
   }, [open, title, form]);
-  if (!user) throw new Error('You must login');
+  if (!user) router.push('/');
 
   const onSubmit = async (values: z.infer<typeof editColumnFormSchema>) => {
     try {
