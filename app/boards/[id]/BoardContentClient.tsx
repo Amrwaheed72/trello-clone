@@ -146,7 +146,6 @@ const BoardContentClient = ({
           };
         }
 
-        // Add task to target column
         if (col.id === targetColumn.id) {
           const movedTask = sourceColumn.tasks.find(
             (task) => task.id === taskId,
@@ -166,7 +165,6 @@ const BoardContentClient = ({
     try {
       await moveTask(taskId, targetColumn.id, targetColumn.tasks.length);
       router.refresh();
-      toast.success('Task moved successfully');
     } catch (err) {
       console.error(err);
       toast.error('Could not move the task');
