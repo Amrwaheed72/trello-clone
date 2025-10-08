@@ -28,6 +28,8 @@ import { Plus, Trash } from 'lucide-react';
 import { DashboardStore } from '@/app/store/DashboardStore';
 import DeleteColumnDialog from './DeleteColumnDialog';
 import EditColumnDialog from './EditColumnDialog';
+import DeleteTaskDialog from './DeleteTaskDialog';
+import EditTaskDialog from './EditTaskDialog';
 
 interface BoardClientViewProps {
   columnsWithTasks: ColumnsWithTasks[];
@@ -57,6 +59,10 @@ const BoardContentClient = ({
   const setOpenAddTask = DashboardStore((state) => state.setOpenAddTask);
   const setSelectedColumn = DashboardStore((state) => state.setSelectedColumn);
   const selectedColumn = DashboardStore((state) => state.selectedColumn);
+  const selectedTask = DashboardStore((state) => state.selectedTask);
+  const setSelectedTask = DashboardStore((state) => state.setSelectedTask);
+  const setOpenDeleteTask = DashboardStore((state) => state.setOpenDeleteTask);
+  const setOpenEditTask = DashboardStore((state) => state.setOpenEditTask);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -170,7 +176,6 @@ const BoardContentClient = ({
     return columnsWithTasks.map((column) => ({
       ...column,
       tasks: column.tasks.filter((task) => {
-        // Apply priority filter
         if (
           filters.priority.length > 0 &&
           !filters.priority.includes(task.priority)
@@ -226,6 +231,8 @@ const BoardContentClient = ({
             id={selectedColumn?.id ?? ''}
             boardId={id}
           />
+          <DeleteTaskDialog taskId={selectedTask?.id ?? ''} />
+          <EditTaskDialog selectedTask={selectedTask} />
         </div>
 
         <DndContext
@@ -262,7 +269,29 @@ const BoardContentClient = ({
                 >
                   <div className="space-y-3">
                     {column.tasks.map((task) => (
-                      <TaskComponent task={task} key={task.id} />
+                      <TaskComponent
+                        onEdit={() => {
+                          setSelectedTask({
+                            id: task.id,
+                            board_column_id: task.board_column_id,
+                            assignee: task.assignee,
+                            priority: task.priority,
+                            dueDate: task.due_date,
+                            title: task.title,
+                            description: task.description,
+                          });
+                          setOpenEditTask(true);
+                        }}
+                        onDelete={() => {
+                          setSelectedTask({
+                            id: task.id,
+                            board_column_id: task.board_column_id,
+                          });
+                          setOpenDeleteTask(true);
+                        }}
+                        task={task}
+                        key={task.id}
+                      />
                     ))}
                   </div>
                 </SortableContext>

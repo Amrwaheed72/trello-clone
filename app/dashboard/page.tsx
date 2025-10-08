@@ -2,7 +2,6 @@ import BoardsComponent from '@/components/BoardsComponent';
 import ChangeViewButtons from '@/components/ChangeViewButtons';
 import CreateBoardComponent from './CreateBoardComponent';
 import DashboardStats from './DashboardStats';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinner';
 import { auth, currentUser } from '@clerk/nextjs/server';
@@ -10,6 +9,8 @@ import { Filter, Search } from 'lucide-react';
 import { Suspense } from 'react';
 import { getUserBoards } from '@/lib/actions';
 import UpgradeDialog from '@/components/UpgradeDialog';
+import SearchInput from './SearchInput';
+import { Button } from '@/components/ui/button';
 
 export const metadata = {
   title: 'Dashboard',
@@ -23,6 +24,7 @@ const Page = async () => {
   const user = await currentUser();
   const boards = await getUserBoards(user.id);
   const canCreateBoard = !hasFreePlan || boards.length < 1;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:bg-gradient-to-br dark:from-blue-950 dark:via-black dark:to-purple-950">
       <main className="container mx-auto px-4 py-6 sm:py-8">
@@ -60,22 +62,15 @@ const Page = async () => {
             {/* helper buttons like change shape and filtering the boards */}
             <div className="flex flex-col items-stretch gap-2 space-y-2 sm:flex-row sm:items-center sm:space-y-0">
               <ChangeViewButtons />
-              {/* <Button variant={'outline'} size={'sm'}>
+              <Button variant={'outline'} size={'sm'}>
                 <Filter />
                 Filter
-              </Button> */}
+              </Button>
               <CreateBoardComponent canCreateBoard={canCreateBoard} />
             </div>
           </div>
           {/* search */}
-          {/* <div className="relative mb-4 sm:mb-6">
-            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
-            <Input
-              id="search"
-              placeholder="Search Boards..."
-              className="pl-10"
-            />
-          </div> */}
+          <SearchInput />
           <Suspense
             fallback={
               <div className="flex items-center justify-center">

@@ -208,3 +208,25 @@ export const editColumn = async (
 
   return data;
 };
+
+export const deleteTask = async (taskId: string) => {
+  const { error } = await supabase.from('tasks').delete().eq('id', taskId);
+  if (error) throw error;
+  return true;
+};
+
+export const updateTask = async (
+  values: Omit<
+    Task,
+    'id' | 'board_column_id' | 'sort_order' | 'created_at' | 'updated_at'
+  >,
+  taskId: string,
+) => {
+  const { data, error } = await supabase
+    .from('tasks')
+    .update({ ...values, updated_at: new Date().toISOString() })
+    .eq('id', taskId)
+    .select();
+  if (error) throw error;
+  return data;
+};

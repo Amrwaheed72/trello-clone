@@ -42,7 +42,7 @@ const EditBoardDialog = ({
     boardTitle: z
       .string()
       .min(1, { message: 'You must give this board a Title' })
-      .max(50, { message: 'Too long Title' }),
+      .max(15, { message: 'Too long Title' }),
     boardColor: z.string(),
   });
   const form = useForm<z.infer<typeof formSchema>>({

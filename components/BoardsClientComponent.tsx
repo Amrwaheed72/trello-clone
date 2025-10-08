@@ -4,6 +4,7 @@ import { DashboardStore } from '@/app/store/DashboardStore';
 import { Board } from '@/lib/supabase/models';
 import BoardsInGrid from './BoardsInGrid';
 import BoardsInList from './BoardsInList';
+import { useMemo } from 'react';
 
 interface BoardsClientComponentProps {
   boards: Board[];
@@ -11,12 +12,20 @@ interface BoardsClientComponentProps {
 
 const BoardsClientComponent = ({ boards }: BoardsClientComponentProps) => {
   const viewMode = DashboardStore((state) => state.viewMode);
+  const query = DashboardStore((state) => state.query);
+  const searchedBoards = useMemo(() => {
+    if (!query) return boards;
+    return boards.filter((board) =>
+      board.title.toLowerCase().includes(query.toLowerCase()),
+    );
+  }, [query, boards]);
+
   return (
     <div>
       {viewMode === 'grid' ? (
-        <BoardsInGrid boards={boards} />
+        <BoardsInGrid boards={searchedBoards} />
       ) : (
-        <BoardsInList boards={boards} />
+        <BoardsInList boards={searchedBoards} />
       )}
     </div>
   );

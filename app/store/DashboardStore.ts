@@ -34,6 +34,34 @@ interface ViewModeState {
   setFilteredColumn: [];
   openUpgradeDialog: boolean;
   setOpenUpgradeDialog: (state: boolean) => void;
+  openDeleteTask: boolean;
+  setOpenDeleteTask: (state: boolean) => void;
+  query: string | null;
+  setQuery: (query: string | null) => void;
+
+  openEditTask: boolean;
+  setOpenEditTask: (state: boolean) => void;
+
+  selectedTask: {
+    id: string;
+    board_column_id?: string;
+    title?: string | null;
+    description?: string | null;
+    dueDate?: string | null;
+    assignee?: string | null;
+    priority?: string | null;
+  } | null;
+  setSelectedTask: (
+    task: {
+      id: string;
+      board_column_id: string;
+      title?: string;
+      description?: string | null;
+      dueDate?: string | null;
+      assignee?: string | null;
+      priority?: string | null;
+    } | null,
+  ) => void;
 
   selectedColumn: { id: string; board_id: string; title?: string } | null;
   setSelectedColumn: (
@@ -72,8 +100,16 @@ export const DashboardStore = create<ViewModeState>((set) => ({
   setSelectedColumn: (column) => set({ selectedColumn: column }),
   openEditColumn: false,
   setOpenEditColumn: (state) => set({ openEditColumn: state }),
+  openDeleteTask: false,
+  setOpenDeleteTask: (state) => set({ openDeleteTask: state }),
   filteredColumn: [],
   setFilteredColumn: [],
   openUpgradeDialog: false,
   setOpenUpgradeDialog: (state) => set({ openUpgradeDialog: state }),
+  selectedTask: null,
+  setSelectedTask: (task) => set({ selectedTask: task }),
+  query: '',
+  setQuery: (query) => set({ query: query }),
+  openEditTask: false,
+  setOpenEditTask: (state) => set({ openEditTask: state }),
 }));
