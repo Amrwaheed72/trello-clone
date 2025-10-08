@@ -11,9 +11,10 @@ interface Props {
   boardTitle?: string;
 }
 const BoardNavbar = ({ boardTitle }: Props) => {
-  const ToggleOpen = DashboardStore((state) => state.toggleOpen);
-  const toggleOpenFilter = DashboardStore((state) => state.toggleOpenFilter);
+  const setOpenEditBoard = DashboardStore((state) => state.setOpenEditBoard);
+  const setOpenFilter = DashboardStore((state) => state.setOpenFilter);
   const filterCount = DashboardStore((state) => state.filterCount);
+
   return (
     <nav className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-sm dark:bg-black/80">
       <div className="container mx-auto flex items-center justify-between px-4 py-3 sm:py-4">
@@ -36,7 +37,7 @@ const BoardNavbar = ({ boardTitle }: Props) => {
                 </span>
 
                 <Button
-                  onClick={ToggleOpen}
+                  onClick={() => setOpenEditBoard(true)}
                   variant={'ghost'}
                   size={'sm'}
                   className="h-7 w-7 flex-shrink-0 p-0"
@@ -51,7 +52,7 @@ const BoardNavbar = ({ boardTitle }: Props) => {
           <Button
             variant={'outline'}
             size={'sm'}
-            onClick={toggleOpenFilter}
+            onClick={() => setOpenFilter(true)}
             className={`text-xs sm:text-sm`}
           >
             <Filter className="mr-1 h-3 w-3 sm:mr-2 sm:h-4 sm:w-4" />

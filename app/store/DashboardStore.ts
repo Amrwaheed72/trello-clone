@@ -2,20 +2,26 @@
 import { create } from 'zustand';
 
 type ViewMode = 'grid' | 'list';
+type Filters = {
+  priority: string[];
+  assignee: string[];
+  dueDate: string | null;
+};
 
 interface ViewModeState {
+  filters: Filters;
+  setFilters: (filters: Filters) => void;
+  clearFilters: () => void;
   viewMode: ViewMode;
   setViewMode: (mode: ViewMode) => void;
   openEditBoard: boolean;
   setOpenEditBoard: (state: boolean) => void;
-  toggleOpenEditBoard: () => void;
   openFilter: boolean;
   setOpenFilter: (state: boolean) => void;
-  toggleOpenFilter: () => void;
   filterCount: number;
+  // setFilterCount: () => void;
   openAddTask: boolean;
   setOpenAddTask: (state: boolean) => void;
-  toggleOpenAddTask: () => void;
   openAddColumn: boolean;
   setOpenAddColumn: (state: boolean) => void;
   openDeleteBoard: boolean;
@@ -24,6 +30,8 @@ interface ViewModeState {
   setOpenDeleteColumn: (state: boolean) => void;
   openEditColumn: boolean;
   setOpenEditColumn: (state: boolean) => void;
+  filteredColumn: [];
+  setFilteredColumn: [];
 
   selectedColumn: { id: string; board_id: string; title?: string } | null;
   setSelectedColumn: (
@@ -32,32 +40,36 @@ interface ViewModeState {
 }
 
 export const DashboardStore = create<ViewModeState>((set) => ({
+  filters: {
+    priority: [],
+    assignee: [],
+    dueDate: null,
+  },
+  setFilters: (filters) => set({ filters }),
+  clearFilters: () =>
+    set({
+      filters: { priority: [], assignee: [], dueDate: null },
+    }),
   viewMode: 'grid',
   setViewMode: (mode) => set({ viewMode: mode }),
   openEditBoard: false,
   setOpenEditBoard: (state) => set({ openEditBoard: state }),
-  toggleOpenEditBoard: () => set((prev) => ({ openEditBoard: !prev.openEditBoard })),
   openFilter: false,
   setOpenFilter: (state) => set({ openFilter: state }),
-  toggleOpenFilter: () => set((prev) => ({ openFilter: !prev.openFilter })),
   filterCount: 3,
-  openAddTask:false,
-  setOpenAddTask:(state) => set({ openAddTask: state }),
-  toggleOpenAddTask:() => set((prev) => ({ openAddTask: !prev.openAddTask })),
+  // setFilterCount,
+  openAddTask: false,
+  setOpenAddTask: (state) => set({ openAddTask: state }),
   openAddColumn: false,
   setOpenAddColumn: (state) => set({ openAddColumn: state }),
-  toggleOpenAddColumn: () =>
-    set((prev) => ({ openAddColumn: !prev.openAddColumn })),
   openDeleteBoard: false,
   setOpenDeleteBoard: (state) => set({ openDeleteBoard: state }),
-  toggleOpenDeleteBoard: () =>
-    set((prev) => ({ openDeleteBoard: !prev.openDeleteBoard })),
   openDeleteColumn: false,
   setOpenDeleteColumn: (state) => set({ openDeleteColumn: state }),
-  toggleOpenDeleteColumn: () =>
-    set((prev) => ({ openDeleteColumn: !prev.openDeleteColumn })),
   selectedColumn: null,
   setSelectedColumn: (column) => set({ selectedColumn: column }),
   openEditColumn: false,
   setOpenEditColumn: (state) => set({ openEditColumn: state }),
+  filteredColumn: [],
+  setFilteredColumn: [],
 }));

@@ -70,7 +70,7 @@ const AddTaskDialog = ({
       currentTasks.length > 0
         ? Math.max(...currentTasks.map((t) => t.sort_order)) + 1
         : 0;
-        console.log(id);
+    console.log(id);
     try {
       await createTask(
         {

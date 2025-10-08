@@ -15,6 +15,16 @@ const priorityOptions = ['low', 'medium', 'high'];
 const FilterBoardDialog = () => {
   const openFilter = DashboardStore((state) => state.openFilter);
   const setOpenFilter = DashboardStore((state) => state.setOpenFilter);
+  const filters = DashboardStore((state) => state.filters);
+  const setFilters = DashboardStore((state) => state.setFilters);
+  const clearFilters = DashboardStore((state) => state.clearFilters);
+
+  const onPriorityFilter = (priority: string) => {
+    const newPriorities = filters.priority.includes(priority)
+      ? filters.priority.filter((p) => p !== priority)
+      : [...filters.priority, priority];
+    setFilters({ ...filters, priority: newPriorities });
+  };
   return (
     <Dialog open={openFilter} onOpenChange={setOpenFilter}>
       <DialogContent className="mx-auto w-[95vw] max-w-[425px]">
@@ -29,13 +39,22 @@ const FilterBoardDialog = () => {
             <Label>Priority</Label>
             <div className="flex flex-wrap gap-2">
               {priorityOptions.map((priority, i) => (
-                <Button variant={'outline'} size={'sm'} key={i}>
+                <Button
+                  onClick={() => {
+                    onPriorityFilter(priority);
+                  }}
+                  variant={
+                    filters.priority.includes(priority) ? 'default' : 'outline'
+                  }
+                  size={'sm'}
+                  key={i}
+                >
                   {priority.charAt(0).toUpperCase() + priority.slice(1)}
                 </Button>
               ))}
             </div>
           </div>
-          <div className="space-y-2">
+          {/* <div className="space-y-2">
             <Label>Assignee</Label>
             <div className="flex flex-wrap gap-2">
               {priorityOptions.map((priority, i) => (
@@ -44,13 +63,19 @@ const FilterBoardDialog = () => {
                 </Button>
               ))}
             </div>
-          </div>
+          </div> */}
           <div className="space-y-2">
             <Label>Due Date</Label>
-            <Input type="date" />
+            <Input
+              type="date"
+              value={filters.dueDate || ''}
+              onChange={(e) =>
+                setFilters({ ...filters, dueDate: e.target.value })
+              }
+            />
           </div>
           <div className="flex justify-between pt-4">
-            <Button type="button" variant={'outline'}>
+            <Button onClick={clearFilters} type="button" variant={'outline'}>
               Clear Filter
             </Button>
             <Button

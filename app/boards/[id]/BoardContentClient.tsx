@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Column from '@/app/boards/[id]/Column';
 import TaskComponent from '@/app/boards/[id]/TaskComponent';
 import AddTaskDialog from './AddTaskDialog';
@@ -40,7 +40,10 @@ const BoardContentClient = ({
   tasks,
   id,
 }: BoardClientViewProps) => {
+  const filters = DashboardStore((state) => state.filters);
+
   const [columns, setColumns] = useState<ColumnsWithTasks[]>(columnsWithTasks);
+
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const router = useRouter();
   const setOpenDeleteColumn = DashboardStore(
@@ -163,7 +166,30 @@ const BoardContentClient = ({
       toast.error('Could not move the task');
     }
   };
+  const filteredColumns = useMemo(() => {
+    return columnsWithTasks.map((column) => ({
+      ...column,
+      tasks: column.tasks.filter((task) => {
+        // Apply priority filter
+        if (
+          filters.priority.length > 0 &&
+          !filters.priority.includes(task.priority)
+        ) {
+          return false;
+        }
 
+        if (
+          filters.dueDate &&
+          new Date(task.due_date).toDateString() !==
+            new Date(filters.dueDate).toDateString()
+        ) {
+          return false;
+        }
+
+        return true;
+      }),
+    }));
+  }, [columnsWithTasks, filters]);
   return (
     <>
       <main className="container mx-auto px-2 py-4 sm:px-4 sm:py-6">
@@ -210,7 +236,7 @@ const BoardContentClient = ({
           onDragEnd={handleDragEnd}
         >
           <div className="flex flex-col space-y-4 lg:-mx-2 lg:flex-row lg:space-y-0 lg:space-x-6 lg:overflow-x-auto lg:px-2 lg:pb-6 lg:[&::-webkit-scrollbar]:h-2 lg:[&::-webkit-scrollbar-thumb]:rounded-full lg:[&::-webkit-scrollbar-thumb]:bg-gray-300 dark:lg:[&::-webkit-scrollbar-thumb]:bg-gray-700 lg:[&::-webkit-scrollbar-track]:bg-gray-100 dark:lg:[&::-webkit-scrollbar-track]:bg-gray-800">
-            {columns.map((column) => (
+            {filteredColumns.map((column) => (
               <Column
                 onDelete={() => {
                   setSelectedColumn({
