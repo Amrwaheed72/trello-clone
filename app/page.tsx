@@ -51,10 +51,10 @@ const Home = async () => {
             <span className="text-blue-600">finally.</span>
           </h1>
           <p className="mx-auto mb-8 max-w-2xl text-xl text-gray-600 dark:text-gray-300">
-            TrelloClone helps teams move work forward. Collaborate, manage
+            Planify helps teams move work forward. Collaborate, manage
             projects, and reach new productivity peaks. From high rises to the
             home office, the way your team works is unique—accomplish it all
-            with TrelloClone.
+            with Planify.
           </p>
 
           {!userId && (
@@ -112,7 +112,7 @@ const Home = async () => {
             Ready to get started?
           </h2>
           <p className="mx-auto mb-8 max-w-2xl text-xl text-blue-100">
-            Join thousands of teams who are already using TrelloClone to
+            Join thousands of teams who are already using Planify to
             organize their work.
           </p>
 

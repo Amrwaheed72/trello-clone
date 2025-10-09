@@ -13,7 +13,7 @@ const DashboardStats = async () => {
   const user = await currentUser();
   if (!user) redirect('/');
   const data = await getUserBoards(user.id);
-
+  
   const recentActivityCount = data.filter((board) => {
     const updatedAt = new Date(board.updated_at);
     const oneWeekAgo = new Date();
