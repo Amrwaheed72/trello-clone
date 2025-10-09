@@ -61,10 +61,10 @@ const Page = async () => {
             </div>
             <div className="flex flex-col items-stretch gap-2 space-y-2 sm:flex-row sm:items-center sm:space-y-0">
               <ChangeViewButtons />
-              <Button variant={'outline'} size={'sm'}>
+              {/* <Button variant={'outline'} size={'sm'}>
                 <Filter />
                 Filter
-              </Button>
+              </Button> */}
               <CreateBoardComponent canCreateBoard={canCreateBoard} />
             </div>
           </div>
