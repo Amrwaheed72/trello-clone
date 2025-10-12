@@ -28,11 +28,11 @@ import {
 } from '@/components/ui/select';
 import { toast } from 'sonner';
 import { Spinner } from '@/components/ui/spinner';
-import { Task } from '@/services/supabase/models';
+import { Task } from '@/app/services/supabase/models';
 import { useRouter } from 'next/navigation';
 import ReusableFormField from '@/components/ReusableFormField';
 import { useEffect } from 'react';
-import { updateTask } from '@/services/actions/taskActions';
+import { updateTask } from '@/app/services/actions/taskActions';
 import { addTaskFormSchema } from '@/app/utils/schemas';
 import { useTaskStore } from '@/app/store/TaskStore';
 const priorityOptions = ['low', 'medium', 'high'];

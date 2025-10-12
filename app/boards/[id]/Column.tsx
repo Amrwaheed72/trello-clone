@@ -1,5 +1,5 @@
 'use client';
-import { ColumnsWithTasks } from '@/services/supabase/models';
+import { ColumnsWithTasks } from '@/app/services/supabase/models';
 import { Badge } from '../../../components/ui/badge';
 import { Button } from '../../../components/ui/button';
 import { MoreHorizontalIcon, Trash } from 'lucide-react';

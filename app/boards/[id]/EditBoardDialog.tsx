@@ -23,7 +23,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { Spinner } from '@/components/ui/spinner';
 import { BoardColors } from '@/app/utils/constants';
-import { updateBoard } from '@/services/actions/boardActions';
+import { updateBoard } from '@/app/services/actions/boardActions';
 import { useBoardStore } from '@/app/store/BoardStore';
 const EditBoardDialog = ({
   boardTitle,

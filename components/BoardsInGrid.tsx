@@ -8,7 +8,7 @@ import {
 } from './ui/card';
 import { Badge } from './ui/badge';
 import { Plus } from 'lucide-react';
-import { Board } from '@/services/supabase/models';
+import { Board } from '@/app/services/supabase/models';
 
 interface BoardsClientComponentProps {
   boards: Board[];

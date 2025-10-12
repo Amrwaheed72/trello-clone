@@ -1,7 +1,7 @@
 import BoardContentClient from './BoardContentClient';
 import AddColumnDialog from './AddColumnDialog';
-import { getTasksForBoard } from '@/services/actions/taskActions';
-import { getColumns } from '@/services/actions/columnActions';
+import { getTasksForBoard } from '@/app/services/actions/taskActions';
+import { getColumns } from '@/app/services/actions/columnActions';
 const BoardContent = async ({ id }: { id: string }) => {
   const tasks = await getTasksForBoard(id);
   const columns = await getColumns(id);

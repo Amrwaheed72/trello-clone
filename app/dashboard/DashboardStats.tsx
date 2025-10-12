@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import ReusableCardComponent from '@/components/ReusableCardComponent';
 import { redirect } from 'next/navigation';
-import { getUserBoards } from '@/services/actions/boardActions';
+import { getUserBoards } from '@/app/services/actions/boardActions';
 
 const DashboardStats = async () => {
   const user = await currentUser();

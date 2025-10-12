@@ -6,10 +6,7 @@ import AddTaskDialog from './AddTaskDialog';
 import TaskOverlay from './TaskOverlay';
 import {
   DndContext,
-  DragEndEvent,
-  DragOverEvent,
   DragOverlay,
-  DragStartEvent,
   PointerSensor,
   rectIntersection,
   useSensor,
@@ -19,20 +16,17 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { ColumnsWithTasks, Task } from '@/services/supabase/models';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
+import { ColumnsWithTasks, Task } from '@/app/services/supabase/models';
 import { Button } from '@/components/ui/button';
 import { Plus, Trash } from 'lucide-react';
-import { DashboardStore } from '@/app/store/DashboardStore';
 import EditColumnDialog from './EditColumnDialog';
 import EditTaskDialog from './EditTaskDialog';
 import DeleteDialog from '@/components/DeleteDialog';
-import { moveTask } from '@/services/actions/taskActions';
 import { useDeleteDialogStore } from '@/app/store/DeleteDialogStore';
 import { useFilterStore } from '@/app/store/FilterStore';
 import { useColumnStore } from '@/app/store/ColumnStore';
 import { useTaskStore } from '@/app/store/TaskStore';
+import useDragnDrop from '@/app/hooks/useDragnDrop';
 
 interface BoardClientViewProps {
   columnsWithTasks: ColumnsWithTasks[];
@@ -45,12 +39,15 @@ const BoardContentClient = ({
   tasks,
   id,
 }: BoardClientViewProps) => {
-  const filters = useFilterStore((state) => state.filters);
-
   const [columns, setColumns] = useState<ColumnsWithTasks[]>(columnsWithTasks);
-
   const [activeTask, setActiveTask] = useState<Task | null>(null);
-  const router = useRouter();
+
+  const filters = useFilterStore((state) => state.filters);
+  const { handleDragStart, handleDragEnd, handleDragOver } = useDragnDrop({
+    columns,
+    setColumns,
+    setActiveTask,
+  });
 
   const setOpenAddColumn = useColumnStore((state) => state.setOpenAddColumn);
   const setOpenEditColumn = useColumnStore((state) => state.setOpenEditColumn);
@@ -61,7 +58,7 @@ const BoardContentClient = ({
   const selectedTask = useTaskStore((state) => state.selectedTask);
   const setSelectedTask = useTaskStore((state) => state.setSelectedTask);
   const setOpenEditTask = useTaskStore((state) => state.setOpenEditTask);
-  
+
   const setSelectedDelete = useDeleteDialogStore(
     (state) => state.setSelectedDelete,
   );
@@ -76,105 +73,7 @@ const BoardContentClient = ({
       },
     }),
   );
-  const handleDragStart = (e: DragStartEvent) => {
-    const taskId = e.active.id as string;
-    const task = columns
-      .flatMap((col) => col.tasks)
-      .find((task) => task.id === taskId);
-    if (task) setActiveTask(task);
-  };
 
-  const handleDragOver = (e: DragOverEvent) => {
-    const { active, over } = e;
-    if (!over) return;
-
-    const activeId = active.id as string;
-    const overId = over.id as string;
-
-    const sourceColumn = columns.find((col) =>
-      col.tasks.some((task) => task.id === activeId),
-    );
-    const targetColumn = columns.find((col) =>
-      col.tasks.some((task) => task.id === overId),
-    );
-
-    if (!sourceColumn || !targetColumn) return;
-
-    if (sourceColumn.id === targetColumn.id) {
-      const activeIndex = sourceColumn.tasks.findIndex(
-        (task) => task.id === activeId,
-      );
-      const overIndex = targetColumn.tasks.findIndex(
-        (task) => task.id === overId,
-      );
-
-      if (activeIndex !== overIndex) {
-        setColumns((prev) => {
-          const newColumns = [...prev];
-          const column = newColumns.find((col) => col.id === sourceColumn.id);
-          if (column) {
-            const tasks = [...column.tasks];
-            const [movedTask] = tasks.splice(activeIndex, 1);
-            tasks.splice(overIndex, 0, movedTask);
-            column.tasks = tasks;
-          }
-          return newColumns;
-        });
-      }
-    }
-  };
-
-  const handleDragEnd = async (e: DragEndEvent) => {
-    const { active, over } = e;
-    if (!over) return;
-
-    const taskId = active.id as string;
-    const overId = over.id as string;
-
-    const targetColumn = columns.find((col) => col.id === overId);
-    if (!targetColumn) return;
-
-    const sourceColumn = columns.find((col) =>
-      col.tasks.some((task) => task.id === taskId),
-    );
-
-    if (!sourceColumn || sourceColumn.id === targetColumn.id) return;
-
-    // Optimistic UI update
-    setColumns((prev) => {
-      const updated = prev.map((col) => {
-        // Remove task from source column
-        if (col.id === sourceColumn.id) {
-          return {
-            ...col,
-            tasks: col.tasks.filter((task) => task.id !== taskId),
-          };
-        }
-
-        if (col.id === targetColumn.id) {
-          const movedTask = sourceColumn.tasks.find(
-            (task) => task.id === taskId,
-          );
-          return {
-            ...col,
-            tasks: movedTask ? [...col.tasks, movedTask] : col.tasks,
-          };
-        }
-
-        return col;
-      });
-
-      return updated;
-    });
-
-    try {
-      await moveTask(taskId, targetColumn.id, targetColumn.tasks.length);
-      router.refresh();
-    } catch (err) {
-      console.error(err);
-      toast.error('Could not move the task');
-    }
-  };
   const filteredColumns = useMemo(() => {
     return columnsWithTasks.map((column) => ({
       ...column,

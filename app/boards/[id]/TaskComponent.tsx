@@ -1,5 +1,5 @@
 'use client';
-import { Task } from '@/services/supabase/models';
+import { Task } from '@/app/services/supabase/models';
 import { Card, CardContent } from '../../../components/ui/card';
 import { Calendar, MoreHorizontalIcon, Trash, User } from 'lucide-react';
 import { useSortable } from '@dnd-kit/sortable';

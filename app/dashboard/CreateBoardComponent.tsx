@@ -7,7 +7,7 @@ import { useTransition } from 'react';
 import { Spinner } from '@/components/ui/spinner';
 import { toast } from 'sonner';
 import { DashboardStore } from '../store/DashboardStore';
-import { createBoardWithDefaultColumns } from '@/services/actions/columnActions';
+import { createBoardWithDefaultColumns } from '@/app/services/actions/columnActions';
 
 const CreateBoardComponent = ({
   canCreateBoard,

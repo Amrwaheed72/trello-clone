@@ -12,9 +12,9 @@ import { useTransition } from 'react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { Spinner } from '@/components/ui/spinner';
-import { deleteBoard } from '@/services/actions/boardActions';
-import { deleteColumn } from '@/services/actions/columnActions';
-import { deleteTask } from '@/services/actions/taskActions';
+import { deleteBoard } from '@/app/services/actions/boardActions';
+import { deleteColumn } from '@/app/services/actions/columnActions';
+import { deleteTask } from '@/app/services/actions/taskActions';
 const DeleteDialog = ({
   id,
   type,

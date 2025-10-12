@@ -29,10 +29,10 @@ import {
 } from '@/components/ui/select';
 import { toast } from 'sonner';
 import { Spinner } from '@/components/ui/spinner';
-import { ColumnsWithTasks } from '@/services/supabase/models';
+import { ColumnsWithTasks } from '@/app/services/supabase/models';
 import { useRouter } from 'next/navigation';
 import ReusableFormField from '@/components/ReusableFormField';
-import { createTask } from '@/services/actions/taskActions';
+import { createTask } from '@/app/services/actions/taskActions';
 import { addTaskFormSchema } from '@/app/utils/schemas';
 import { useTaskStore } from '@/app/store/TaskStore';
 const priorityOptions = ['low', 'medium', 'high'];

@@ -5,7 +5,7 @@ import BoardContent from './BoardContent';
 import { Suspense } from 'react';
 import { Spinner } from '@/components/ui/spinner';
 import NotFound from './not-found';
-import { getBoard } from '@/services/actions/boardActions';
+import { getBoard } from '@/app/services/actions/boardActions';
 
 interface Params {
   params: Promise<{ id: string }>;

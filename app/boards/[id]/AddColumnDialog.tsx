@@ -12,8 +12,8 @@ import {
 } from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
 import { Spinner } from '@/components/ui/spinner';
-import { createColumn } from '@/services/actions/columnActions';
-import { ColumnsWithTasks } from '@/services/supabase/models';
+import { createColumn } from '@/app/services/actions/columnActions';
+import { ColumnsWithTasks } from '@/app/services/supabase/models';
 import { useUser } from '@clerk/nextjs';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';

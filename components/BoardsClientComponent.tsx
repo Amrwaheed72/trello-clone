@@ -1,7 +1,7 @@
 'use client';
 
 import { DashboardStore } from '@/app/store/DashboardStore';
-import { Board } from '@/services/supabase/models';
+import { Board } from '@/app/services/supabase/models';
 import BoardsInGrid from './BoardsInGrid';
 import BoardsInList from './BoardsInList';
 import { useMemo } from 'react';

@@ -10,7 +10,7 @@ import { Suspense } from 'react';
 import UpgradeDialog from '@/components/UpgradeDialog';
 import SearchInput from './SearchInput';
 import { Button } from '@/components/ui/button';
-import { getUserBoards } from '@/services/actions/boardActions';
+import { getUserBoards } from '@/app/services/actions/boardActions';
 
 export const metadata = {
   title: 'Dashboard',
