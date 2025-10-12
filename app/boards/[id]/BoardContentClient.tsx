@@ -26,10 +26,9 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Plus, Trash } from 'lucide-react';
 import { DashboardStore } from '@/app/store/DashboardStore';
-import DeleteColumnDialog from './DeleteColumnDialog';
 import EditColumnDialog from './EditColumnDialog';
-import DeleteTaskDialog from './DeleteTaskDialog';
 import EditTaskDialog from './EditTaskDialog';
+import DeleteDialog from '@/components/DeleteDialog';
 
 interface BoardClientViewProps {
   columnsWithTasks: ColumnsWithTasks[];
@@ -48,22 +47,21 @@ const BoardContentClient = ({
 
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const router = useRouter();
-  const setOpenDeleteColumn = DashboardStore(
-    (state) => state.setOpenDeleteColumn,
-  );
+
   const setOpenAddColumn = DashboardStore((state) => state.setOpenAddColumn);
-  const setOpenDeleteBoard = DashboardStore(
-    (state) => state.setOpenDeleteBoard,
-  );
+
   const setOpenEditColumn = DashboardStore((state) => state.setOpenEditColumn);
   const setOpenAddTask = DashboardStore((state) => state.setOpenAddTask);
   const setSelectedColumn = DashboardStore((state) => state.setSelectedColumn);
   const selectedColumn = DashboardStore((state) => state.selectedColumn);
   const selectedTask = DashboardStore((state) => state.selectedTask);
   const setSelectedTask = DashboardStore((state) => state.setSelectedTask);
-  const setOpenDeleteTask = DashboardStore((state) => state.setOpenDeleteTask);
   const setOpenEditTask = DashboardStore((state) => state.setOpenEditTask);
-
+  const setSelectedDelete = DashboardStore((state) => state.setSelectedDelete);
+  const selectedDelete = DashboardStore((state) => state.selectedDelete);
+  const setOpenDeleteDialog = DashboardStore(
+    (state) => state.setOpenDeleteDialog,
+  );
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -205,7 +203,13 @@ const BoardContentClient = ({
           <div className="flex flex-col gap-2 sm:flex-row">
             <Button
               variant={'destructive'}
-              onClick={() => setOpenDeleteBoard(true)}
+              onClick={() => {
+                setSelectedDelete({
+                  id: id,
+                  type: 'board',
+                });
+                setOpenDeleteDialog(true);
+              }}
               className="w-full sm:w-auto"
             >
               <Trash />
@@ -220,16 +224,18 @@ const BoardContentClient = ({
             </Button>
           </div>
           <AddTaskDialog id={id} columns={columns} />
-          <DeleteColumnDialog
-            columnId={selectedColumn?.id ?? ''}
-            boardId={selectedColumn?.board_id ?? ''}
-          />
+
           <EditColumnDialog
             title={selectedColumn?.title ?? ''}
             id={selectedColumn?.id ?? ''}
             boardId={id}
           />
-          <DeleteTaskDialog taskId={selectedTask?.id ?? ''} />
+          <DeleteDialog
+            id={selectedDelete?.id ?? ''}
+            boardId={selectedDelete?.boardId ?? ''}
+            type={selectedDelete?.type ?? ''}
+            board_column_id={selectedDelete?.board_column_id}
+          />
           <EditTaskDialog selectedTask={selectedTask} />
         </div>
 
@@ -244,11 +250,12 @@ const BoardContentClient = ({
             {filteredColumns.map((column) => (
               <Column
                 onDelete={() => {
-                  setSelectedColumn({
+                  setSelectedDelete({
                     id: column.id,
-                    board_id: column.board_id,
+                    boardId: column.board_id,
+                    type: 'column',
                   });
-                  setOpenDeleteColumn(true);
+                  setOpenDeleteDialog(true);
                 }}
                 onEdit={() => {
                   setSelectedColumn({
@@ -281,11 +288,12 @@ const BoardContentClient = ({
                           setOpenEditTask(true);
                         }}
                         onDelete={() => {
-                          setSelectedTask({
+                          setSelectedDelete({
                             id: task.id,
+                            type: 'task',
                             board_column_id: task.board_column_id,
                           });
-                          setOpenDeleteTask(true);
+                          setOpenDeleteDialog(true);
                         }}
                         task={task}
                         key={task.id}

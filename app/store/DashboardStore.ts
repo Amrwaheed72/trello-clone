@@ -8,6 +8,7 @@ type Filters = {
   dueDate: string | null;
 };
 
+type DeleteDialog = 'board' | 'column' | 'task';
 interface ViewModeState {
   filters: Filters;
   setFilters: (filters: Filters) => void;
@@ -24,18 +25,12 @@ interface ViewModeState {
   setOpenAddTask: (state: boolean) => void;
   openAddColumn: boolean;
   setOpenAddColumn: (state: boolean) => void;
-  openDeleteBoard: boolean;
-  setOpenDeleteBoard: (state: boolean) => void;
-  openDeleteColumn: boolean;
-  setOpenDeleteColumn: (state: boolean) => void;
   openEditColumn: boolean;
   setOpenEditColumn: (state: boolean) => void;
   filteredColumn: [];
   setFilteredColumn: [];
   openUpgradeDialog: boolean;
   setOpenUpgradeDialog: (state: boolean) => void;
-  openDeleteTask: boolean;
-  setOpenDeleteTask: (state: boolean) => void;
   query: string | null;
   setQuery: (query: string | null) => void;
 
@@ -63,10 +58,35 @@ interface ViewModeState {
     } | null,
   ) => void;
 
-  selectedColumn: { id: string; board_id: string; title?: string } | null;
+  selectedColumn: {
+    id: string;
+    board_id: string;
+    title?: string;
+  } | null;
   setSelectedColumn: (
-    column: { id: string; board_id: string; title?: string } | null,
+    column: {
+      id: string;
+      board_id: string;
+      title?: string;
+    } | null,
   ) => void;
+  selectedDelete: {
+    id: string;
+    boardId?: string;
+    type: DeleteDialog;
+    board_column_id?: string;
+  } | null;
+  setSelectedDelete: (
+    deletedThing: {
+      id: string;
+      boardId?: string;
+      type: DeleteDialog;
+      board_column_id?: string;
+    } | null,
+  ) => void;
+
+  openDeleteDialog: boolean;
+  setOpenDeleteDialog: (state: boolean) => void;
 }
 
 export const DashboardStore = create<ViewModeState>((set) => ({
@@ -92,16 +112,10 @@ export const DashboardStore = create<ViewModeState>((set) => ({
   setOpenAddTask: (state) => set({ openAddTask: state }),
   openAddColumn: false,
   setOpenAddColumn: (state) => set({ openAddColumn: state }),
-  openDeleteBoard: false,
-  setOpenDeleteBoard: (state) => set({ openDeleteBoard: state }),
-  openDeleteColumn: false,
-  setOpenDeleteColumn: (state) => set({ openDeleteColumn: state }),
   selectedColumn: null,
   setSelectedColumn: (column) => set({ selectedColumn: column }),
   openEditColumn: false,
   setOpenEditColumn: (state) => set({ openEditColumn: state }),
-  openDeleteTask: false,
-  setOpenDeleteTask: (state) => set({ openDeleteTask: state }),
   filteredColumn: [],
   setFilteredColumn: [],
   openUpgradeDialog: false,
@@ -112,4 +126,8 @@ export const DashboardStore = create<ViewModeState>((set) => ({
   setQuery: (query) => set({ query: query }),
   openEditTask: false,
   setOpenEditTask: (state) => set({ openEditTask: state }),
+  openDeleteDialog: false,
+  setOpenDeleteDialog: (state) => set({ openDeleteDialog: state }),
+  selectedDelete: null,
+  setSelectedDelete: (deletedThing) => set({ selectedDelete: deletedThing }),
 }));

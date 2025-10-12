@@ -1,7 +1,6 @@
 import { getBoardWithColumns, getTasksForBoard } from '@/lib/actions';
 import BoardContentClient from './BoardContentClient';
 import AddColumnDialog from './AddColumnDialog';
-import DeleteBoardDialog from './DeleteBoardDialog';
 const BoardContent = async ({ id }: { id: string }) => {
   const tasks = await getTasksForBoard(id);
   const { columns } = await getBoardWithColumns(id);
@@ -18,7 +17,6 @@ const BoardContent = async ({ id }: { id: string }) => {
         tasks={tasks}
       />
       <AddColumnDialog columnsWithTasks={columnsWithTasks} id={id} />
-      <DeleteBoardDialog boardId={id} />
     </>
   );
 };
