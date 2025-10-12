@@ -1,5 +1,4 @@
 'use client';
-import { DashboardStore } from '@/app/store/DashboardStore';
 import {
   Dialog,
   DialogContent,
@@ -25,6 +24,7 @@ import { toast } from 'sonner';
 import { Spinner } from '@/components/ui/spinner';
 import { BoardColors } from '@/app/utils/constants';
 import { updateBoard } from '@/services/actions/boardActions';
+import { useBoardStore } from '@/app/store/BoardStore';
 const EditBoardDialog = ({
   boardTitle,
   boardColor,
@@ -34,8 +34,8 @@ const EditBoardDialog = ({
   boardColor: string;
   boardId: string;
 }) => {
-  const open = DashboardStore((state) => state.openEditBoard);
-  const setOpen = DashboardStore((state) => state.setOpenEditBoard);
+  const open = useBoardStore((state) => state.openEditBoard);
+  const setOpen = useBoardStore((state) => state.setOpenEditBoard);
   const router = useRouter();
 
   const formSchema = z.object({

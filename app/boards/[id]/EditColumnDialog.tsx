@@ -1,5 +1,5 @@
 'use client';
-import { DashboardStore } from '@/app/store/DashboardStore';
+import { useColumnStore } from '@/app/store/ColumnStore';
 import { editColumnFormSchema } from '@/app/utils/schemas';
 import ReusableFormField from '@/components/ReusableFormField';
 import { Button } from '@/components/ui/button';
@@ -29,8 +29,8 @@ const EditColumnDialog = ({
   title: string;
   boardId: string;
 }) => {
-  const open = DashboardStore((state) => state.openEditColumn);
-  const setOpen = DashboardStore((state) => state.setOpenEditColumn);
+  const open = useColumnStore((state) => state.openEditColumn);
+  const setOpen = useColumnStore((state) => state.setOpenEditColumn);
   const { user } = useUser();
   const router = useRouter();
   const form = useForm<z.infer<typeof editColumnFormSchema>>({

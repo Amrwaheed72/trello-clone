@@ -1,22 +1,30 @@
 import { create } from 'zustand';
 
-type DeleteType = 'board' | 'column' | 'task' | null;
+type DeleteDialog = 'board' | 'column' | 'task';
 
 interface DeleteDialogState {
-  open: boolean;
-  type: DeleteType;
-  id: string | null;
-  name: string | null;
-  setOpen: (open: boolean) => void;
-  openDialog: (type: DeleteType, id: string, name?: string) => void;
-  closeDialog: () => void;
+  openDeleteDialog: boolean;
+  setOpenDeleteDialog: (state: boolean) => void;
+  selectedDelete: {
+    id: string;
+    boardId?: string;
+    type: DeleteDialog;
+    board_column_id?: string;
+  } | null;
+
+  setSelectedDelete: (
+    deletedThing: {
+      id: string;
+      boardId?: string;
+      type: DeleteDialog;
+      board_column_id?: string;
+    } | null,
+  ) => void;
 }
+
 export const useDeleteDialogStore = create<DeleteDialogState>((set) => ({
-  open: false,
-  type: null,
-  id: null,
-  name: null,
-  setOpen: (open) => set({ open }),
-  openDialog: (type, id, name) => set({ open: true, type, id, name }),
-  closeDialog: () => set({ open: false, type: null, id: null, name: null }),
+  openDeleteDialog: false,
+  setOpenDeleteDialog: (state) => set({ openDeleteDialog: state }),
+  selectedDelete: null,
+  setSelectedDelete: (deletedThing) => set({ selectedDelete: deletedThing }),
 }));

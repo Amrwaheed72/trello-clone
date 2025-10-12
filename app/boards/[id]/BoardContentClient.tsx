@@ -29,6 +29,10 @@ import EditColumnDialog from './EditColumnDialog';
 import EditTaskDialog from './EditTaskDialog';
 import DeleteDialog from '@/components/DeleteDialog';
 import { moveTask } from '@/services/actions/taskActions';
+import { useDeleteDialogStore } from '@/app/store/DeleteDialogStore';
+import { useFilterStore } from '@/app/store/FilterStore';
+import { useColumnStore } from '@/app/store/ColumnStore';
+import { useTaskStore } from '@/app/store/TaskStore';
 
 interface BoardClientViewProps {
   columnsWithTasks: ColumnsWithTasks[];
@@ -41,25 +45,28 @@ const BoardContentClient = ({
   tasks,
   id,
 }: BoardClientViewProps) => {
-  const filters = DashboardStore((state) => state.filters);
+  const filters = useFilterStore((state) => state.filters);
 
   const [columns, setColumns] = useState<ColumnsWithTasks[]>(columnsWithTasks);
 
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const router = useRouter();
 
-  const setOpenAddColumn = DashboardStore((state) => state.setOpenAddColumn);
+  const setOpenAddColumn = useColumnStore((state) => state.setOpenAddColumn);
+  const setOpenEditColumn = useColumnStore((state) => state.setOpenEditColumn);
+  const setSelectedColumn = useColumnStore((state) => state.setSelectedColumn);
+  const selectedColumn = useColumnStore((state) => state.selectedColumn);
 
-  const setOpenEditColumn = DashboardStore((state) => state.setOpenEditColumn);
-  const setOpenAddTask = DashboardStore((state) => state.setOpenAddTask);
-  const setSelectedColumn = DashboardStore((state) => state.setSelectedColumn);
-  const selectedColumn = DashboardStore((state) => state.selectedColumn);
-  const selectedTask = DashboardStore((state) => state.selectedTask);
-  const setSelectedTask = DashboardStore((state) => state.setSelectedTask);
-  const setOpenEditTask = DashboardStore((state) => state.setOpenEditTask);
-  const setSelectedDelete = DashboardStore((state) => state.setSelectedDelete);
-  const selectedDelete = DashboardStore((state) => state.selectedDelete);
-  const setOpenDeleteDialog = DashboardStore(
+  const setOpenAddTask = useTaskStore((state) => state.setOpenAddTask);
+  const selectedTask = useTaskStore((state) => state.selectedTask);
+  const setSelectedTask = useTaskStore((state) => state.setSelectedTask);
+  const setOpenEditTask = useTaskStore((state) => state.setOpenEditTask);
+  
+  const setSelectedDelete = useDeleteDialogStore(
+    (state) => state.setSelectedDelete,
+  );
+  const selectedDelete = useDeleteDialogStore((state) => state.selectedDelete);
+  const setOpenDeleteDialog = useDeleteDialogStore(
     (state) => state.setOpenDeleteDialog,
   );
   const sensors = useSensors(

@@ -1,5 +1,4 @@
 'use client';
-import { DashboardStore } from '@/app/store/DashboardStore';
 import {
   Dialog,
   DialogContent,
@@ -10,14 +9,15 @@ import {
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useFilterStore } from '@/app/store/FilterStore';
 
 const priorityOptions = ['low', 'medium', 'high'];
 const FilterBoardDialog = () => {
-  const openFilter = DashboardStore((state) => state.openFilter);
-  const setOpenFilter = DashboardStore((state) => state.setOpenFilter);
-  const filters = DashboardStore((state) => state.filters);
-  const setFilters = DashboardStore((state) => state.setFilters);
-  const clearFilters = DashboardStore((state) => state.clearFilters);
+  const openFilter = useFilterStore((state) => state.openFilter);
+  const setOpenFilter = useFilterStore((state) => state.setOpenFilter);
+  const filters = useFilterStore((state) => state.filters);
+  const setFilters = useFilterStore((state) => state.setFilters);
+  const clearFilters = useFilterStore((state) => state.clearFilters);
 
   const onPriorityFilter = (priority: string) => {
     const newPriorities = filters.priority.includes(priority)

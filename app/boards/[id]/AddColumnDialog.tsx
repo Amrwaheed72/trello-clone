@@ -1,5 +1,5 @@
 'use client';
-import { DashboardStore } from '@/app/store/DashboardStore';
+import { useColumnStore } from '@/app/store/ColumnStore';
 import { addColumnFormSchema } from '@/app/utils/schemas';
 import ReusableFormField from '@/components/ReusableFormField';
 import { Button } from '@/components/ui/button';
@@ -28,8 +28,8 @@ const AddColumnDialog = ({
   id: string;
   columnsWithTasks: ColumnsWithTasks[];
 }) => {
-  const open = DashboardStore((state) => state.openAddColumn);
-  const setOpen = DashboardStore((state) => state.setOpenAddColumn);
+  const open = useColumnStore((state) => state.openAddColumn);
+  const setOpen = useColumnStore((state) => state.setOpenAddColumn);
   const { user } = useUser();
   const router = useRouter();
   const form = useForm<z.infer<typeof addColumnFormSchema>>({

@@ -1,5 +1,6 @@
 'use client';
-import { DashboardStore } from '@/app/store/DashboardStore';
+import { useBoardStore } from '@/app/store/BoardStore';
+import { useFilterStore } from '@/app/store/FilterStore';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -11,9 +12,9 @@ interface Props {
   boardTitle?: string;
 }
 const BoardNavbar = ({ boardTitle }: Props) => {
-  const setOpenEditBoard = DashboardStore((state) => state.setOpenEditBoard);
-  const setOpenFilter = DashboardStore((state) => state.setOpenFilter);
-  const filterCount = DashboardStore((state) => state.filterCount);
+  const setOpenEditBoard = useBoardStore((state) => state.setOpenEditBoard);
+  const setOpenFilter = useFilterStore((state) => state.setOpenFilter);
+  const filterCount = useFilterStore((state) => state.filterCount);
 
   return (
     <nav className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-sm dark:bg-black/80">
