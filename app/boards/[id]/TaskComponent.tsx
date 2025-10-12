@@ -1,11 +1,10 @@
 'use client';
-import { Task } from '@/lib/supabase/models';
+import { Task } from '@/services/supabase/models';
 import { Card, CardContent } from '../../../components/ui/card';
 import { Calendar, MoreHorizontalIcon, Trash, User } from 'lucide-react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Button } from '@/components/ui/button';
-import { DashboardStore } from '@/app/store/DashboardStore';
 
 const TaskComponent = ({
   task,
@@ -16,8 +15,6 @@ const TaskComponent = ({
   onDelete: () => void;
   onEdit: () => void;
 }) => {
-  const setOpenDeleteTask = DashboardStore((state) => state.setOpenDeleteTask);
-  // const setOpenEditTask = DashboardStore((state) => state.setOpenEditTask);
   const {
     attributes,
     listeners,

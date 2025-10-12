@@ -1,5 +1,6 @@
 'use client';
 import { DashboardStore } from '@/app/store/DashboardStore';
+import { addColumnFormSchema } from '@/app/utils/schemas';
 import ReusableFormField from '@/components/ReusableFormField';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,9 +12,8 @@ import {
 } from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
 import { Spinner } from '@/components/ui/spinner';
-import { createColumn } from '@/lib/actions';
-import { ColumnsWithTasks } from '@/lib/supabase/models';
-import { addColumnFormSchema } from '@/lib/utils';
+import { createColumn } from '@/services/actions/columnActions';
+import { ColumnsWithTasks } from '@/services/supabase/models';
 import { useUser } from '@clerk/nextjs';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';

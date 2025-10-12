@@ -7,10 +7,10 @@ import { Spinner } from '@/components/ui/spinner';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { Filter, Search } from 'lucide-react';
 import { Suspense } from 'react';
-import { getUserBoards } from '@/lib/actions';
 import UpgradeDialog from '@/components/UpgradeDialog';
 import SearchInput from './SearchInput';
 import { Button } from '@/components/ui/button';
+import { getUserBoards } from '@/services/actions/boardActions';
 
 export const metadata = {
   title: 'Dashboard',

@@ -1,5 +1,5 @@
 'use client';
-import { Task } from '@/lib/supabase/models';
+import { Task } from '@/services/supabase/models';
 import { Card, CardContent } from '../../../components/ui/card';
 import { Calendar, User } from 'lucide-react';
 

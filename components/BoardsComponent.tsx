@@ -1,8 +1,8 @@
-import { getUserBoards } from '@/lib/actions';
 import { currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import Empty from './Empty';
 import BoardsClientComponent from './BoardsClientComponent';
+import { getUserBoards } from '@/services/actions/boardActions';
 
 const BoardsComponent = async () => {
   const user = await currentUser();

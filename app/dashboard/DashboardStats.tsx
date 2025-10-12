@@ -1,4 +1,3 @@
-import { getUserBoards } from '@/lib/actions';
 import { currentUser } from '@clerk/nextjs/server';
 import {
   Bubbles,
@@ -8,12 +7,13 @@ import {
 } from 'lucide-react';
 import ReusableCardComponent from '@/components/ReusableCardComponent';
 import { redirect } from 'next/navigation';
+import { getUserBoards } from '@/services/actions/boardActions';
 
 const DashboardStats = async () => {
   const user = await currentUser();
   if (!user) redirect('/');
   const data = await getUserBoards(user.id);
-  
+
   const recentActivityCount = data.filter((board) => {
     const updatedAt = new Date(board.updated_at);
     const oneWeekAgo = new Date();

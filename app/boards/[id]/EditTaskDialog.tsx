@@ -26,15 +26,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { updateTask } from '@/lib/actions';
 import { toast } from 'sonner';
 import { Spinner } from '@/components/ui/spinner';
-import { Task } from '@/lib/supabase/models';
+import { Task } from '@/services/supabase/models';
 import { useRouter } from 'next/navigation';
 import ReusableFormField from '@/components/ReusableFormField';
-import { addTaskFormSchema } from '@/lib/utils';
 import { DashboardStore } from '@/app/store/DashboardStore';
 import { useEffect } from 'react';
+import { updateTask } from '@/services/actions/taskActions';
+import { addTaskFormSchema } from '@/app/utils/schemas';
 const priorityOptions = ['low', 'medium', 'high'];
 const EditTaskDialog = ({ selectedTask }: { selectedTask: Task }) => {
   const open = DashboardStore((state) => state.openEditTask);

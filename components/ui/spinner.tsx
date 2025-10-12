@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from "@/app/utils/schemas";
 
 interface SpinnerProps {
     size?: 'sm' | 'md' | 'lg' | 'xl';

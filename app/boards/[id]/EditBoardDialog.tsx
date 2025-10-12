@@ -20,11 +20,11 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { updateBoard } from '@/lib/actions';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { Spinner } from '@/components/ui/spinner';
-import { BoardColors } from '@/lib/constants';
+import { BoardColors } from '@/app/utils/constants';
+import { updateBoard } from '@/services/actions/boardActions';
 const EditBoardDialog = ({
   boardTitle,
   boardColor,

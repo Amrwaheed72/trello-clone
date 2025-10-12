@@ -1,13 +1,13 @@
 'use client';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { createBoardWithDefaultColumns } from '@/lib/actions';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
 import { useTransition } from 'react';
 import { Spinner } from '@/components/ui/spinner';
 import { toast } from 'sonner';
 import { DashboardStore } from '../store/DashboardStore';
+import { createBoardWithDefaultColumns } from '@/services/actions/columnActions';
 
 const CreateBoardComponent = ({
   canCreateBoard,

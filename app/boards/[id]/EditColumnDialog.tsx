@@ -1,5 +1,6 @@
 'use client';
 import { DashboardStore } from '@/app/store/DashboardStore';
+import { editColumnFormSchema } from '@/app/utils/schemas';
 import ReusableFormField from '@/components/ReusableFormField';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,8 +11,7 @@ import {
 } from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
 import { Spinner } from '@/components/ui/spinner';
-import { editColumn } from '@/lib/actions';
-import { editColumnFormSchema } from '@/lib/utils';
+import { editColumn } from '@/services/actions/columnActions';
 import { useUser } from '@clerk/nextjs';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';

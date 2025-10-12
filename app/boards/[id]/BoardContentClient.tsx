@@ -19,8 +19,7 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { ColumnsWithTasks, Task } from '@/lib/supabase/models';
-import { moveTask } from '@/lib/actions';
+import { ColumnsWithTasks, Task } from '@/services/supabase/models';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -29,6 +28,7 @@ import { DashboardStore } from '@/app/store/DashboardStore';
 import EditColumnDialog from './EditColumnDialog';
 import EditTaskDialog from './EditTaskDialog';
 import DeleteDialog from '@/components/DeleteDialog';
+import { moveTask } from '@/services/actions/taskActions';
 
 interface BoardClientViewProps {
   columnsWithTasks: ColumnsWithTasks[];

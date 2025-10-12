@@ -27,14 +27,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { createTask } from '@/lib/actions';
 import { toast } from 'sonner';
 import { Spinner } from '@/components/ui/spinner';
-import { ColumnsWithTasks } from '@/lib/supabase/models';
+import { ColumnsWithTasks } from '@/services/supabase/models';
 import { useRouter } from 'next/navigation';
 import ReusableFormField from '@/components/ReusableFormField';
-import { addTaskFormSchema } from '@/lib/utils';
 import { DashboardStore } from '@/app/store/DashboardStore';
+import { createTask } from '@/services/actions/taskActions';
+import { addTaskFormSchema } from '@/app/utils/schemas';
 const priorityOptions = ['low', 'medium', 'high'];
 const AddTaskDialog = ({
   columns,
