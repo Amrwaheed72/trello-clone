@@ -22,6 +22,9 @@ import { useColumnStore } from '@/app/store/ColumnStore';
 import { useTaskStore } from '@/app/store/TaskStore';
 import useDragnDrop from '@/app/hooks/useDragnDrop';
 import dynamic from 'next/dynamic';
+const AddColumnDialog = dynamic(() => import('./AddColumnDialog'), {
+  ssr: false,
+});
 
 const Column = dynamic(() => import('@/app/boards/[id]/Column'), {
   ssr: false,
@@ -161,6 +164,7 @@ const BoardContentClient = ({
             board_column_id={selectedDelete?.board_column_id}
           />
           <EditTaskDialog selectedTask={selectedTask} />
+          <AddColumnDialog columnsWithTasks={columnsWithTasks} id={id} />
         </div>
 
         <DndContext
