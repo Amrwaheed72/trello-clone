@@ -4,13 +4,6 @@ import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { toast } from 'sonner';
 import { ColumnsWithTasks } from '@/app/services/supabase/models';
 import { useRouter } from 'next/navigation';
@@ -27,6 +20,37 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import ReusableFormField from '@/components/ReusableFormField';
+
+const Select = dynamic(
+  () => import('@/components/ui/select').then((mod) => mod.Select),
+  {
+    ssr: false,
+  },
+);
+const SelectContent = dynamic(
+  () => import('@/components/ui/select').then((mod) => mod.SelectContent),
+  {
+    ssr: false,
+  },
+);
+const SelectItem = dynamic(
+  () => import('@/components/ui/select').then((mod) => mod.SelectItem),
+  {
+    ssr: false,
+  },
+);
+const SelectTrigger = dynamic(
+  () => import('@/components/ui/select').then((mod) => mod.SelectTrigger),
+  {
+    ssr: false,
+  },
+);
+const SelectValue = dynamic(
+  () => import('@/components/ui/select').then((mod) => mod.SelectValue),
+  {
+    ssr: false,
+  },
+);
 
 const Button = dynamic(
   () => import('@/components/ui/button').then((mod) => mod.Button),
@@ -85,7 +109,7 @@ const AddTaskDialog = ({
   columns: ColumnsWithTasks[];
   id: string;
 }) => {
-  const {openAddTask,setOpenAddTask} = useTaskStore();
+  const { openAddTask, setOpenAddTask } = useTaskStore();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof addTaskFormSchema>>({

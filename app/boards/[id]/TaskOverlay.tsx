@@ -3,11 +3,17 @@ import { Task } from '@/app/services/supabase/models';
 import { Calendar, User } from 'lucide-react';
 import dynamic from 'next/dynamic';
 
-const Card = dynamic(() =>
-  import('@/components/ui/card').then((mod) => mod.Card),
+const Card = dynamic(
+  () => import('@/components/ui/card').then((mod) => mod.Card),
+  {
+    ssr: false,
+  },
 );
-const CardContent = dynamic(() =>
-  import('@/components/ui/card').then((mod) => mod.CardContent),
+const CardContent = dynamic(
+  () => import('@/components/ui/card').then((mod) => mod.CardContent),
+  {
+    ssr: false,
+  },
 );
 
 const TaskOverlay = ({ task }: { task: Task }) => {

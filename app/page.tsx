@@ -9,14 +9,23 @@ import {
   Users,
   Zap,
 } from 'lucide-react';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+const Card = dynamic(() =>
+  import('@/components/ui/card').then((mod) => mod.Card),
+);
+const CardContent = dynamic(() =>
+  import('@/components/ui/card').then((mod) => mod.CardContent),
+);
+const CardDescription = dynamic(() =>
+  import('@/components/ui/card').then((mod) => mod.CardDescription),
+);
+const CardHeader = dynamic(() =>
+  import('@/components/ui/card').then((mod) => mod.CardHeader),
+);
+const CardTitle = dynamic(() =>
+  import('@/components/ui/card').then((mod) => mod.CardTitle),
+);
 import { auth } from '@clerk/nextjs/server';
+import dynamic from 'next/dynamic';
 const Home = async () => {
   const { userId } = await auth();
   const features = [
@@ -51,10 +60,10 @@ const Home = async () => {
             <span className="text-blue-600">finally.</span>
           </h1>
           <p className="mx-auto mb-8 max-w-2xl text-xl text-gray-600 dark:text-gray-300">
-            Planify helps teams move work forward. Collaborate, manage
-            projects, and reach new productivity peaks. From high rises to the
-            home office, the way your team works is unique—accomplish it all
-            with Planify.
+            Planify helps teams move work forward. Collaborate, manage projects,
+            and reach new productivity peaks. From high rises to the home
+            office, the way your team works is unique—accomplish it all with
+            Planify.
           </p>
 
           {!userId && (
@@ -112,8 +121,8 @@ const Home = async () => {
             Ready to get started?
           </h2>
           <p className="mx-auto mb-8 max-w-2xl text-xl text-blue-100">
-            Join thousands of teams who are already using Planify to
-            organize their work.
+            Join thousands of teams who are already using Planify to organize
+            their work.
           </p>
 
           {!userId && (

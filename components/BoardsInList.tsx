@@ -7,21 +7,17 @@ import dynamic from 'next/dynamic';
 const Card = dynamic(() => import('./ui/card').then((mod) => mod.Card), {
   ssr: false,
 });
-const CardContent = dynamic(
-  () => import('./ui/card').then((mod) => mod.CardContent),
-  { ssr: false },
+const CardContent = dynamic(() =>
+  import('./ui/card').then((mod) => mod.CardContent),
 );
-const CardDescription = dynamic(
-  () => import('./ui/card').then((mod) => mod.CardDescription),
-  { ssr: false },
+const CardDescription = dynamic(() =>
+  import('./ui/card').then((mod) => mod.CardDescription),
 );
-const CardHeader = dynamic(
-  () => import('./ui/card').then((mod) => mod.CardHeader),
-  { ssr: false },
+const CardHeader = dynamic(() =>
+  import('./ui/card').then((mod) => mod.CardHeader),
 );
-const CardTitle = dynamic(
-  () => import('./ui/card').then((mod) => mod.CardTitle),
-  { ssr: false },
+const CardTitle = dynamic(() =>
+  import('./ui/card').then((mod) => mod.CardTitle),
 );
 interface BoardsClientComponentProps {
   boards: Board[];

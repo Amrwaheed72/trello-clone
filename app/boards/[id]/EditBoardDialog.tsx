@@ -18,17 +18,29 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-const Dialog = dynamic(() =>
-  import('@/components/ui/dialog').then((mod) => mod.Dialog),
+const Dialog = dynamic(
+  () => import('@/components/ui/dialog').then((mod) => mod.Dialog),
+  {
+    ssr: false,
+  },
 );
-const DialogContent = dynamic(() =>
-  import('@/components/ui/dialog').then((mod) => mod.DialogContent),
+const DialogContent = dynamic(
+  () => import('@/components/ui/dialog').then((mod) => mod.DialogContent),
+  {
+    ssr: false,
+  },
 );
-const DialogHeader = dynamic(() =>
-  import('@/components/ui/dialog').then((mod) => mod.DialogHeader),
+const DialogHeader = dynamic(
+  () => import('@/components/ui/dialog').then((mod) => mod.DialogHeader),
+  {
+    ssr: false,
+  },
 );
-const DialogTitle = dynamic(() =>
-  import('@/components/ui/dialog').then((mod) => mod.DialogTitle),
+const DialogTitle = dynamic(
+  () => import('@/components/ui/dialog').then((mod) => mod.DialogTitle),
+  {
+    ssr: false,
+  },
 );
 
 const Input = dynamic(

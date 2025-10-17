@@ -7,10 +7,14 @@ import { Button } from '@/components/ui/button';
 import dynamic from 'next/dynamic';
 
 const Card = dynamic(() =>
-  import('@/components/ui/card').then((mod) => mod.Card),
+  import('@/components/ui/card').then((mod) => mod.Card),{
+    ssr:false
+  }
 );
 const CardContent = dynamic(() =>
-  import('@/components/ui/card').then((mod) => mod.CardContent),
+  import('@/components/ui/card').then((mod) => mod.CardContent),{
+    ssr:false
+  }
 );
 
 const TaskComponent = ({

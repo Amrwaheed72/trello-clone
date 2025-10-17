@@ -12,13 +12,6 @@ import {
 } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { toast } from 'sonner';
 import { Task } from '@/app/services/supabase/models';
 import { useRouter } from 'next/navigation';
@@ -29,20 +22,65 @@ import { addTaskFormSchema } from '@/app/utils/schemas';
 import { useTaskStore } from '@/app/store/TaskStore';
 import dynamic from 'next/dynamic';
 const priorityOptions = ['low', 'medium', 'high'];
-const Dialog = dynamic(() =>
-  import('@/components/ui/dialog').then((mod) => mod.Dialog),
+const Select = dynamic(
+  () => import('@/components/ui/select').then((mod) => mod.Select),
+  {
+    ssr: false,
+  },
 );
-const DialogTrigger = dynamic(() =>
-  import('@/components/ui/dialog').then((mod) => mod.DialogTrigger),
+const SelectContent = dynamic(
+  () => import('@/components/ui/select').then((mod) => mod.SelectContent),
+  {
+    ssr: false,
+  },
 );
-const DialogContent = dynamic(() =>
-  import('@/components/ui/dialog').then((mod) => mod.DialogContent),
+const SelectItem = dynamic(
+  () => import('@/components/ui/select').then((mod) => mod.SelectItem),
+  {
+    ssr: false,
+  },
 );
-const DialogHeader = dynamic(() =>
-  import('@/components/ui/dialog').then((mod) => mod.DialogHeader),
+const SelectTrigger = dynamic(
+  () => import('@/components/ui/select').then((mod) => mod.SelectTrigger),
+  {
+    ssr: false,
+  },
 );
-const DialogTitle = dynamic(() =>
-  import('@/components/ui/dialog').then((mod) => mod.DialogTitle),
+const SelectValue = dynamic(
+  () => import('@/components/ui/select').then((mod) => mod.SelectValue),
+  {
+    ssr: false,
+  },
+);
+const Dialog = dynamic(
+  () => import('@/components/ui/dialog').then((mod) => mod.Dialog),
+  {
+    ssr: false,
+  },
+);
+const DialogTrigger = dynamic(
+  () => import('@/components/ui/dialog').then((mod) => mod.DialogTrigger),
+  {
+    ssr: false,
+  },
+);
+const DialogContent = dynamic(
+  () => import('@/components/ui/dialog').then((mod) => mod.DialogContent),
+  {
+    ssr: false,
+  },
+);
+const DialogHeader = dynamic(
+  () => import('@/components/ui/dialog').then((mod) => mod.DialogHeader),
+  {
+    ssr: false,
+  },
+);
+const DialogTitle = dynamic(
+  () => import('@/components/ui/dialog').then((mod) => mod.DialogTitle),
+  {
+    ssr: false,
+  },
 );
 
 const Spinner = dynamic(
