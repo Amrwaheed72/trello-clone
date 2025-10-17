@@ -1,7 +1,14 @@
 'use client';
 import { Task } from '@/app/services/supabase/models';
-import { Card, CardContent } from '../../../components/ui/card';
 import { Calendar, User } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+const Card = dynamic(() =>
+  import('@/components/ui/card').then((mod) => mod.Card),
+);
+const CardContent = dynamic(() =>
+  import('@/components/ui/card').then((mod) => mod.CardContent),
+);
 
 const TaskOverlay = ({ task }: { task: Task }) => {
   const { assignee, description, due_date, priority, title } = task;

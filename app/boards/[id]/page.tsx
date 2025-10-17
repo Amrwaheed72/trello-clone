@@ -1,11 +1,13 @@
 import BoardNavbar from './BoardNavbar';
 import EditBoardDialog from './EditBoardDialog';
-import FilterBoardDialog from './FilterBoardDialog';
 import BoardContent from './BoardContent';
 import { Suspense } from 'react';
 import { Spinner } from '@/components/ui/spinner';
 import NotFound from './not-found';
 import { getBoard } from '@/app/services/actions/boardActions';
+import dynamic from 'next/dynamic';
+
+const FilterBoardDialog = dynamic(() => import('./FilterBoardDialog'));
 
 interface Params {
   params: Promise<{ id: string }>;

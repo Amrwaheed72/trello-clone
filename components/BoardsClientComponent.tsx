@@ -2,10 +2,15 @@
 
 import { DashboardStore } from '@/app/store/DashboardStore';
 import { Board } from '@/app/services/supabase/models';
-import BoardsInGrid from './BoardsInGrid';
-import BoardsInList from './BoardsInList';
 import { useMemo } from 'react';
+import dynamic from 'next/dynamic';
 
+const BoardsInGrid = dynamic(() => import('./BoardsInGrid'), {
+  ssr: false,
+});
+const BoardsInList = dynamic(() => import('./BoardsInList'), {
+  ssr: false,
+});
 interface BoardsClientComponentProps {
   boards: Board[];
 }

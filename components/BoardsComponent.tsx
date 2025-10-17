@@ -1,9 +1,10 @@
 import { currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
-import Empty from './Empty';
-import BoardsClientComponent from './BoardsClientComponent';
 import { getUserBoards } from '@/app/services/actions/boardActions';
+import dynamic from 'next/dynamic';
 
+const Empty = dynamic(() => import('./Empty'));
+const BoardsClientComponent = dynamic(() => import('./BoardsClientComponent'));
 const BoardsComponent = async () => {
   const user = await currentUser();
   if (!user) redirect('/');

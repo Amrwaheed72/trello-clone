@@ -1,10 +1,17 @@
 'use client';
 import { Task } from '@/app/services/supabase/models';
-import { Card, CardContent } from '../../../components/ui/card';
 import { Calendar, MoreHorizontalIcon, Trash, User } from 'lucide-react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Button } from '@/components/ui/button';
+import dynamic from 'next/dynamic';
+
+const Card = dynamic(() =>
+  import('@/components/ui/card').then((mod) => mod.Card),
+);
+const CardContent = dynamic(() =>
+  import('@/components/ui/card').then((mod) => mod.CardContent),
+);
 
 const TaskComponent = ({
   task,

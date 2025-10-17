@@ -1,9 +1,7 @@
 'use client';
 import { useMemo, useState } from 'react';
-import Column from '@/app/boards/[id]/Column';
-import TaskComponent from '@/app/boards/[id]/TaskComponent';
-import AddTaskDialog from './AddTaskDialog';
-import TaskOverlay from './TaskOverlay';
+import { Button } from '@/components/ui/button';
+
 import {
   DndContext,
   DragOverlay,
@@ -17,17 +15,41 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { ColumnsWithTasks, Task } from '@/app/services/supabase/models';
-import { Button } from '@/components/ui/button';
 import { Plus, Trash } from 'lucide-react';
-import EditColumnDialog from './EditColumnDialog';
-import EditTaskDialog from './EditTaskDialog';
-import DeleteDialog from '@/components/DeleteDialog';
 import { useDeleteDialogStore } from '@/app/store/DeleteDialogStore';
 import { useFilterStore } from '@/app/store/FilterStore';
 import { useColumnStore } from '@/app/store/ColumnStore';
 import { useTaskStore } from '@/app/store/TaskStore';
 import useDragnDrop from '@/app/hooks/useDragnDrop';
+import dynamic from 'next/dynamic';
 
+const Column = dynamic(() => import('@/app/boards/[id]/Column'), {
+  ssr: false,
+});
+const TaskComponent = dynamic(() => import('@/app/boards/[id]/TaskComponent'), {
+  ssr: false,
+});
+const AddTaskDialog = dynamic(() => import('@/app/boards/[id]/AddTaskDialog'), {
+  ssr: false,
+});
+const EditColumnDialog = dynamic(
+  () => import('@/app/boards/[id]/EditColumnDialog'),
+  {
+    ssr: false,
+  },
+);
+const EditTaskDialog = dynamic(
+  () => import('@/app/boards/[id]/EditTaskDialog'),
+  {
+    ssr: false,
+  },
+);
+const DeleteDialog = dynamic(() => import('@/components/DeleteDialog'), {
+  ssr: false,
+});
+const TaskOverlay = dynamic(() => import('@/app/boards/[id]/TaskOverlay'), {
+  ssr: false,
+});
 interface BoardClientViewProps {
   columnsWithTasks: ColumnsWithTasks[];
   tasks: Task[];
@@ -42,30 +64,26 @@ const BoardContentClient = ({
   const [columns, setColumns] = useState<ColumnsWithTasks[]>(columnsWithTasks);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
 
-  const filters = useFilterStore((state) => state.filters);
+  const { filters } = useFilterStore();
   const { handleDragStart, handleDragEnd, handleDragOver } = useDragnDrop({
     columns,
     setColumns,
     setActiveTask,
   });
 
-  const setOpenAddColumn = useColumnStore((state) => state.setOpenAddColumn);
-  const setOpenEditColumn = useColumnStore((state) => state.setOpenEditColumn);
-  const setSelectedColumn = useColumnStore((state) => state.setSelectedColumn);
-  const selectedColumn = useColumnStore((state) => state.selectedColumn);
+  const {
+    setOpenAddColumn,
+    setOpenEditColumn,
+    setSelectedColumn,
+    selectedColumn,
+  } = useColumnStore();
 
-  const setOpenAddTask = useTaskStore((state) => state.setOpenAddTask);
-  const selectedTask = useTaskStore((state) => state.selectedTask);
-  const setSelectedTask = useTaskStore((state) => state.setSelectedTask);
-  const setOpenEditTask = useTaskStore((state) => state.setOpenEditTask);
+  const { setOpenAddTask, selectedTask, setSelectedTask, setOpenEditTask } =
+    useTaskStore();
 
-  const setSelectedDelete = useDeleteDialogStore(
-    (state) => state.setSelectedDelete,
-  );
-  const selectedDelete = useDeleteDialogStore((state) => state.selectedDelete);
-  const setOpenDeleteDialog = useDeleteDialogStore(
-    (state) => state.setOpenDeleteDialog,
-  );
+  const { setSelectedDelete, selectedDelete, setOpenDeleteDialog } =
+    useDeleteDialogStore();
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {

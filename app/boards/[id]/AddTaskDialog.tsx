@@ -1,23 +1,7 @@
 'use client';
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import {
@@ -28,13 +12,71 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { toast } from 'sonner';
-import { Spinner } from '@/components/ui/spinner';
 import { ColumnsWithTasks } from '@/app/services/supabase/models';
 import { useRouter } from 'next/navigation';
-import ReusableFormField from '@/components/ReusableFormField';
 import { createTask } from '@/app/services/actions/taskActions';
 import { addTaskFormSchema } from '@/app/utils/schemas';
 import { useTaskStore } from '@/app/store/TaskStore';
+import dynamic from 'next/dynamic';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import ReusableFormField from '@/components/ReusableFormField';
+
+const Button = dynamic(
+  () => import('@/components/ui/button').then((mod) => mod.Button),
+  {
+    ssr: false,
+  },
+);
+
+const Spinner = dynamic(
+  () => import('@/components/ui/spinner').then((mod) => mod.Spinner),
+  {
+    ssr: false,
+  },
+);
+const Dialog = dynamic(
+  () => import('@/components/ui/dialog').then((mod) => mod.Dialog),
+  {
+    ssr: false,
+  },
+);
+const DialogContent = dynamic(
+  () => import('@/components/ui/dialog').then((mod) => mod.DialogContent),
+  {
+    ssr: false,
+  },
+);
+const DialogDescription = dynamic(
+  () => import('@/components/ui/dialog').then((mod) => mod.DialogDescription),
+  {
+    ssr: false,
+  },
+);
+const DialogHeader = dynamic(
+  () => import('@/components/ui/dialog').then((mod) => mod.DialogHeader),
+  {
+    ssr: false,
+  },
+);
+const DialogTitle = dynamic(
+  () => import('@/components/ui/dialog').then((mod) => mod.DialogTitle),
+  {
+    ssr: false,
+  },
+);
+const DialogTrigger = dynamic(
+  () => import('@/components/ui/dialog').then((mod) => mod.DialogTrigger),
+  {
+    ssr: false,
+  },
+);
 const priorityOptions = ['low', 'medium', 'high'];
 const AddTaskDialog = ({
   columns,
@@ -43,8 +85,7 @@ const AddTaskDialog = ({
   columns: ColumnsWithTasks[];
   id: string;
 }) => {
-  const open = useTaskStore((state) => state.openAddTask);
-  const setOpen = useTaskStore((state) => state.setOpenAddTask);
+  const {openAddTask,setOpenAddTask} = useTaskStore();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof addTaskFormSchema>>({
@@ -89,7 +130,7 @@ const AddTaskDialog = ({
       router.refresh();
       toast.success('Task created successfully!');
       form.reset();
-      setOpen(false);
+      setOpenAddTask(false);
     } catch (error) {
       console.error(error);
       toast.error('Could not create the task, please try again later.');
@@ -97,7 +138,7 @@ const AddTaskDialog = ({
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={openAddTask} onOpenChange={setOpenAddTask}>
       <DialogTrigger asChild></DialogTrigger>
       <DialogContent className="mx-auto w-[95vw] max-w-[425px]">
         <DialogHeader>

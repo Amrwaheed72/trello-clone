@@ -3,14 +3,8 @@ import { useColumnStore } from '@/app/store/ColumnStore';
 import { editColumnFormSchema } from '@/app/utils/schemas';
 import ReusableFormField from '@/components/ReusableFormField';
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+
 import { Form } from '@/components/ui/form';
-import { Spinner } from '@/components/ui/spinner';
 import { editColumn } from '@/app/services/actions/columnActions';
 import { useUser } from '@clerk/nextjs';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -19,6 +13,24 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
+import dynamic from 'next/dynamic';
+
+const Dialog = dynamic(() =>
+  import('@/components/ui/dialog').then((mod) => mod.Dialog),
+);
+const DialogContent = dynamic(() =>
+  import('@/components/ui/dialog').then((mod) => mod.DialogContent),
+);
+const DialogHeader = dynamic(() =>
+  import('@/components/ui/dialog').then((mod) => mod.DialogHeader),
+);
+const DialogTitle = dynamic(() =>
+  import('@/components/ui/dialog').then((mod) => mod.DialogTitle),
+);
+const Spinner = dynamic(
+  () => import('@/components/ui/spinner').then((mod) => mod.Spinner),
+  { ssr: false },
+);
 
 const EditColumnDialog = ({
   id,
@@ -29,8 +41,7 @@ const EditColumnDialog = ({
   title: string;
   boardId: string;
 }) => {
-  const open = useColumnStore((state) => state.openEditColumn);
-  const setOpen = useColumnStore((state) => state.setOpenEditColumn);
+  const { openEditColumn, setOpenEditColumn } = useColumnStore();
   const { user } = useUser();
   const router = useRouter();
   const form = useForm<z.infer<typeof editColumnFormSchema>>({
@@ -39,10 +50,10 @@ const EditColumnDialog = ({
   });
 
   useEffect(() => {
-    if (open && title) {
+    if (openEditColumn && title) {
       form.reset({ title });
     }
-  }, [open, title, form]);
+  }, [openEditColumn, title, form]);
   if (!user) router.push('/');
 
   const onSubmit = async (values: z.infer<typeof editColumnFormSchema>) => {
@@ -57,13 +68,13 @@ const EditColumnDialog = ({
       router.refresh();
       toast.success('Column Edited successfully!');
       form.reset({ title: values.title });
-      setOpen(false);
+      setOpenEditColumn(false);
     } catch (error) {
       toast.error('Could not edit a Column');
     }
   };
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={openEditColumn} onOpenChange={setOpenEditColumn}>
       <DialogContent className="mx-auto w-[95vw] max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Edit Column</DialogTitle>
@@ -83,7 +94,7 @@ const EditColumnDialog = ({
             <div className="flex justify-end gap-2">
               <Button
                 type="button"
-                onClick={() => setOpen(false)}
+                onClick={() => setOpenEditColumn(false)}
                 variant={'outline'}
               >
                 Cancel

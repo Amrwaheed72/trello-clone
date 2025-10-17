@@ -1,12 +1,5 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -27,7 +20,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { toast } from 'sonner';
-import { Spinner } from '@/components/ui/spinner';
 import { Task } from '@/app/services/supabase/models';
 import { useRouter } from 'next/navigation';
 import ReusableFormField from '@/components/ReusableFormField';
@@ -35,10 +27,30 @@ import { useEffect } from 'react';
 import { updateTask } from '@/app/services/actions/taskActions';
 import { addTaskFormSchema } from '@/app/utils/schemas';
 import { useTaskStore } from '@/app/store/TaskStore';
+import dynamic from 'next/dynamic';
 const priorityOptions = ['low', 'medium', 'high'];
+const Dialog = dynamic(() =>
+  import('@/components/ui/dialog').then((mod) => mod.Dialog),
+);
+const DialogTrigger = dynamic(() =>
+  import('@/components/ui/dialog').then((mod) => mod.DialogTrigger),
+);
+const DialogContent = dynamic(() =>
+  import('@/components/ui/dialog').then((mod) => mod.DialogContent),
+);
+const DialogHeader = dynamic(() =>
+  import('@/components/ui/dialog').then((mod) => mod.DialogHeader),
+);
+const DialogTitle = dynamic(() =>
+  import('@/components/ui/dialog').then((mod) => mod.DialogTitle),
+);
+
+const Spinner = dynamic(
+  () => import('@/components/ui/spinner').then((mod) => mod.Spinner),
+  { ssr: false },
+);
 const EditTaskDialog = ({ selectedTask }: { selectedTask: Task }) => {
-  const open = useTaskStore((state) => state.openEditTask);
-  const setOpen = useTaskStore((state) => state.setOpenEditTask);
+  const { openEditTask, setOpenEditTask } = useTaskStore();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof addTaskFormSchema>>({
@@ -71,7 +83,7 @@ const EditTaskDialog = ({ selectedTask }: { selectedTask: Task }) => {
       router.refresh();
       toast.success('Task updated successfully!');
       form.reset();
-      setOpen(false);
+      setOpenEditTask(false);
     } catch (error) {
       console.error(error);
       toast.error('Could not create the task, please try again later.');
@@ -79,7 +91,7 @@ const EditTaskDialog = ({ selectedTask }: { selectedTask: Task }) => {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={openEditTask} onOpenChange={setOpenEditTask}>
       <DialogTrigger asChild></DialogTrigger>
       <DialogContent className="mx-auto w-[95vw] max-w-[425px]">
         <DialogHeader>

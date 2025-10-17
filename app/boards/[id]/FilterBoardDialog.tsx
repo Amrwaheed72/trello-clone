@@ -1,23 +1,31 @@
 'use client';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useFilterStore } from '@/app/store/FilterStore';
+import dynamic from 'next/dynamic';
+
+const Dialog = dynamic(() =>
+  import('@/components/ui/dialog').then((mod) => mod.Dialog),
+);
+const DialogContent = dynamic(() =>
+  import('@/components/ui/dialog').then((mod) => mod.DialogContent),
+);
+const DialogHeader = dynamic(() =>
+  import('@/components/ui/dialog').then((mod) => mod.DialogHeader),
+);
+const DialogDescription = dynamic(() =>
+  import('@/components/ui/dialog').then((mod) => mod.DialogDescription),
+);
+const DialogTitle = dynamic(() =>
+  import('@/components/ui/dialog').then((mod) => mod.DialogTitle),
+);
 
 const priorityOptions = ['low', 'medium', 'high'];
 const FilterBoardDialog = () => {
-  const openFilter = useFilterStore((state) => state.openFilter);
-  const setOpenFilter = useFilterStore((state) => state.setOpenFilter);
-  const filters = useFilterStore((state) => state.filters);
-  const setFilters = useFilterStore((state) => state.setFilters);
-  const clearFilters = useFilterStore((state) => state.clearFilters);
+  const { openFilter, setOpenFilter, filters, setFilters, clearFilters } =
+    useFilterStore();
 
   const onPriorityFilter = (priority: string) => {
     const newPriorities = filters.priority.includes(priority)

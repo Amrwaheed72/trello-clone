@@ -1,18 +1,22 @@
 import { ReactNode } from 'react';
-import { Card, CardContent } from './ui/card';
+import dynamic from 'next/dynamic';
 
+const Card = dynamic(() => import('./ui/card').then((mod) => mod.Card));
+const CardContent = dynamic(() =>
+  import('./ui/card').then((mod) => mod.CardContent),
+);
 interface ReusableCardProps {
   icon: ReactNode;
   cardLabel: string;
   content: string | number;
-  contentClasses: string
+  contentClasses: string;
 }
 
 const ReusableCardComponent = ({
   icon,
   cardLabel,
   content,
-  contentClasses
+  contentClasses,
 }: ReusableCardProps) => {
   return (
     <Card>
@@ -26,7 +30,9 @@ const ReusableCardComponent = ({
               {content}
             </p>
           </div>
-          <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${contentClasses} sm:h-12 sm:w-12`}>
+          <div
+            className={`flex h-10 w-10 items-center justify-center rounded-lg ${contentClasses} sm:h-12 sm:w-12`}
+          >
             {icon}
           </div>
         </div>

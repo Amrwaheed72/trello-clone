@@ -12,9 +12,8 @@ interface Props {
   boardTitle?: string;
 }
 const BoardNavbar = ({ boardTitle }: Props) => {
-  const setOpenEditBoard = useBoardStore((state) => state.setOpenEditBoard);
-  const setOpenFilter = useFilterStore((state) => state.setOpenFilter);
-  const filterCount = useFilterStore((state) => state.filterCount);
+  const { setOpenEditBoard } = useBoardStore();
+  const { setOpenFilter, filterCount } = useFilterStore();
 
   return (
     <nav className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-sm dark:bg-black/80">

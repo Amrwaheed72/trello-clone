@@ -1,15 +1,28 @@
 import Link from 'next/link';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from './ui/card';
 import { Badge } from './ui/badge';
 import { Plus } from 'lucide-react';
 import { Board } from '@/app/services/supabase/models';
+import dynamic from 'next/dynamic';
 
+const Card = dynamic(() => import('./ui/card').then((mod) => mod.Card), {
+  ssr: false,
+});
+const CardContent = dynamic(
+  () => import('./ui/card').then((mod) => mod.CardContent),
+  { ssr: false },
+);
+const CardDescription = dynamic(
+  () => import('./ui/card').then((mod) => mod.CardDescription),
+  { ssr: false },
+);
+const CardHeader = dynamic(
+  () => import('./ui/card').then((mod) => mod.CardHeader),
+  { ssr: false },
+);
+const CardTitle = dynamic(
+  () => import('./ui/card').then((mod) => mod.CardTitle),
+  { ssr: false },
+);
 interface BoardsClientComponentProps {
   boards: Board[];
 }

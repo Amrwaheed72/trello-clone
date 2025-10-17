@@ -1,14 +1,20 @@
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from './ui/form';
+import dynamic from 'next/dynamic';
+
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Control, FieldValues, Path } from 'react-hook-form';
+import { FormField } from './ui/form';
 
+const FormControl = dynamic(() =>
+  import('./ui/form').then((mod) => mod.FormControl),
+);
+const FormItem = dynamic(() => import('./ui/form').then((mod) => mod.FormItem));
+const FormLabel = dynamic(() =>
+  import('./ui/form').then((mod) => mod.FormLabel),
+);
+const FormMessage = dynamic(() =>
+  import('./ui/form').then((mod) => mod.FormMessage),
+);
 type ReusableFormFieldProps<T extends FieldValues> = {
   control: Control<T>;
   name: Path<T>;

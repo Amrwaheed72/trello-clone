@@ -1,30 +1,45 @@
 'use client';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+
+import dynamic from 'next/dynamic';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { BoardColors } from '@/app/utils/constants';
+import { updateBoard } from '@/app/services/actions/boardActions';
+import { useBoardStore } from '@/app/store/BoardStore';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
-import { Spinner } from '@/components/ui/spinner';
-import { BoardColors } from '@/app/utils/constants';
-import { updateBoard } from '@/app/services/actions/boardActions';
-import { useBoardStore } from '@/app/store/BoardStore';
+const Dialog = dynamic(() =>
+  import('@/components/ui/dialog').then((mod) => mod.Dialog),
+);
+const DialogContent = dynamic(() =>
+  import('@/components/ui/dialog').then((mod) => mod.DialogContent),
+);
+const DialogHeader = dynamic(() =>
+  import('@/components/ui/dialog').then((mod) => mod.DialogHeader),
+);
+const DialogTitle = dynamic(() =>
+  import('@/components/ui/dialog').then((mod) => mod.DialogTitle),
+);
+
+const Input = dynamic(
+  () => import('@/components/ui/input').then((mod) => mod.Input),
+  { ssr: false },
+);
+
+const Spinner = dynamic(
+  () => import('@/components/ui/spinner').then((mod) => mod.Spinner),
+  { ssr: false },
+);
 const EditBoardDialog = ({
   boardTitle,
   boardColor,
@@ -34,8 +49,7 @@ const EditBoardDialog = ({
   boardColor: string;
   boardId: string;
 }) => {
-  const open = useBoardStore((state) => state.openEditBoard);
-  const setOpen = useBoardStore((state) => state.setOpenEditBoard);
+  const { openEditBoard, setOpenEditBoard } = useBoardStore();
   const router = useRouter();
 
   const formSchema = z.object({
@@ -67,14 +81,14 @@ const EditBoardDialog = ({
         boardTitle: values.boardTitle,
         boardColor: values.boardColor,
       });
-      setOpen(false);
+      setOpenEditBoard(false);
     } catch (error) {
       console.error(error);
       toast.error('Failed to update board!');
     }
   };
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={openEditBoard} onOpenChange={setOpenEditBoard}>
       <DialogContent className="mx-auto w-[95vw] max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Edit Board</DialogTitle>
@@ -106,7 +120,7 @@ const EditBoardDialog = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Board Color</FormLabel>
-                  <FormDescription></FormDescription>
+                  {/* <FormDescription></FormDescription> */}
                   <FormControl>
                     <div className="flex w-full flex-wrap gap-4 sm:gap-8">
                       {BoardColors.map((color) => (
@@ -126,7 +140,7 @@ const EditBoardDialog = ({
             />
             <div className="flex justify-end gap-2">
               <Button
-                onClick={() => setOpen(false)}
+                onClick={() => setOpenEditBoard(false)}
                 variant={'outline'}
                 type="button"
                 className="cursor-pointer"

@@ -4,10 +4,14 @@ import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
 import { useTransition } from 'react';
-import { Spinner } from '@/components/ui/spinner';
 import { toast } from 'sonner';
 import { DashboardStore } from '../store/DashboardStore';
 import { createBoardWithDefaultColumns } from '@/app/services/actions/columnActions';
+import dynamic from 'next/dynamic';
+
+const Spinner = dynamic(() =>
+  import('@/components/ui/spinner').then((mod) => mod.Spinner),
+);
 
 const CreateBoardComponent = ({
   canCreateBoard,
@@ -15,9 +19,7 @@ const CreateBoardComponent = ({
   canCreateBoard: boolean;
 }) => {
   const [isPending, startTransition] = useTransition();
-  const setOpenUpgradeDialog = DashboardStore(
-    (state) => state.setOpenUpgradeDialog,
-  );
+  const { setOpenUpgradeDialog } = DashboardStore();
   const router = useRouter();
   const { user } = useUser();
   if (!user) router.push('/');

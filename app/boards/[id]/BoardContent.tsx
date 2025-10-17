@@ -1,7 +1,11 @@
-import BoardContentClient from './BoardContentClient';
-import AddColumnDialog from './AddColumnDialog';
 import { getTasksForBoard } from '@/app/services/actions/taskActions';
 import { getColumns } from '@/app/services/actions/columnActions';
+import dynamic from 'next/dynamic';
+import { Spinner } from '@/components/ui/spinner';
+const BoardContentClient = dynamic(() => import('./BoardContentClient'), {
+  loading: () => <Spinner variant="ring" size="xl" />,
+});
+const AddColumnDialog = dynamic(() => import('./AddColumnDialog'));
 const BoardContent = async ({ id }: { id: string }) => {
   const tasks = await getTasksForBoard(id);
   const columns = await getColumns(id);

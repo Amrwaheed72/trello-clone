@@ -1,17 +1,6 @@
 'use client';
 import { useColumnStore } from '@/app/store/ColumnStore';
 import { addColumnFormSchema } from '@/app/utils/schemas';
-import ReusableFormField from '@/components/ReusableFormField';
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import { Form } from '@/components/ui/form';
-import { Spinner } from '@/components/ui/spinner';
 import { createColumn } from '@/app/services/actions/columnActions';
 import { ColumnsWithTasks } from '@/app/services/supabase/models';
 import { useUser } from '@clerk/nextjs';
@@ -20,6 +9,54 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
+import dynamic from 'next/dynamic';
+import { Form } from '@/components/ui/form';
+import ReusableFormField from '@/components/ReusableFormField';
+
+
+const Button = dynamic(
+  () => import('@/components/ui/button').then((mod) => mod.Button),
+  {
+    ssr: false,
+  },
+);
+
+const Dialog = dynamic(
+  () => import('@/components/ui/dialog').then((mod) => mod.Dialog),
+  {
+    ssr: false,
+  },
+);
+const DialogContent = dynamic(
+  () => import('@/components/ui/dialog').then((mod) => mod.DialogContent),
+  {
+    ssr: false,
+  },
+);
+const DialogDescription = dynamic(
+  () => import('@/components/ui/dialog').then((mod) => mod.DialogDescription),
+  {
+    ssr: false,
+  },
+);
+const DialogHeader = dynamic(
+  () => import('@/components/ui/dialog').then((mod) => mod.DialogHeader),
+  {
+    ssr: false,
+  },
+);
+const DialogTitle = dynamic(
+  () => import('@/components/ui/dialog').then((mod) => mod.DialogTitle),
+  {
+    ssr: false,
+  },
+);
+const Spinner = dynamic(
+  () => import('@/components/ui/spinner').then((mod) => mod.Spinner),
+  {
+    ssr: false,
+  },
+);
 
 const AddColumnDialog = ({
   id,
@@ -28,8 +65,7 @@ const AddColumnDialog = ({
   id: string;
   columnsWithTasks: ColumnsWithTasks[];
 }) => {
-  const open = useColumnStore((state) => state.openAddColumn);
-  const setOpen = useColumnStore((state) => state.setOpenAddColumn);
+  const { openAddColumn, setOpenAddColumn } = useColumnStore();
   const { user } = useUser();
   const router = useRouter();
   const form = useForm<z.infer<typeof addColumnFormSchema>>({
@@ -53,13 +89,13 @@ const AddColumnDialog = ({
       });
       router.refresh();
       toast.success('Column Created successfully!');
-      setOpen(false);
+      setOpenAddColumn(false);
     } catch (error) {
       toast.error('Could not create a Column');
     }
   };
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={openAddColumn} onOpenChange={setOpenAddColumn}>
       <DialogContent className="mx-auto w-[95vw] max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Create New Column</DialogTitle>
@@ -82,7 +118,7 @@ const AddColumnDialog = ({
             <div className="flex justify-end gap-2">
               <Button
                 type="button"
-                onClick={() => setOpen(false)}
+                onClick={() => setOpenAddColumn(false)}
                 variant={'outline'}
               >
                 Cancel
