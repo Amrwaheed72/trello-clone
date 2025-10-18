@@ -20,6 +20,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import ReusableFormField from '@/components/ReusableFormField';
+import { memo } from 'react';
 
 const Select = dynamic(
   () => import('@/components/ui/select').then((mod) => mod.Select),
@@ -102,13 +103,14 @@ const DialogTrigger = dynamic(
   },
 );
 const priorityOptions = ['low', 'medium', 'high'];
-const AddTaskDialog = ({
+
+const AddTaskDialog = memo(function AddTaskDialog({
   columns,
   id,
 }: {
   columns: ColumnsWithTasks[];
   id: string;
-}) => {
+}) {
   const { openAddTask, setOpenAddTask } = useTaskStore();
   const router = useRouter();
 
@@ -272,6 +274,6 @@ const AddTaskDialog = ({
       </DialogContent>
     </Dialog>
   );
-};
+});
 
 export default AddTaskDialog;

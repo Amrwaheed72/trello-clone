@@ -16,7 +16,7 @@ import { toast } from 'sonner';
 import { Task } from '@/app/services/supabase/models';
 import { useRouter } from 'next/navigation';
 import ReusableFormField from '@/components/ReusableFormField';
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import { updateTask } from '@/app/services/actions/taskActions';
 import { addTaskFormSchema } from '@/app/utils/schemas';
 import { useTaskStore } from '@/app/store/TaskStore';
@@ -87,7 +87,11 @@ const Spinner = dynamic(
   () => import('@/components/ui/spinner').then((mod) => mod.Spinner),
   { ssr: false },
 );
-const EditTaskDialog = ({ selectedTask }: { selectedTask: Task }) => {
+const EditTaskDialog = memo(function EditTaskDialog({
+  selectedTask,
+}: {
+  selectedTask: Task;
+}) {
   const { openEditTask, setOpenEditTask } = useTaskStore();
   const router = useRouter();
 
@@ -247,6 +251,6 @@ const EditTaskDialog = ({ selectedTask }: { selectedTask: Task }) => {
       </DialogContent>
     </Dialog>
   );
-};
+});
 
 export default EditTaskDialog;

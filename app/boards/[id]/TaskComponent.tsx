@@ -5,19 +5,22 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Button } from '@/components/ui/button';
 import dynamic from 'next/dynamic';
+import { memo } from 'react';
 
-const Card = dynamic(() =>
-  import('@/components/ui/card').then((mod) => mod.Card),{
-    ssr:false
-  }
+const Card = dynamic(
+  () => import('@/components/ui/card').then((mod) => mod.Card),
+  {
+    ssr: false,
+  },
 );
-const CardContent = dynamic(() =>
-  import('@/components/ui/card').then((mod) => mod.CardContent),{
-    ssr:false
-  }
+const CardContent = dynamic(
+  () => import('@/components/ui/card').then((mod) => mod.CardContent),
+  {
+    ssr: false,
+  },
 );
 
-const TaskComponent = ({
+const TaskComponent = memo(function TaskComponent({
   task,
   onDelete,
   onEdit,
@@ -25,7 +28,7 @@ const TaskComponent = ({
   task: Task;
   onDelete: () => void;
   onEdit: () => void;
-}) => {
+}) {
   const {
     attributes,
     listeners,
@@ -107,6 +110,6 @@ const TaskComponent = ({
       </Card>
     </div>
   );
-};
+});
 
 export default TaskComponent;

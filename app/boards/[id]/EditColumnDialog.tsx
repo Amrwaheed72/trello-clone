@@ -9,7 +9,7 @@ import { editColumn } from '@/app/services/actions/columnActions';
 import { useUser } from '@clerk/nextjs';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
@@ -44,7 +44,7 @@ const Spinner = dynamic(
   { ssr: false },
 );
 
-const EditColumnDialog = ({
+const EditColumnDialog = memo(function EditColumnDialog({
   id,
   title,
   boardId,
@@ -52,7 +52,7 @@ const EditColumnDialog = ({
   id: string;
   title: string;
   boardId: string;
-}) => {
+}) {
   const { openEditColumn, setOpenEditColumn } = useColumnStore();
   const { user } = useUser();
   const router = useRouter();
@@ -131,6 +131,6 @@ const EditColumnDialog = ({
       </DialogContent>
     </Dialog>
   );
-};
+});
 
 export default EditColumnDialog;

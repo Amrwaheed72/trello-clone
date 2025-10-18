@@ -4,6 +4,7 @@ import { Badge } from '../../../components/ui/badge';
 import { Button } from '../../../components/ui/button';
 import { MoreHorizontalIcon, Trash } from 'lucide-react';
 import { useDroppable } from '@dnd-kit/core';
+import { memo } from 'react';
 
 interface ColProps {
   column: ColumnsWithTasks;
@@ -14,7 +15,12 @@ interface ColProps {
   // onEditColumn: (column: ColumnsWithTasks) => void;
 }
 
-const Column = ({ column, children, onDelete, onEdit }: ColProps) => {
+const Column = memo(function Column({
+  column,
+  children,
+  onDelete,
+  onEdit,
+}: ColProps) {
   const { setNodeRef, isOver } = useDroppable({ id: column.id });
   return (
     <div
@@ -58,6 +64,6 @@ const Column = ({ column, children, onDelete, onEdit }: ColProps) => {
       </div>
     </div>
   );
-};
+});
 
 export default Column;

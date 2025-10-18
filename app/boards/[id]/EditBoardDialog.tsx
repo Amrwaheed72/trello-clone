@@ -30,6 +30,12 @@ const DialogContent = dynamic(
     ssr: false,
   },
 );
+const DialogDescription = dynamic(
+  () => import('@/components/ui/dialog').then((mod) => mod.DialogDescription),
+  {
+    ssr: false,
+  },
+);
 const DialogHeader = dynamic(
   () => import('@/components/ui/dialog').then((mod) => mod.DialogHeader),
   {
@@ -104,6 +110,7 @@ const EditBoardDialog = ({
       <DialogContent className="mx-auto w-[95vw] max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Edit Board</DialogTitle>
+          <DialogDescription>You can only edit board title or board color</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form

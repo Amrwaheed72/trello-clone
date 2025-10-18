@@ -12,6 +12,7 @@ import z from 'zod';
 import dynamic from 'next/dynamic';
 import { Form } from '@/components/ui/form';
 import ReusableFormField from '@/components/ReusableFormField';
+import { memo } from 'react';
 
 
 const Button = dynamic(
@@ -58,13 +59,13 @@ const Spinner = dynamic(
   },
 );
 
-const AddColumnDialog = ({
+const AddColumnDialog =memo( function AddColumnDialog ({
   id,
   columnsWithTasks,
 }: {
   id: string;
   columnsWithTasks: ColumnsWithTasks[];
-}) => {
+})  {
   const { openAddColumn, setOpenAddColumn } = useColumnStore();
   const { user } = useUser();
   const router = useRouter();
@@ -138,6 +139,6 @@ const AddColumnDialog = ({
       </DialogContent>
     </Dialog>
   );
-};
+})
 
 export default AddColumnDialog;
