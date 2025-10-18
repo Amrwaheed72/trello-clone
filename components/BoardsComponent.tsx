@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 
 const Empty = dynamic(() => import('./Empty'));
 const BoardsClientComponent = dynamic(() => import('./BoardsClientComponent'));
+
 const BoardsComponent = async () => {
   const user = await currentUser();
   if (!user) redirect('/');

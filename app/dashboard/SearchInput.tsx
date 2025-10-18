@@ -4,8 +4,7 @@ import { Search } from 'lucide-react';
 import { DashboardStore } from '../store/DashboardStore';
 
 const SearchInput = () => {
-  const query = DashboardStore((state) => state.query);
-  const setQuery = DashboardStore((state) => state.setQuery);
+  const { query, setQuery } = DashboardStore();
   return (
     <div className="relative mb-4 sm:mb-6">
       <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />

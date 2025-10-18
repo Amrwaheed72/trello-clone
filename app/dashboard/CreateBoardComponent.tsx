@@ -3,7 +3,7 @@ import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
-import { useTransition } from 'react';
+import { memo, useTransition } from 'react';
 import { toast } from 'sonner';
 import { DashboardStore } from '../store/DashboardStore';
 import { createBoardWithDefaultColumns } from '@/app/services/actions/columnActions';
@@ -16,11 +16,11 @@ const Spinner = dynamic(
   },
 );
 
-const CreateBoardComponent = ({
+const CreateBoardComponent = memo(function CreateBoardComponent({
   canCreateBoard,
 }: {
   canCreateBoard: boolean;
-}) => {
+}) {
   const [isPending, startTransition] = useTransition();
   const { setOpenUpgradeDialog } = DashboardStore();
   const router = useRouter();
@@ -59,6 +59,6 @@ const CreateBoardComponent = ({
       )}
     </Button>
   );
-};
+});
 
 export default CreateBoardComponent;
