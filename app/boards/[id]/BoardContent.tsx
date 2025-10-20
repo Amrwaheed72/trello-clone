@@ -1,7 +1,6 @@
 import { getTasksForBoard } from '@/app/services/actions/taskActions';
 import { getColumns } from '@/app/services/actions/columnActions';
-import dynamic from 'next/dynamic';
-const BoardContentClient = dynamic(() => import('./BoardContentClient'));
+import BoardContentClient from './BoardContentClient';
 
 const BoardContent = async ({ id }: { id: string }) => {
   const tasks = await getTasksForBoard(id);
