@@ -9,23 +9,15 @@ import {
   Users,
   Zap,
 } from 'lucide-react';
-const Card = dynamic(() =>
-  import('@/components/ui/card').then((mod) => mod.Card),
-);
-const CardContent = dynamic(() =>
-  import('@/components/ui/card').then((mod) => mod.CardContent),
-);
-const CardDescription = dynamic(() =>
-  import('@/components/ui/card').then((mod) => mod.CardDescription),
-);
-const CardHeader = dynamic(() =>
-  import('@/components/ui/card').then((mod) => mod.CardHeader),
-);
-const CardTitle = dynamic(() =>
-  import('@/components/ui/card').then((mod) => mod.CardTitle),
-);
+
 import { auth } from '@clerk/nextjs/server';
-import dynamic from 'next/dynamic';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 const Home = async () => {
   const { userId } = await auth();
   const features = [

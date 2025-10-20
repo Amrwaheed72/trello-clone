@@ -6,8 +6,6 @@ type Filters = {
   dueDate: string | null;
 };
 interface FilterState {
-  openFilter: boolean;
-  setOpenFilter: (state: boolean) => void;
   filterCount: number;
   // setFilterCount: () => void;
 
@@ -29,8 +27,6 @@ export const useFilterStore = create<FilterState>((set) => ({
     set({
       filters: { priority: [], assignee: [], dueDate: null },
     }),
-  openFilter: false,
-  setOpenFilter: (state) => set({ openFilter: state }),
   filterCount: 3,
   // setFilterCount,
   filteredColumn: [],

@@ -186,37 +186,27 @@ const EditTaskDialog = memo(function EditTaskDialog({
                 </FormItem>
               )}
             />
-            <div className="flex items-center justify-between">
-              <Button
-                type="button"
-                onClick={handleReset}
-                disabled={!form.formState.isDirty}
-                size={'sm'}
-              >
-                Reset the form
-              </Button>
-              <div className="flex justify-end gap-2">
-                <DialogClose asChild>
-                  <Button variant={'outline'} size={'sm'}>
-                    Cancel
-                  </Button>
-                </DialogClose>
-                <Button
-                  size={'sm'}
-                  disabled={
-                    form.formState.isSubmitting || !form.formState.isDirty
-                  }
-                  type="submit"
-                >
-                  {form.formState.isSubmitting ? (
-                    <>
-                      <Spinner size="sm" variant="ring" /> Updating
-                    </>
-                  ) : (
-                    'Update Task'
-                  )}
+
+            <div className="flex justify-end gap-2">
+              <DialogClose asChild>
+                <Button onClick={handleReset} variant={'outline'}>
+                  Cancel
                 </Button>
-              </div>
+              </DialogClose>
+              <Button
+                disabled={
+                  form.formState.isSubmitting || !form.formState.isDirty
+                }
+                type="submit"
+              >
+                {form.formState.isSubmitting ? (
+                  <>
+                    <Spinner size="sm" variant="ring" /> Updating
+                  </>
+                ) : (
+                  'Update Task'
+                )}
+              </Button>
             </div>
           </form>
         </Form>

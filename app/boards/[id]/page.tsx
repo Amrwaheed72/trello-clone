@@ -4,10 +4,6 @@ import { Suspense } from 'react';
 import { Spinner } from '@/components/ui/spinner';
 import NotFound from './not-found';
 import { getBoard } from '@/app/services/actions/boardActions';
-import dynamic from 'next/dynamic';
-
-const FilterBoardDialog = dynamic(() => import('./FilterBoardDialog'));
-const EditBoardDialog = dynamic(() => import('./EditBoardDialog'));
 
 interface Params {
   params: Promise<{ id: string }>;
@@ -32,13 +28,6 @@ const Page = async ({ params }: Params) => {
         boardColor={board.color}
         boardId={board.id}
       />
-      {/* <EditBoardDialog
-        boardColor={board.color}
-        boardTitle={board.title}
-        boardId={board.id}
-      
-      /> */}
-      <FilterBoardDialog />
       <Suspense
         fallback={
           <div className="flex h-[50vh] items-center justify-center">

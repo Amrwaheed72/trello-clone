@@ -122,7 +122,6 @@ const EditBoardDialog = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Board Color</FormLabel>
-                  {/* <FormDescription></FormDescription> */}
                   <FormControl>
                     <div className="flex w-full flex-wrap gap-4 sm:gap-8">
                       {BoardColors.map((color) => (

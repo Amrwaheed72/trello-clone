@@ -17,8 +17,7 @@ import { useState } from 'react';
 const priorityOptions = ['low', 'medium', 'high'];
 const FilterBoardDialog = ({ children }: { children: React.ReactNode }) => {
   const [open, setOpen] = useState(false);
-  const { openFilter, setOpenFilter, filters, setFilters, clearFilters } =
-    useFilterStore();
+  const { filters, setFilters, clearFilters } = useFilterStore();
 
   const onPriorityFilter = (priority: string) => {
     const newPriorities = filters.priority.includes(priority)

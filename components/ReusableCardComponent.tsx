@@ -1,10 +1,6 @@
 import { ReactNode } from 'react';
-import dynamic from 'next/dynamic';
+import { Card, CardContent } from './ui/card';
 
-const Card = dynamic(() => import('./ui/card').then((mod) => mod.Card));
-const CardContent = dynamic(() =>
-  import('./ui/card').then((mod) => mod.CardContent),
-);
 interface ReusableCardProps {
   icon: ReactNode;
   cardLabel: string;

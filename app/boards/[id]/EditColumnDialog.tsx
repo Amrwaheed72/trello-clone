@@ -71,7 +71,7 @@ const EditColumnDialog = memo(function EditColumnDialog({
       open={open}
       onOpenChange={(val) => {
         setOpen(val);
-        if (!val) form.reset({ title });
+        if (!val) form.reset();
       }}
     >
       <DialogTrigger asChild>{children}</DialogTrigger>

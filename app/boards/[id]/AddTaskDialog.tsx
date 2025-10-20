@@ -200,35 +200,21 @@ const AddTaskDialog = memo(function AddTaskDialog({
                 </FormItem>
               )}
             />
-            <div className="flex items-center justify-between">
-              <Button
-                size="sm"
-                disabled={!form.formState.isDirty}
-                type="button"
-                onClick={handleReset}
-              >
-                Reset the form
-              </Button>
-              <div className="flex justify-end gap-2">
-                <DialogClose asChild>
-                  <Button size="sm" variant={'outline'}>
-                    Cancel
-                  </Button>
-                </DialogClose>
-                <Button
-                  size="sm"
-                  disabled={form.formState.isSubmitting}
-                  type="submit"
-                >
-                  {form.formState.isSubmitting ? (
-                    <>
-                      <Spinner size="sm" variant="ring" /> Creating
-                    </>
-                  ) : (
-                    'Create Task'
-                  )}
+            <div className="flex justify-end gap-2">
+              <DialogClose asChild>
+                <Button onClick={handleReset} variant={'outline'}>
+                  Cancel
                 </Button>
-              </div>
+              </DialogClose>
+              <Button disabled={form.formState.isSubmitting} type="submit">
+                {form.formState.isSubmitting ? (
+                  <>
+                    <Spinner size="sm" variant="ring" /> Creating
+                  </>
+                ) : (
+                  'Create Task'
+                )}
+              </Button>
             </div>
           </form>
         </Form>

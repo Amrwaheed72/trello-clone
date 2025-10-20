@@ -1,10 +1,8 @@
 import { currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { getUserBoards } from '@/app/services/actions/boardActions';
-import dynamic from 'next/dynamic';
-
-const Empty = dynamic(() => import('./Empty'));
-const BoardsClientComponent = dynamic(() => import('./BoardsClientComponent'));
+import Empty from './Empty';
+import BoardsClientComponent from './BoardsClientComponent';
 
 const BoardsComponent = async () => {
   const user = await currentUser();
@@ -13,6 +11,7 @@ const BoardsComponent = async () => {
   if (!boards || boards.length === 0) {
     return <Empty message="No Boards Found, try to create some" />;
   }
+
   return <BoardsClientComponent boards={boards} />;
 };
 

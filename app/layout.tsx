@@ -1,9 +1,8 @@
-import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-import Providers from './Providers';
-import { ThemeProvider } from 'next-themes';
 import { Toaster } from '@/components/ui/sonner';
+
+import Providers from './Providers';
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -16,10 +15,10 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: {
-    template: "%s - Planify",
-    default: "Welcome - Planify",
+    template: '%s - Planify',
+    default: 'Welcome - Planify',
   },
-  description: "",
+  description: '',
 };
 
 export default function RootLayout({
@@ -33,15 +32,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Toaster position="top-right" closeButton={true} richColors />
-            <main>{children}</main>
-          </ThemeProvider>
+          <Toaster position="top-right" closeButton={true} richColors />
+          <main>{children}</main>
         </Providers>
       </body>
     </html>

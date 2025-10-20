@@ -65,9 +65,9 @@ const DeleteDialog = ({
         </DialogHeader>
         <div className="flex justify-end gap-2">
           <DialogClose asChild>
-            <Button size={'sm'}>Cancel</Button>
+            <Button >Cancel</Button>
           </DialogClose>
-          <Button variant={'destructive'} size={'sm'} onClick={handleDelete}>
+          <Button variant={'destructive'}  onClick={handleDelete}>
             {isPending ? (
               <>
                 <Spinner size="sm" variant="ring" />

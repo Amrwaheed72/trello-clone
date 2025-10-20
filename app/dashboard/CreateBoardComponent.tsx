@@ -7,14 +7,9 @@ import { memo, useTransition } from 'react';
 import { toast } from 'sonner';
 import { DashboardStore } from '../store/DashboardStore';
 import { createBoardWithDefaultColumns } from '@/app/services/actions/columnActions';
-import dynamic from 'next/dynamic';
+import { Spinner } from '@/components/ui/spinner';
 
-const Spinner = dynamic(
-  () => import('@/components/ui/spinner').then((mod) => mod.Spinner),
-  {
-    ssr: false,
-  },
-);
+
 
 const CreateBoardComponent = memo(function CreateBoardComponent({
   canCreateBoard,
