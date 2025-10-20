@@ -1,6 +1,5 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -9,7 +8,6 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { BoardColors } from '@/app/utils/constants';
 import { updateBoard } from '@/app/services/actions/boardActions';
-import { useBoardStore } from '@/app/store/BoardStore';
 import {
   Form,
   FormControl,
@@ -18,56 +16,32 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-const Dialog = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.Dialog),
-  {
-    ssr: false,
-  },
-);
-const DialogContent = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogContent),
-  {
-    ssr: false,
-  },
-);
-const DialogDescription = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogDescription),
-  {
-    ssr: false,
-  },
-);
-const DialogHeader = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogHeader),
-  {
-    ssr: false,
-  },
-);
-const DialogTitle = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogTitle),
-  {
-    ssr: false,
-  },
-);
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Spinner } from '@/components/ui/spinner';
+import { Input } from '@/components/ui/input';
+import { useState } from 'react';
 
-const Input = dynamic(
-  () => import('@/components/ui/input').then((mod) => mod.Input),
-  { ssr: false },
-);
-
-const Spinner = dynamic(
-  () => import('@/components/ui/spinner').then((mod) => mod.Spinner),
-  { ssr: false },
-);
 const EditBoardDialog = ({
   boardTitle,
   boardColor,
   boardId,
+  children,
 }: {
   boardTitle: string;
   boardColor: string;
   boardId: string;
+  children: React.ReactNode;
 }) => {
-  const { openEditBoard, setOpenEditBoard } = useBoardStore();
+  const [open, setOpen] = useState(false);
+
   const router = useRouter();
 
   const formSchema = z.object({
@@ -99,18 +73,27 @@ const EditBoardDialog = ({
         boardTitle: values.boardTitle,
         boardColor: values.boardColor,
       });
-      setOpenEditBoard(false);
+      setOpen(false);
     } catch (error) {
       console.error(error);
       toast.error('Failed to update board!');
     }
   };
   return (
-    <Dialog open={openEditBoard} onOpenChange={setOpenEditBoard}>
+    <Dialog
+      open={open}
+      onOpenChange={(val) => {
+        setOpen(val);
+        if (!val) form.reset();
+      }}
+    >
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="mx-auto w-[95vw] max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Edit Board</DialogTitle>
-          <DialogDescription>You can only edit board title or board color</DialogDescription>
+          <DialogDescription>
+            You can only edit board title or board color
+          </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -158,14 +141,15 @@ const EditBoardDialog = ({
               )}
             />
             <div className="flex justify-end gap-2">
-              <Button
-                onClick={() => setOpenEditBoard(false)}
-                variant={'outline'}
-                type="button"
-                className="cursor-pointer"
-              >
-                Cancel
-              </Button>
+              <DialogClose asChild>
+                <Button
+                  variant={'outline'}
+                  type="button"
+                  className="cursor-pointer"
+                >
+                  Cancel
+                </Button>
+              </DialogClose>
               <Button
                 disabled={
                   !form.formState.isDirty || form.formState.isSubmitting

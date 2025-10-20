@@ -6,61 +6,29 @@ import { useRouter } from 'next/navigation';
 import { deleteBoard } from '@/app/services/actions/boardActions';
 import { deleteColumn } from '@/app/services/actions/columnActions';
 import { deleteTask } from '@/app/services/actions/taskActions';
-import { useDeleteDialogStore } from '@/app/store/DeleteDialogStore';
-import dynamic from 'next/dynamic';
-
-const Spinner = dynamic(
-  () => import('@/components/ui/spinner').then((mod) => mod.Spinner),
-  {
-    ssr: false,
-  },
-);
-const Dialog = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.Dialog),
-  {
-    ssr: false,
-  },
-);
-
-const DialogContent = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogContent),
-  {
-    ssr: false,
-  },
-);
-
-const DialogDescription = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogDescription),
-  {
-    ssr: false,
-  },
-);
-
-const DialogHeader = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogHeader),
-  {
-    ssr: false,
-  },
-);
-
-const DialogTitle = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogTitle),
-  {
-    ssr: false,
-  },
-);
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Spinner } from '@/components/ui/spinner';
 const DeleteDialog = ({
   id,
   type,
   boardId,
   board_column_id,
+  children,
 }: {
   id: string;
   type: string;
   boardId?: string;
   board_column_id?: string;
+  children?: React.ReactNode;
 }) => {
-  const { openDeleteDialog, setOpenDeleteDialog } = useDeleteDialogStore();
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
@@ -79,7 +47,6 @@ const DeleteDialog = ({
         }
 
         toast.success(`${type} deleted successfully!`);
-        setOpenDeleteDialog(false);
       } catch (err) {
         toast.error(`Could not delete this ${type}`);
       }
@@ -87,7 +54,8 @@ const DeleteDialog = ({
   };
 
   return (
-    <Dialog open={openDeleteDialog} onOpenChange={setOpenDeleteDialog}>
+    <Dialog>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="mx-auto w-[95vw] max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Delete this {type}?</DialogTitle>
@@ -96,9 +64,9 @@ const DeleteDialog = ({
           </DialogDescription>
         </DialogHeader>
         <div className="flex justify-end gap-2">
-          <Button size={'sm'} onClick={() => setOpenDeleteDialog(false)}>
-            Cancel
-          </Button>
+          <DialogClose asChild>
+            <Button size={'sm'}>Cancel</Button>
+          </DialogClose>
           <Button variant={'destructive'} size={'sm'} onClick={handleDelete}>
             {isPending ? (
               <>

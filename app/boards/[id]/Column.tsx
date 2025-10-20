@@ -5,22 +5,19 @@ import { Button } from '../../../components/ui/button';
 import { MoreHorizontalIcon, Trash } from 'lucide-react';
 import { useDroppable } from '@dnd-kit/core';
 import { memo } from 'react';
-
+import dynamic from 'next/dynamic';
+const DeleteDialog = dynamic(() => import('@/components/DeleteDialog'), {
+  ssr: false,
+});
+const EditColumnDialog = dynamic(() => import('./EditColumnDialog'), {
+  ssr: false,
+});
 interface ColProps {
   column: ColumnsWithTasks;
   children: React.ReactNode;
-  onDelete: () => void;
-  onEdit: () => void;
-  // onCreateTask: (taskData: any) => Promise<void>;
-  // onEditColumn: (column: ColumnsWithTasks) => void;
 }
 
-const Column = memo(function Column({
-  column,
-  children,
-  onDelete,
-  onEdit,
-}: ColProps) {
+const Column = memo(function Column({ column, children }: ColProps) {
   const { setNodeRef, isOver } = useDroppable({ id: column.id });
   return (
     <div
@@ -41,22 +38,24 @@ const Column = memo(function Column({
               </Badge>
             </div>
             <div className="flex gap-2">
-              <Button
-                onClick={onDelete}
-                variant="outline"
-                size={'sm'}
-                className="flex-shrink-0"
+              <DeleteDialog id={column.id} type="column">
+                <Button variant="outline" size={'sm'} className="flex-shrink-0">
+                  <Trash />
+                </Button>
+              </DeleteDialog>
+              <EditColumnDialog
+                title={column.title}
+                id={column.id}
+                boardId={column.board_id}
               >
-                <Trash />
-              </Button>
-              <Button
-                onClick={onEdit}
-                variant={'outline'}
-                size={'sm'}
-                className="flex-shrink-0"
-              >
-                <MoreHorizontalIcon />
-              </Button>
+                <Button
+                  variant={'outline'}
+                  size={'sm'}
+                  className="flex-shrink-0"
+                >
+                  <MoreHorizontalIcon />
+                </Button>
+              </EditColumnDialog>
             </div>
           </div>
         </div>

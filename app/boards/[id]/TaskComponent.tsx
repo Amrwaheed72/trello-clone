@@ -4,31 +4,18 @@ import { Calendar, MoreHorizontalIcon, Trash, User } from 'lucide-react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Button } from '@/components/ui/button';
-import dynamic from 'next/dynamic';
 import { memo } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import dynamic from 'next/dynamic';
 
-const Card = dynamic(
-  () => import('@/components/ui/card').then((mod) => mod.Card),
-  {
-    ssr: false,
-  },
-);
-const CardContent = dynamic(
-  () => import('@/components/ui/card').then((mod) => mod.CardContent),
-  {
-    ssr: false,
-  },
-);
+const DeleteDialog = dynamic(() => import('@/components/DeleteDialog'), {
+  ssr: false,
+});
+const EditTaskDialog = dynamic(() => import('./EditTaskDialog'), {
+  ssr: false,
+});
 
-const TaskComponent = memo(function TaskComponent({
-  task,
-  onDelete,
-  onEdit,
-}: {
-  task: Task;
-  onDelete: () => void;
-  onEdit: () => void;
-}) {
+const TaskComponent = memo(function TaskComponent({ task }: { task: Task }) {
   const {
     attributes,
     listeners,
@@ -75,12 +62,16 @@ const TaskComponent = memo(function TaskComponent({
                 {title}
               </h4>
               <div>
-                <Button onClick={onDelete} size={'sm'} variant={'ghost'}>
-                  <Trash />
-                </Button>
-                <Button onClick={onEdit} size={'sm'} variant={'ghost'}>
-                  <MoreHorizontalIcon />
-                </Button>
+                <DeleteDialog id={task.id} type="task">
+                  <Button size={'sm'} variant={'ghost'}>
+                    <Trash />
+                  </Button>
+                </DeleteDialog>
+                <EditTaskDialog selectedTask={task}>
+                  <Button size={'sm'} variant={'ghost'}>
+                    <MoreHorizontalIcon />
+                  </Button>
+                </EditTaskDialog>
               </div>
             </div>
             <p className="line-clamp-2 text-xs">

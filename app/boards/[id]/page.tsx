@@ -1,5 +1,4 @@
 import BoardNavbar from './BoardNavbar';
-import EditBoardDialog from './EditBoardDialog';
 import BoardContent from './BoardContent';
 import { Suspense } from 'react';
 import { Spinner } from '@/components/ui/spinner';
@@ -8,6 +7,7 @@ import { getBoard } from '@/app/services/actions/boardActions';
 import dynamic from 'next/dynamic';
 
 const FilterBoardDialog = dynamic(() => import('./FilterBoardDialog'));
+const EditBoardDialog = dynamic(() => import('./EditBoardDialog'));
 
 interface Params {
   params: Promise<{ id: string }>;
@@ -27,12 +27,17 @@ const Page = async ({ params }: Params) => {
   }
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:bg-gradient-to-br dark:from-blue-950 dark:via-black dark:to-purple-950">
-      <BoardNavbar boardTitle={board.title} />
-      <EditBoardDialog
+      <BoardNavbar
+        boardTitle={board.title}
+        boardColor={board.color}
+        boardId={board.id}
+      />
+      {/* <EditBoardDialog
         boardColor={board.color}
         boardTitle={board.title}
         boardId={board.id}
-      />
+      
+      /> */}
       <FilterBoardDialog />
       <Suspense
         fallback={

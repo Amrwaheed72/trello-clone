@@ -9,8 +9,6 @@ import { ColumnsWithTasks } from '@/app/services/supabase/models';
 import { useRouter } from 'next/navigation';
 import { createTask } from '@/app/services/actions/taskActions';
 import { addTaskFormSchema } from '@/app/utils/schemas';
-import { useTaskStore } from '@/app/store/TaskStore';
-import dynamic from 'next/dynamic';
 import {
   Form,
   FormControl,
@@ -20,98 +18,39 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import ReusableFormField from '@/components/ReusableFormField';
-import { memo } from 'react';
+import { memo, useState } from 'react';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/spinner';
 
-const Select = dynamic(
-  () => import('@/components/ui/select').then((mod) => mod.Select),
-  {
-    ssr: false,
-  },
-);
-const SelectContent = dynamic(
-  () => import('@/components/ui/select').then((mod) => mod.SelectContent),
-  {
-    ssr: false,
-  },
-);
-const SelectItem = dynamic(
-  () => import('@/components/ui/select').then((mod) => mod.SelectItem),
-  {
-    ssr: false,
-  },
-);
-const SelectTrigger = dynamic(
-  () => import('@/components/ui/select').then((mod) => mod.SelectTrigger),
-  {
-    ssr: false,
-  },
-);
-const SelectValue = dynamic(
-  () => import('@/components/ui/select').then((mod) => mod.SelectValue),
-  {
-    ssr: false,
-  },
-);
-
-const Button = dynamic(
-  () => import('@/components/ui/button').then((mod) => mod.Button),
-  {
-    ssr: false,
-  },
-);
-
-const Spinner = dynamic(
-  () => import('@/components/ui/spinner').then((mod) => mod.Spinner),
-  {
-    ssr: false,
-  },
-);
-const Dialog = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.Dialog),
-  {
-    ssr: false,
-  },
-);
-const DialogContent = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogContent),
-  {
-    ssr: false,
-  },
-);
-const DialogDescription = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogDescription),
-  {
-    ssr: false,
-  },
-);
-const DialogHeader = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogHeader),
-  {
-    ssr: false,
-  },
-);
-const DialogTitle = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogTitle),
-  {
-    ssr: false,
-  },
-);
-const DialogTrigger = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogTrigger),
-  {
-    ssr: false,
-  },
-);
 const priorityOptions = ['low', 'medium', 'high'];
 
 const AddTaskDialog = memo(function AddTaskDialog({
   columns,
   id,
+  children,
 }: {
   columns: ColumnsWithTasks[];
   id: string;
+  children: React.ReactNode;
 }) {
-  const { openAddTask, setOpenAddTask } = useTaskStore();
+  const [open, setOpen] = useState(false);
+
   const router = useRouter();
 
   const form = useForm<z.infer<typeof addTaskFormSchema>>({
@@ -137,7 +76,6 @@ const AddTaskDialog = memo(function AddTaskDialog({
       currentTasks.length > 0
         ? Math.max(...currentTasks.map((t) => t.sort_order)) + 1
         : 0;
-    console.log(id);
     try {
       await createTask(
         {
@@ -153,19 +91,23 @@ const AddTaskDialog = memo(function AddTaskDialog({
         },
         id,
       );
+      setOpen(false);
       router.refresh();
       toast.success('Task created successfully!');
       form.reset();
-      setOpenAddTask(false);
     } catch (error) {
       console.error(error);
       toast.error('Could not create the task, please try again later.');
     }
   };
 
+  const handleReset = () => {
+    form.reset();
+  };
+
   return (
-    <Dialog open={openAddTask} onOpenChange={setOpenAddTask}>
-      <DialogTrigger asChild></DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="mx-auto w-[95vw] max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Create New Task</DialogTitle>
@@ -258,16 +200,35 @@ const AddTaskDialog = memo(function AddTaskDialog({
                 </FormItem>
               )}
             />
-            <div className="flex justify-end">
-              <Button disabled={form.formState.isSubmitting} type="submit">
-                {form.formState.isSubmitting ? (
-                  <>
-                    <Spinner size="sm" variant="ring" /> Creating
-                  </>
-                ) : (
-                  'Create Task'
-                )}
+            <div className="flex items-center justify-between">
+              <Button
+                size="sm"
+                disabled={!form.formState.isDirty}
+                type="button"
+                onClick={handleReset}
+              >
+                Reset the form
               </Button>
+              <div className="flex justify-end gap-2">
+                <DialogClose asChild>
+                  <Button size="sm" variant={'outline'}>
+                    Cancel
+                  </Button>
+                </DialogClose>
+                <Button
+                  size="sm"
+                  disabled={form.formState.isSubmitting}
+                  type="submit"
+                >
+                  {form.formState.isSubmitting ? (
+                    <>
+                      <Spinner size="sm" variant="ring" /> Creating
+                    </>
+                  ) : (
+                    'Create Task'
+                  )}
+                </Button>
+              </div>
             </div>
           </form>
         </Form>

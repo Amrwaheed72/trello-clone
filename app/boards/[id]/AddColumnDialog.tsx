@@ -1,5 +1,4 @@
 'use client';
-import { useColumnStore } from '@/app/store/ColumnStore';
 import { addColumnFormSchema } from '@/app/utils/schemas';
 import { createColumn } from '@/app/services/actions/columnActions';
 import { ColumnsWithTasks } from '@/app/services/supabase/models';
@@ -9,64 +8,31 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
-import dynamic from 'next/dynamic';
 import { Form } from '@/components/ui/form';
 import ReusableFormField from '@/components/ReusableFormField';
-import { memo } from 'react';
+import { memo, useState } from 'react';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/spinner';
 
-
-const Button = dynamic(
-  () => import('@/components/ui/button').then((mod) => mod.Button),
-  {
-    ssr: false,
-  },
-);
-
-const Dialog = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.Dialog),
-  {
-    ssr: false,
-  },
-);
-const DialogContent = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogContent),
-  {
-    ssr: false,
-  },
-);
-const DialogDescription = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogDescription),
-  {
-    ssr: false,
-  },
-);
-const DialogHeader = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogHeader),
-  {
-    ssr: false,
-  },
-);
-const DialogTitle = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogTitle),
-  {
-    ssr: false,
-  },
-);
-const Spinner = dynamic(
-  () => import('@/components/ui/spinner').then((mod) => mod.Spinner),
-  {
-    ssr: false,
-  },
-);
-
-const AddColumnDialog =memo( function AddColumnDialog ({
+const AddColumnDialog = memo(function AddColumnDialog({
   id,
   columnsWithTasks,
+  children,
 }: {
   id: string;
   columnsWithTasks: ColumnsWithTasks[];
-})  {
-  const { openAddColumn, setOpenAddColumn } = useColumnStore();
+  children: React.ReactNode;
+}) {
+  const [open, setOpen] = useState(false);
   const { user } = useUser();
   const router = useRouter();
   const form = useForm<z.infer<typeof addColumnFormSchema>>({
@@ -88,15 +54,22 @@ const AddColumnDialog =memo( function AddColumnDialog ({
         sort_order: nextSortOrder,
         user_id: user?.id,
       });
+      setOpen(false);
       router.refresh();
       toast.success('Column Created successfully!');
-      setOpenAddColumn(false);
     } catch (error) {
       toast.error('Could not create a Column');
     }
   };
   return (
-    <Dialog open={openAddColumn} onOpenChange={setOpenAddColumn}>
+    <Dialog
+      open={open}
+      onOpenChange={(val) => {
+        setOpen(val);
+        if (!val) form.reset();
+      }}
+    >
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="mx-auto w-[95vw] max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Create New Column</DialogTitle>
@@ -116,14 +89,13 @@ const AddColumnDialog =memo( function AddColumnDialog ({
               placeholder="Enter Column title"
               formLabel="Title"
             />
+
             <div className="flex justify-end gap-2">
-              <Button
-                type="button"
-                onClick={() => setOpenAddColumn(false)}
-                variant={'outline'}
-              >
-                Cancel
-              </Button>
+              <DialogClose asChild>
+                <Button type="button" variant={'outline'}>
+                  Cancel
+                </Button>
+              </DialogClose>
               <Button disabled={form.formState.isSubmitting} type="submit">
                 {form.formState.isSubmitting ? (
                   <>
@@ -139,6 +111,6 @@ const AddColumnDialog =memo( function AddColumnDialog ({
       </DialogContent>
     </Dialog>
   );
-})
+});
 
 export default AddColumnDialog;

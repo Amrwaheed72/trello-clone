@@ -4,41 +4,19 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useFilterStore } from '@/app/store/FilterStore';
-import dynamic from 'next/dynamic';
-
-const Dialog = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.Dialog),
-  {
-    ssr: false,
-  },
-);
-const DialogContent = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogContent),
-  {
-    ssr: false,
-  },
-);
-const DialogHeader = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogHeader),
-  {
-    ssr: false,
-  },
-);
-const DialogDescription = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogDescription),
-  {
-    ssr: false,
-  },
-);
-const DialogTitle = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogTitle),
-  {
-    ssr: false,
-  },
-);
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { useState } from 'react';
 
 const priorityOptions = ['low', 'medium', 'high'];
-const FilterBoardDialog = () => {
+const FilterBoardDialog = ({ children }: { children: React.ReactNode }) => {
+  const [open, setOpen] = useState(false);
   const { openFilter, setOpenFilter, filters, setFilters, clearFilters } =
     useFilterStore();
 
@@ -49,7 +27,8 @@ const FilterBoardDialog = () => {
     setFilters({ ...filters, priority: newPriorities });
   };
   return (
-    <Dialog open={openFilter} onOpenChange={setOpenFilter}>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="mx-auto w-[95vw] max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Filter Tasks</DialogTitle>
@@ -104,7 +83,7 @@ const FilterBoardDialog = () => {
             <Button
               type="button"
               onClick={() => {
-                setOpenFilter(false);
+                setOpen(false);
               }}
             >
               Apply Filter

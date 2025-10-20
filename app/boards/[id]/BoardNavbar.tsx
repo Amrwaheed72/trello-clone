@@ -1,20 +1,23 @@
 'use client';
-import { useBoardStore } from '@/app/store/BoardStore';
-import { useFilterStore } from '@/app/store/FilterStore';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { UserButton } from '@clerk/nextjs';
 import { ArrowLeft, Filter, MoreHorizontal, Trello } from 'lucide-react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 
+const EditBoardDialog = dynamic(() => import('./EditBoardDialog'), {
+  ssr: false,
+});
+const FilterBoardDialog = dynamic(() => import('./FilterBoardDialog'), {
+  ssr: false,
+});
 interface Props {
-  boardTitle?: string;
+  boardTitle: string;
+  boardColor: string;
+  boardId: string;
 }
-const BoardNavbar = ({ boardTitle }: Props) => {
-  const { setOpenEditBoard } = useBoardStore();
-  const { setOpenFilter, filterCount } = useFilterStore();
-
+const BoardNavbar = ({ boardTitle, boardColor, boardId }: Props) => {
   return (
     <nav className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-sm dark:bg-black/80">
       <div className="container mx-auto flex items-center justify-between px-4 py-3 sm:py-4">
@@ -36,33 +39,39 @@ const BoardNavbar = ({ boardTitle }: Props) => {
                   {boardTitle}
                 </span>
 
-                <Button
-                  onClick={() => setOpenEditBoard(true)}
-                  variant={'ghost'}
-                  size={'sm'}
-                  className="h-7 w-7 flex-shrink-0 p-0"
+                <EditBoardDialog
+                  boardId={boardId}
+                  boardColor={boardColor}
+                  boardTitle={boardTitle}
                 >
-                  <MoreHorizontal />
-                </Button>
+                  <Button
+                    variant={'ghost'}
+                    size={'sm'}
+                    className="h-7 w-7 flex-shrink-0 p-0"
+                  >
+                    <MoreHorizontal />
+                  </Button>
+                </EditBoardDialog>
               </div>
             </div>
           </div>
         </div>
         <div className="flex items-center space-x-2 sm:space-x-4">
-          <Button
-            variant={'outline'}
-            size={'sm'}
-            onClick={() => setOpenFilter(true)}
-            className={`text-xs sm:text-sm`}
-          >
-            <Filter className="mr-1 h-3 w-3 sm:mr-2 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">Filter</span>
-            {/* {filterCount > 0 && (
+          <FilterBoardDialog>
+            <Button
+              variant={'outline'}
+              size={'sm'}
+              className={`text-xs sm:text-sm`}
+            >
+              <Filter className="mr-1 h-3 w-3 sm:mr-2 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Filter</span>
+              {/* {filterCount > 0 && (
               <Badge variant={'secondary'} className="ml-1 text-xs sm:ml-2">
-                {filterCount}
+              {filterCount}
               </Badge>
             )} */}
-          </Button>
+            </Button>
+          </FilterBoardDialog>
           <UserButton />
           <ThemeToggle />
         </div>

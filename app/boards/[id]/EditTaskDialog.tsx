@@ -16,83 +16,37 @@ import { toast } from 'sonner';
 import { Task } from '@/app/services/supabase/models';
 import { useRouter } from 'next/navigation';
 import ReusableFormField from '@/components/ReusableFormField';
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { updateTask } from '@/app/services/actions/taskActions';
 import { addTaskFormSchema } from '@/app/utils/schemas';
-import { useTaskStore } from '@/app/store/TaskStore';
-import dynamic from 'next/dynamic';
-const priorityOptions = ['low', 'medium', 'high'];
-const Select = dynamic(
-  () => import('@/components/ui/select').then((mod) => mod.Select),
-  {
-    ssr: false,
-  },
-);
-const SelectContent = dynamic(
-  () => import('@/components/ui/select').then((mod) => mod.SelectContent),
-  {
-    ssr: false,
-  },
-);
-const SelectItem = dynamic(
-  () => import('@/components/ui/select').then((mod) => mod.SelectItem),
-  {
-    ssr: false,
-  },
-);
-const SelectTrigger = dynamic(
-  () => import('@/components/ui/select').then((mod) => mod.SelectTrigger),
-  {
-    ssr: false,
-  },
-);
-const SelectValue = dynamic(
-  () => import('@/components/ui/select').then((mod) => mod.SelectValue),
-  {
-    ssr: false,
-  },
-);
-const Dialog = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.Dialog),
-  {
-    ssr: false,
-  },
-);
-const DialogTrigger = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogTrigger),
-  {
-    ssr: false,
-  },
-);
-const DialogContent = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogContent),
-  {
-    ssr: false,
-  },
-);
-const DialogHeader = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogHeader),
-  {
-    ssr: false,
-  },
-);
-const DialogTitle = dynamic(
-  () => import('@/components/ui/dialog').then((mod) => mod.DialogTitle),
-  {
-    ssr: false,
-  },
-);
 
-const Spinner = dynamic(
-  () => import('@/components/ui/spinner').then((mod) => mod.Spinner),
-  { ssr: false },
-);
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Spinner } from '@/components/ui/spinner';
+const priorityOptions = ['low', 'medium', 'high'];
+
 const EditTaskDialog = memo(function EditTaskDialog({
   selectedTask,
+  children,
 }: {
   selectedTask: Task;
+  children: React.ReactNode;
 }) {
-  const { openEditTask, setOpenEditTask } = useTaskStore();
+  const [open, setOpen] = useState(false);
   const router = useRouter();
 
   const form = useForm<z.infer<typeof addTaskFormSchema>>({
@@ -125,19 +79,25 @@ const EditTaskDialog = memo(function EditTaskDialog({
       router.refresh();
       toast.success('Task updated successfully!');
       form.reset();
-      setOpenEditTask(false);
+      setOpen(false);
     } catch (error) {
       console.error(error);
       toast.error('Could not create the task, please try again later.');
     }
   };
+  const handleReset = () => {
+    form.reset();
+  };
 
   return (
-    <Dialog open={openEditTask} onOpenChange={setOpenEditTask}>
-      <DialogTrigger asChild></DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="mx-auto w-[95vw] max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Update Task</DialogTitle>
+          <DialogDescription>
+            you can edit the task information
+          </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -226,25 +186,37 @@ const EditTaskDialog = memo(function EditTaskDialog({
                 </FormItem>
               )}
             />
-            <div className="flex justify-end gap-2">
-              <Button variant={'outline'} size={'sm'}>
-                Cancel
-              </Button>
+            <div className="flex items-center justify-between">
               <Button
+                type="button"
+                onClick={handleReset}
+                disabled={!form.formState.isDirty}
                 size={'sm'}
-                disabled={
-                  form.formState.isSubmitting || !form.formState.isDirty
-                }
-                type="submit"
               >
-                {form.formState.isSubmitting ? (
-                  <>
-                    <Spinner size="sm" variant="ring" /> Updating
-                  </>
-                ) : (
-                  'Update Task'
-                )}
+                Reset the form
               </Button>
+              <div className="flex justify-end gap-2">
+                <DialogClose asChild>
+                  <Button variant={'outline'} size={'sm'}>
+                    Cancel
+                  </Button>
+                </DialogClose>
+                <Button
+                  size={'sm'}
+                  disabled={
+                    form.formState.isSubmitting || !form.formState.isDirty
+                  }
+                  type="submit"
+                >
+                  {form.formState.isSubmitting ? (
+                    <>
+                      <Spinner size="sm" variant="ring" /> Updating
+                    </>
+                  ) : (
+                    'Update Task'
+                  )}
+                </Button>
+              </div>
             </div>
           </form>
         </Form>
