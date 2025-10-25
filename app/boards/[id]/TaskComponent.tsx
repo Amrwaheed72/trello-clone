@@ -29,9 +29,7 @@ const TaskComponent = memo(function TaskComponent({ task }: { task: Task }) {
     description,
     due_date,
     priority,
-    sort_order,
     title,
-    created_at,
   } = task;
 
   const getPriorityColor = (priority: 'low' | 'medium' | 'high') => {

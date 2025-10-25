@@ -21,6 +21,7 @@ import useDragnDrop from '@/app/hooks/useDragnDrop';
 import dynamic from 'next/dynamic';
 import TaskComponent from './TaskComponent';
 import Column from './Column';
+import TaskOverlay from './TaskOverlay';
 
 const AddColumnDialog = dynamic(() => import('./AddColumnDialog'), {
   ssr: false,
@@ -29,9 +30,6 @@ const AddTaskDialog = dynamic(() => import('@/app/boards/[id]/AddTaskDialog'), {
   ssr: false,
 });
 const DeleteDialog = dynamic(() => import('@/components/DeleteDialog'), {
-  ssr: false,
-});
-const TaskOverlay = dynamic(() => import('@/app/boards/[id]/TaskOverlay'), {
   ssr: false,
 });
 interface BoardClientViewProps {

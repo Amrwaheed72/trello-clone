@@ -2,12 +2,13 @@ import { auth, currentUser } from '@clerk/nextjs/server';
 import { Suspense } from 'react';
 import { getUserBoards } from '@/app/services/actions/boardActions';
 import dynamic from 'next/dynamic';
-import BoardsComponent from '@/components/BoardsComponent';
 import { Spinner } from '@/components/ui/spinner';
 import SearchInput from './SearchInput';
 import CreateBoardComponent from './CreateBoardComponent';
 import DashboardStats from './DashboardStats';
 import ChangeViewButtons from '@/components/ChangeViewButtons';
+import BoardsComponent from './BoardsComponent';
+import { redirect } from 'next/navigation';
 
 const UpgradeDialog = dynamic(() => import('@/components/UpgradeDialog'));
 
@@ -21,6 +22,7 @@ const Page = async () => {
   // const hasProPlan = has({ plan: 'pro_user' });
   // const hasEnterprisePlan = has({ plan: 'enterprise' });
   const user = await currentUser();
+  if (!user) redirect('/');
   const boards = await getUserBoards(user.id);
   const canCreateBoard = !hasFreePlan || boards.length < 1;
 

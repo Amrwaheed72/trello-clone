@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import { Badge } from './ui/badge';
+import { Badge } from '@/components/ui/badge';
 import { Plus } from 'lucide-react';
 import { Board } from '@/app/services/supabase/models';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface BoardsClientComponentProps {
   boards: Board[];

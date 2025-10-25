@@ -48,7 +48,7 @@ const Home = async () => {
       <section className="container mx-auto px-4 py-20 text-center">
         <div className="mx-auto max-w-4xl">
           <h1 className="mb-6 text-5xl font-bold md:text-6xl">
-            Organize work and life,{' '}
+            Organize work and life,
             <span className="text-blue-600">finally.</span>
           </h1>
           <p className="mx-auto mb-8 max-w-2xl text-xl text-gray-600 dark:text-gray-300">

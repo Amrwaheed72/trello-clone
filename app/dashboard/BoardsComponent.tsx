@@ -1,7 +1,7 @@
 import { currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { getUserBoards } from '@/app/services/actions/boardActions';
-import Empty from './Empty';
+import Empty from '@/components/Empty';
 import BoardsClientComponent from './BoardsClientComponent';
 
 const BoardsComponent = async () => {
