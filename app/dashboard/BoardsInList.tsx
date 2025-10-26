@@ -16,7 +16,7 @@ interface BoardsClientComponentProps {
   viewMode: string;
 }
 
-const BoardsInList = ({ boards, viewMode }: BoardsClientComponentProps) => {
+const BoardsInList = ({ boards }: BoardsClientComponentProps) => {
   return (
     <div className="">
       {boards.map((board) => (

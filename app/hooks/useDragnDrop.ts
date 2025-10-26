@@ -7,16 +7,16 @@ import { moveTask } from '../services/actions/taskActions';
 interface UseDragnDropProps {
   columns: ColumnsWithTasks[];
   setColumns: React.Dispatch<React.SetStateAction<ColumnsWithTasks[]>>;
-  setActiveTask: React.Dispatch<React.SetStateAction<Task | null>>; 
+  setActiveTask: React.Dispatch<React.SetStateAction<Task | null>>;
+  boardId: string;
 }
 
 const useDragnDrop = ({
   columns,
   setColumns,
   setActiveTask,
+  boardId,
 }: UseDragnDropProps) => {
-  const router = useRouter();
-
   const handleDragStart = (e: DragStartEvent) => {
     const taskId = e.active.id as string;
     const task = columns
@@ -117,9 +117,8 @@ const useDragnDrop = ({
     });
 
     try {
-      await moveTask(taskId, targetColumn.id, targetColumn.tasks.length);
+      await moveTask(taskId, targetColumn.id, targetColumn.tasks.length,boardId);
       toast.success('Task moved successfully!');
-      router.refresh();
     } catch (err) {
       console.error(err);
       toast.error('Could not move the task');

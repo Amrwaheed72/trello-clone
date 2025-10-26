@@ -40,10 +40,8 @@ const DeleteDialog = ({
           router.push('/dashboard');
         } else if (type === 'column') {
           await deleteColumn(id, boardId);
-          router.refresh();
         } else if (type === 'task') {
           await deleteTask(id, boardId);
-          router.refresh();
         }
 
         toast.success(`${type} deleted successfully!`);

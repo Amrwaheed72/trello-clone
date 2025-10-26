@@ -26,7 +26,7 @@ import {
 } from '@/components/ui/dialog';
 import { Spinner } from '@/components/ui/spinner';
 import { Input } from '@/components/ui/input';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 const EditBoardDialog = ({
   boardTitle,
@@ -40,7 +40,6 @@ const EditBoardDialog = ({
   children: React.ReactNode;
 }) => {
   const [open, setOpen] = useState(false);
-
 
   const formSchema = z.object({
     boardTitle: z
@@ -56,6 +55,25 @@ const EditBoardDialog = ({
       boardColor: boardColor,
     },
   });
+  const handleDialogChange = useCallback(
+    (val: boolean) => {
+      setOpen(val);
+      if (!val) form.reset();
+    },
+    [form],
+  );
+  const handleColorChange = useCallback(
+    (color: string) => {
+      form.setValue('boardColor', color);
+    },
+    [form],
+  );
+  useEffect(() => {
+    form.reset({
+      boardTitle: boardTitle,
+      boardColor: boardColor,
+    });
+  }, [boardTitle, boardColor]);
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await updateBoard(
@@ -66,10 +84,6 @@ const EditBoardDialog = ({
         boardId,
       );
       toast.success('Board Updated Successfully!');
-      form.reset({
-        boardTitle: values.boardTitle,
-        boardColor: values.boardColor,
-      });
       setOpen(false);
     } catch (error) {
       console.error(error);
@@ -77,13 +91,7 @@ const EditBoardDialog = ({
     }
   };
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(val) => {
-        setOpen(val);
-        if (!val) form.reset();
-      }}
-    >
+    <Dialog open={open} onOpenChange={handleDialogChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="mx-auto w-[95vw] max-w-[425px]">
         <DialogHeader>
@@ -127,7 +135,7 @@ const EditBoardDialog = ({
                           type="button"
                           key={color.id}
                           className={`h-8 w-8 rounded-full ${color.color} ${field.value === color.color ? 'ring-2 ring-black ring-offset-2 dark:ring-white dark:ring-offset-black' : ''} `}
-                          onClick={() => field.onChange(color.color)}
+                          onClick={() => handleColorChange(color.color)}
                         />
                       ))}
                     </div>

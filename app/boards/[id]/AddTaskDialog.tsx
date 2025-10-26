@@ -50,7 +50,6 @@ const AddTaskDialog = memo(function AddTaskDialog({
 }) {
   const [open, setOpen] = useState(false);
 
-
   const form = useForm<z.infer<typeof addTaskFormSchema>>({
     resolver: zodResolver(addTaskFormSchema),
     defaultValues: {
@@ -89,9 +88,9 @@ const AddTaskDialog = memo(function AddTaskDialog({
         },
         id,
       );
-      setOpen(false);
-      toast.success('Task created successfully!');
       form.reset();
+      toast.success('Task created successfully!');
+      setOpen(false);
     } catch (error) {
       console.error(error);
       toast.error('Could not create the task, please try again later.');

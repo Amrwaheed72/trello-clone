@@ -32,6 +32,7 @@ export const moveTask = async (
   taskId: string,
   targetColumnId: string,
   newPosition: number,
+  boardId: string,
 ) => {
   const { error: shiftError } = await supabase.rpc('shift_task_positions', {
     column_id_input: targetColumnId,
@@ -52,7 +53,7 @@ export const moveTask = async (
     .single();
 
   if (error) throw error;
-  // revalidatePath(`/boards/${id}`);
+  revalidatePath(`/boards/${boardId}`);
   return data;
 };
 

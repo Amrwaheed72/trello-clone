@@ -3,13 +3,12 @@ import { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 
 import {
-  DndContext,
   DragOverlay,
   PointerSensor,
-  rectIntersection,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
+
 import {
   SortableContext,
   verticalListSortingStrategy,
@@ -23,6 +22,7 @@ import TaskComponent from './TaskComponent';
 import Column from './Column';
 import TaskOverlay from './TaskOverlay';
 
+const DndWrapper = dynamic(() => import('./DndWrapper'), { ssr: false });
 const AddColumnDialog = dynamic(() => import('./AddColumnDialog'), {
   ssr: false,
 });
@@ -48,6 +48,7 @@ const BoardContentClient = ({
 
   const { filters } = useFilterStore();
   const { handleDragStart, handleDragEnd, handleDragOver } = useDragnDrop({
+    boardId: id,
     columns,
     setColumns,
     setActiveTask,
@@ -108,10 +109,9 @@ const BoardContentClient = ({
             </AddTaskDialog>
           </div>
         </div>
-
-        <DndContext
+        {/* i made a dndWrapper to avoid the hydration error by importing it as a dynamic import with ssr: false */}
+        <DndWrapper
           sensors={sensors}
-          collisionDetection={rectIntersection}
           onDragStart={handleDragStart}
           onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
@@ -146,7 +146,7 @@ const BoardContentClient = ({
               {activeTask ? <TaskOverlay task={activeTask} /> : null}
             </DragOverlay>
           </div>
-        </DndContext>
+        </DndWrapper>
       </main>
     </>
   );

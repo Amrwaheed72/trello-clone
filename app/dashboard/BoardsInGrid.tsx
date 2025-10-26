@@ -16,7 +16,7 @@ interface BoardsClientComponentProps {
   viewMode:string
 }
 
-const BoardsInGrid = ({ boards,viewMode }: BoardsClientComponentProps) => {
+const BoardsInGrid = ({ boards }: BoardsClientComponentProps) => {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
       {boards.map((board) => (

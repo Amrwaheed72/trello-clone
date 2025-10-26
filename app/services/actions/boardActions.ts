@@ -35,8 +35,8 @@ export const updateBoard = async (
     .select()
     .single();
   if (error) throw error;
-  revalidatePath(`/boards/${boardId}`);
   revalidatePath(`/dashboard`);
+  revalidatePath(`/boards/${boardId}`);
 
   return data;
 };
