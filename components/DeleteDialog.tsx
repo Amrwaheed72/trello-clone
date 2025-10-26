@@ -42,7 +42,7 @@ const DeleteDialog = ({
           await deleteColumn(id, boardId);
           router.refresh();
         } else if (type === 'task') {
-          await deleteTask(id);
+          await deleteTask(id, boardId);
           router.refresh();
         }
 
@@ -65,9 +65,9 @@ const DeleteDialog = ({
         </DialogHeader>
         <div className="flex justify-end gap-2">
           <DialogClose asChild>
-            <Button >Cancel</Button>
+            <Button>Cancel</Button>
           </DialogClose>
-          <Button variant={'destructive'}  onClick={handleDelete}>
+          <Button variant={'destructive'} onClick={handleDelete}>
             {isPending ? (
               <>
                 <Spinner size="sm" variant="ring" />

@@ -5,9 +5,7 @@ import { Button } from '@/components/ui/button';
 
 import { Form } from '@/components/ui/form';
 import { editColumn } from '@/app/services/actions/columnActions';
-import { useUser } from '@clerk/nextjs';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
 import { memo, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -35,8 +33,6 @@ const EditColumnDialog = memo(function EditColumnDialog({
   children: React.ReactNode;
 }) {
   const [open, setOpen] = useState(false);
-  const { user } = useUser();
-  const router = useRouter();
   const form = useForm<z.infer<typeof editColumnFormSchema>>({
     resolver: zodResolver(editColumnFormSchema),
     defaultValues: { title: '' },
@@ -47,7 +43,6 @@ const EditColumnDialog = memo(function EditColumnDialog({
       form.reset({ title });
     }
   }, [title, form]);
-  if (!user) router.push('/');
 
   const onSubmit = async (values: z.infer<typeof editColumnFormSchema>) => {
     try {
@@ -58,7 +53,6 @@ const EditColumnDialog = memo(function EditColumnDialog({
         },
         boardId,
       );
-      router.refresh();
       setOpen(false);
       toast.success('Column Edited successfully!');
       form.reset({ title: values.title });

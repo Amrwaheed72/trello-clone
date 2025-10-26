@@ -4,7 +4,6 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { BoardColors } from '@/app/utils/constants';
 import { updateBoard } from '@/app/services/actions/boardActions';
@@ -42,7 +41,6 @@ const EditBoardDialog = ({
 }) => {
   const [open, setOpen] = useState(false);
 
-  const router = useRouter();
 
   const formSchema = z.object({
     boardTitle: z
@@ -67,7 +65,6 @@ const EditBoardDialog = ({
         },
         boardId,
       );
-      router.refresh();
       toast.success('Board Updated Successfully!');
       form.reset({
         boardTitle: values.boardTitle,

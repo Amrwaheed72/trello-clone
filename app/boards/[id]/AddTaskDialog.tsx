@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { ColumnsWithTasks } from '@/app/services/supabase/models';
-import { useRouter } from 'next/navigation';
 import { createTask } from '@/app/services/actions/taskActions';
 import { addTaskFormSchema } from '@/app/utils/schemas';
 import {
@@ -51,7 +50,6 @@ const AddTaskDialog = memo(function AddTaskDialog({
 }) {
   const [open, setOpen] = useState(false);
 
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof addTaskFormSchema>>({
     resolver: zodResolver(addTaskFormSchema),
@@ -92,7 +90,6 @@ const AddTaskDialog = memo(function AddTaskDialog({
         id,
       );
       setOpen(false);
-      router.refresh();
       toast.success('Task created successfully!');
       form.reset();
     } catch (error) {

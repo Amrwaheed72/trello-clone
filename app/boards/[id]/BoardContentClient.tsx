@@ -125,7 +125,7 @@ const BoardContentClient = ({
                 >
                   <div className="space-y-3">
                     {column.tasks.map((task) => (
-                      <TaskComponent task={task} key={task.id} />
+                      <TaskComponent boardId={id} task={task} key={task.id} />
                     ))}
                   </div>
                 </SortableContext>

@@ -1,10 +1,10 @@
 'use client';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
-import { DashboardStore } from '../store/DashboardStore';
+import { useDashboardStore } from '../store/DashboardStore';
 
 const SearchInput = () => {
-  const { query, setQuery } = DashboardStore();
+  const { query, setQuery } = useDashboardStore();
   return (
     <div className="relative mb-4 sm:mb-6">
       <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />

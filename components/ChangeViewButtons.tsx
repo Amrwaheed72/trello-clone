@@ -1,11 +1,10 @@
 'use client';
 import { Grid3x3, List } from 'lucide-react';
 import { Button } from './ui/button';
-import { DashboardStore } from '@/app/store/DashboardStore';
+import { useDashboardStore } from '@/app/store/DashboardStore';
 
 const ChangeViewButtons = () => {
-  const viewMode = DashboardStore((state) => state.viewMode);
-  const setViewMode = DashboardStore((state) => state.setViewMode);
+  const { viewMode, setViewMode } = useDashboardStore();
   return (
     <div className="flex items-center space-x-2 rounded-lg border p-1">
       <Button

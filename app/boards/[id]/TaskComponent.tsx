@@ -4,7 +4,6 @@ import { Calendar, MoreHorizontalIcon, Trash, User } from 'lucide-react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Button } from '@/components/ui/button';
-import { memo } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import dynamic from 'next/dynamic';
 
@@ -15,7 +14,7 @@ const EditTaskDialog = dynamic(() => import('./EditTaskDialog'), {
   ssr: false,
 });
 
-const TaskComponent = memo(function TaskComponent({ task }: { task: Task }) {
+const TaskComponent = ({ task, boardId }: { task: Task; boardId: string }) => {
   const {
     attributes,
     listeners,
@@ -24,13 +23,7 @@ const TaskComponent = memo(function TaskComponent({ task }: { task: Task }) {
     transition,
     isDragging,
   } = useSortable({ id: task.id });
-  const {
-    assignee,
-    description,
-    due_date,
-    priority,
-    title,
-  } = task;
+  const { assignee, description, due_date, priority, title } = task;
 
   const getPriorityColor = (priority: 'low' | 'medium' | 'high') => {
     switch (priority) {
@@ -65,7 +58,7 @@ const TaskComponent = memo(function TaskComponent({ task }: { task: Task }) {
                     <Trash />
                   </Button>
                 </DeleteDialog>
-                <EditTaskDialog selectedTask={task}>
+                <EditTaskDialog boardId={boardId} selectedTask={task}>
                   <Button size={'sm'} variant={'ghost'}>
                     <MoreHorizontalIcon />
                   </Button>
@@ -99,6 +92,6 @@ const TaskComponent = memo(function TaskComponent({ task }: { task: Task }) {
       </Card>
     </div>
   );
-});
+};
 
 export default TaskComponent;

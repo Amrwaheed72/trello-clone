@@ -1,18 +1,17 @@
 'use client';
 
-import { DashboardStore } from '@/app/store/DashboardStore';
 import { Board } from '@/app/services/supabase/models';
 import { useMemo } from 'react';
 import BoardsInGrid from './BoardsInGrid';
 import BoardsInList from './BoardsInList';
+import { useDashboardStore } from '../store/DashboardStore';
 
 interface BoardsClientComponentProps {
   boards: Board[];
 }
 
 const BoardsClientComponent = ({ boards }: BoardsClientComponentProps) => {
-  const viewMode = DashboardStore((state) => state.viewMode);
-  const query = DashboardStore((state) => state.query);
+  const { viewMode, query } = useDashboardStore();
   const searchedBoards = useMemo(() => {
     if (!query) return boards;
     return boards.filter((board) =>
@@ -23,9 +22,9 @@ const BoardsClientComponent = ({ boards }: BoardsClientComponentProps) => {
   return (
     <div>
       {viewMode === 'grid' ? (
-        <BoardsInGrid boards={searchedBoards} />
+        <BoardsInGrid boards={searchedBoards} viewMode={viewMode} />
       ) : (
-        <BoardsInList boards={searchedBoards} />
+        <BoardsInList boards={searchedBoards} viewMode={viewMode} />
       )}
     </div>
   );

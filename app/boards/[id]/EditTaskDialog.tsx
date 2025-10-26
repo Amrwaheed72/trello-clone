@@ -14,7 +14,6 @@ import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { Task } from '@/app/services/supabase/models';
-import { useRouter } from 'next/navigation';
 import ReusableFormField from '@/components/ReusableFormField';
 import { memo, useEffect, useState } from 'react';
 import { updateTask } from '@/app/services/actions/taskActions';
@@ -39,15 +38,16 @@ import {
 import { Spinner } from '@/components/ui/spinner';
 const priorityOptions = ['low', 'medium', 'high'];
 
-const EditTaskDialog = memo(function EditTaskDialog({
+const EditTaskDialog = ({
   selectedTask,
   children,
+  boardId
 }: {
   selectedTask: Task;
   children: React.ReactNode;
-}) {
+  boardId:string
+}) => {
   const [open, setOpen] = useState(false);
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof addTaskFormSchema>>({
     resolver: zodResolver(addTaskFormSchema),
@@ -75,8 +75,7 @@ const EditTaskDialog = memo(function EditTaskDialog({
 
   const onSubmit = async (values: z.infer<typeof addTaskFormSchema>) => {
     try {
-      await updateTask(values, selectedTask.id);
-      router.refresh();
+      await updateTask(values, selectedTask.id,boardId);
       toast.success('Task updated successfully!');
       form.reset();
       setOpen(false);
@@ -213,6 +212,6 @@ const EditTaskDialog = memo(function EditTaskDialog({
       </DialogContent>
     </Dialog>
   );
-});
+};
 
 export default EditTaskDialog;

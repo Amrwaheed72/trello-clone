@@ -1,6 +1,7 @@
 import HomeNavbar from '@/components/HomeNavbar';
 import { Button } from '@/components/ui/button';
 import { SignUpButton } from '@clerk/nextjs';
+import * as motion from 'motion/react-client';
 import {
   ArrowRight,
   CheckSquare,
@@ -42,8 +43,27 @@ const Home = async () => {
       description: 'Enterprise-grade security with Clerk authentication',
     },
   ];
+  const variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+    exit: {
+      opacity: 0,
+      y: -10,
+      transition: {
+        duration: 0.2,
+      },
+    },
+  };
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:bg-gradient-to-br dark:from-blue-950 dark:via-black dark:to-purple-950">
+    <motion.div
+      variants={variants}
+      className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:bg-gradient-to-br dark:from-blue-950 dark:via-black dark:to-purple-950"
+    >
       <HomeNavbar />
       <section className="container mx-auto px-4 py-20 text-center">
         <div className="mx-auto max-w-4xl">
@@ -143,7 +163,7 @@ const Home = async () => {
           </div>
         </div>
       </footer>
-    </div>
+    </motion.div>
   );
 };
 export default Home;

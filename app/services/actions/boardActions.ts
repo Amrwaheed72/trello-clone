@@ -3,7 +3,6 @@ import { revalidatePath } from 'next/cache';
 import { Board } from '../supabase/models';
 import { supabase } from '../supabase/supabase';
 
-
 export const getUserBoards = async (userId: string): Promise<Board[]> => {
   const { data, error } = await supabase
     .from('boards')
@@ -37,6 +36,7 @@ export const updateBoard = async (
     .single();
   if (error) throw error;
   revalidatePath(`/boards/${boardId}`);
+  revalidatePath(`/dashboard`);
 
   return data;
 };
@@ -49,6 +49,7 @@ export const createBoard = async (
     .select()
     .single();
   if (error) throw error;
+  revalidatePath(`/dashboard`);
   return data;
 };
 
@@ -56,5 +57,6 @@ export const deleteBoard = async (boardId: string) => {
   const { error } = await supabase.from('boards').delete().eq('id', boardId);
 
   if (error) throw error;
+  revalidatePath(`/dashboard`);
   return true;
 };

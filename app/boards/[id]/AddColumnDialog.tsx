@@ -10,7 +10,7 @@ import { toast } from 'sonner';
 import z from 'zod';
 import { Form } from '@/components/ui/form';
 import ReusableFormField from '@/components/ReusableFormField';
-import { memo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import {
   Dialog,
   DialogClose,
@@ -41,7 +41,9 @@ const AddColumnDialog = memo(function AddColumnDialog({
       title: '',
     },
   });
-  if (!user) router.push('/');
+  useEffect(() => {
+    if (!user) router.push('/');
+  }, [user, router]);
   const nextSortOrder =
     columnsWithTasks.length > 0
       ? Math.max(...columnsWithTasks.map((t) => t.sort_order)) + 1
@@ -52,10 +54,9 @@ const AddColumnDialog = memo(function AddColumnDialog({
         board_id: id,
         title: values.title,
         sort_order: nextSortOrder,
-        user_id: user?.id,
+        user_id: user.id,
       });
       setOpen(false);
-      router.refresh();
       toast.success('Column Created successfully!');
     } catch (error) {
       toast.error('Could not create a Column');

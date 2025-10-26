@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
 import { memo, useTransition } from 'react';
 import { toast } from 'sonner';
-import { DashboardStore } from '../store/DashboardStore';
 import { createBoardWithDefaultColumns } from '@/app/services/actions/columnActions';
 import { Spinner } from '@/components/ui/spinner';
+import { useDashboardStore } from '../store/DashboardStore';
 
 
 
@@ -17,9 +17,9 @@ const CreateBoardComponent = memo(function CreateBoardComponent({
   canCreateBoard: boolean;
 }) {
   const [isPending, startTransition] = useTransition();
-  const { setOpenUpgradeDialog } = DashboardStore();
   const router = useRouter();
   const { user } = useUser();
+  const { setOpenUpgradeDialog } = useDashboardStore();
   if (!user) router.push('/');
   const handleCreateBoard = async () => {
     if (!canCreateBoard) {

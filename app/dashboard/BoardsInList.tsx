@@ -3,13 +3,20 @@ import { Badge } from '@/components/ui/badge';
 import { Plus } from 'lucide-react';
 import { Board } from '@/app/services/supabase/models';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 
 interface BoardsClientComponentProps {
   boards: Board[];
+  viewMode: string;
 }
 
-const BoardsInList = ({ boards }: BoardsClientComponentProps) => {
+const BoardsInList = ({ boards, viewMode }: BoardsClientComponentProps) => {
   return (
     <div className="">
       {boards.map((board) => (

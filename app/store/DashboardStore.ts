@@ -12,7 +12,7 @@ interface ViewModeState {
   setQuery: (query: string | null) => void;
 }
 
-export const DashboardStore = create<ViewModeState>((set) => ({
+export const useDashboardStore = create<ViewModeState>((set) => ({
   viewMode: 'grid',
   setViewMode: (mode) => set({ viewMode: mode }),
 

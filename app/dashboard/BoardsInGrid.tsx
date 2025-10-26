@@ -13,9 +13,10 @@ import { Badge } from '@/components/ui/badge';
 
 interface BoardsClientComponentProps {
   boards: Board[];
+  viewMode:string
 }
 
-const BoardsInGrid = ({ boards }: BoardsClientComponentProps) => {
+const BoardsInGrid = ({ boards,viewMode }: BoardsClientComponentProps) => {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
       {boards.map((board) => (

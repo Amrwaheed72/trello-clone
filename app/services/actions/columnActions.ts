@@ -68,10 +68,11 @@ export const createBoardWithDefaultColumns = async (boardData: {
       }),
     ),
   );
+  // revalidatePath(`/boards/${boardData}`);
   return board;
 };
 
-export const deleteColumn = async (columnId: string, boardId: string) => {
+export const deleteColumn = async (columnId: string, boardId: string |undefined) => {
   const { error } = await supabase
     .from('board_columns')
     .delete()

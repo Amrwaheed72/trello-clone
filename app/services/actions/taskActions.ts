@@ -52,12 +52,17 @@ export const moveTask = async (
     .single();
 
   if (error) throw error;
+  // revalidatePath(`/boards/${id}`);
   return data;
 };
 
-export const deleteTask = async (taskId: string) => {
+export const deleteTask = async (
+  taskId: string,
+  boardId: string | undefined,
+) => {
   const { error } = await supabase.from('tasks').delete().eq('id', taskId);
   if (error) throw error;
+  revalidatePath(`/boards/${boardId}`);
   return true;
 };
 
@@ -67,6 +72,7 @@ export const updateTask = async (
     'id' | 'board_column_id' | 'sort_order' | 'created_at' | 'updated_at'
   >,
   taskId: string,
+  boardId: string,
 ) => {
   const { data, error } = await supabase
     .from('tasks')
@@ -74,5 +80,7 @@ export const updateTask = async (
     .eq('id', taskId)
     .select();
   if (error) throw error;
+  revalidatePath(`/boards/${boardId}`);
+
   return data;
 };
