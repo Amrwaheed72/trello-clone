@@ -1,4 +1,6 @@
 'use client';
+
+// this component is only for fixing hydration error that comes from the themes
 import dynamic from 'next/dynamic';
 const Providers = dynamic(() => import('./Providers'), { ssr: false });
 const ClientLayoutWrapper = ({ children }: { children: React.ReactNode }) => {
