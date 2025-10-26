@@ -23,7 +23,7 @@ const Page = async () => {
   // const hasEnterprisePlan = has({ plan: 'enterprise' });
   const user = await currentUser();
   if (!user) redirect('/');
-  const boards = await getUserBoards(user.id);
+  const boards = await getUserBoards();
   const canCreateBoard = !hasFreePlan || boards.length < 1;
 
   return (

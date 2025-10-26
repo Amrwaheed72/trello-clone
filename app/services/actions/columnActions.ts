@@ -3,6 +3,7 @@ import { revalidatePath } from 'next/cache';
 import { BoardColumns } from '../supabase/models';
 import { supabase } from '../supabase/supabase';
 import { createBoard, getBoard } from './boardActions';
+import { auth } from '@clerk/nextjs/server';
 
 export const getColumns = async (boardId: string): Promise<BoardColumns[]> => {
   const { data, error } = await supabase
@@ -15,11 +16,12 @@ export const getColumns = async (boardId: string): Promise<BoardColumns[]> => {
 };
 
 export const createColumn = async (
-  column: Omit<BoardColumns, 'id' | 'created_at'>,
+  column: Omit<BoardColumns, 'id' | 'created_at' | 'user_id'>,
 ) => {
+  const { userId } = await auth();
   const { data, error } = await supabase
     .from('board_columns')
-    .insert(column)
+    .insert({ ...column, user_id: userId })
     .select()
     .single();
   if (error) throw error;
@@ -44,13 +46,14 @@ export const createBoardWithDefaultColumns = async (boardData: {
   title: string;
   description?: string;
   color?: string;
-  userId: string;
 }) => {
+  const { userId } = await auth();
+  if (!userId) throw new Error('User not authenticated');
   const board = await createBoard({
     title: boardData.title,
     description: boardData.description || null,
     color: boardData.color || 'bg-blue-500',
-    user_id: boardData.userId,
+    user_id: userId,
   });
   const defaultColumns = [
     { title: 'To Do', sort_order: 0 },
@@ -72,7 +75,10 @@ export const createBoardWithDefaultColumns = async (boardData: {
   return board;
 };
 
-export const deleteColumn = async (columnId: string, boardId: string |undefined) => {
+export const deleteColumn = async (
+  columnId: string,
+  boardId: string | undefined,
+) => {
   const { error } = await supabase
     .from('board_columns')
     .delete()

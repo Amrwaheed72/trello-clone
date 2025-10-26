@@ -1,4 +1,3 @@
-import { currentUser } from '@clerk/nextjs/server';
 import {
   Bubbles,
   ChartNoAxesColumnDecreasing,
@@ -6,13 +5,10 @@ import {
   Trello,
 } from 'lucide-react';
 import ReusableCardComponent from '@/components/ReusableCardComponent';
-import { redirect } from 'next/navigation';
 import { getUserBoards } from '@/app/services/actions/boardActions';
 
 const DashboardStats = async () => {
-  const user = await currentUser();
-  if (!user) redirect('/');
-  const data = await getUserBoards(user.id);
+  const data = await getUserBoards();
 
   const recentActivityCount = data.filter((board) => {
     const updatedAt = new Date(board.updated_at);

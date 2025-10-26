@@ -2,15 +2,13 @@
 import { addColumnFormSchema } from '@/app/utils/schemas';
 import { createColumn } from '@/app/services/actions/columnActions';
 import { ColumnsWithTasks } from '@/app/services/supabase/models';
-import { useUser } from '@clerk/nextjs';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
 import { Form } from '@/components/ui/form';
 import ReusableFormField from '@/components/ReusableFormField';
-import { memo, useEffect, useState } from 'react';
+import { memo, useState } from 'react';
 import {
   Dialog,
   DialogClose,
@@ -33,17 +31,12 @@ const AddColumnDialog = memo(function AddColumnDialog({
   children: React.ReactNode;
 }) {
   const [open, setOpen] = useState(false);
-  const { user } = useUser();
-  const router = useRouter();
   const form = useForm<z.infer<typeof addColumnFormSchema>>({
     resolver: zodResolver(addColumnFormSchema),
     defaultValues: {
       title: '',
     },
   });
-  useEffect(() => {
-    if (!user) router.push('/');
-  }, [user, router]);
   const nextSortOrder =
     columnsWithTasks.length > 0
       ? Math.max(...columnsWithTasks.map((t) => t.sort_order)) + 1
@@ -54,7 +47,6 @@ const AddColumnDialog = memo(function AddColumnDialog({
         board_id: id,
         title: values.title,
         sort_order: nextSortOrder,
-        user_id: user.id,
       });
       setOpen(false);
       toast.success('Column Created successfully!');

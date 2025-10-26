@@ -3,6 +3,7 @@ import './globals.css';
 import { Toaster } from '@/components/ui/sonner';
 
 import Providers from './Providers';
+import ClientLayoutWrapper from './ClientLayoutWrapper';
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -27,14 +28,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" dir='ltr'>
+    <html lang="en" dir="ltr">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>
+        <ClientLayoutWrapper>
           <Toaster position="top-right" closeButton={true} richColors />
           <main>{children}</main>
-        </Providers>
+        </ClientLayoutWrapper>
       </body>
     </html>
   );

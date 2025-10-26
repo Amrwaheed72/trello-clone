@@ -1,9 +1,7 @@
 'use client';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useRouter } from 'next/navigation';
-import { useUser } from '@clerk/nextjs';
-import { memo, useEffect, useTransition } from 'react';
+import { useTransition } from 'react';
 import { toast } from 'sonner';
 import { createBoardWithDefaultColumns } from '@/app/services/actions/columnActions';
 import { Spinner } from '@/components/ui/spinner';
@@ -15,12 +13,8 @@ const CreateBoardComponent = ({
   canCreateBoard: boolean;
 }) => {
   const [isPending, startTransition] = useTransition();
-  const router = useRouter();
-  const { user } = useUser();
   const { setOpenUpgradeDialog } = useDashboardStore();
-  useEffect(() => {
-    if (!user) router.push('/');
-  }, [user, router]);
+
   const handleCreateBoard = async () => {
     if (!canCreateBoard) {
       setOpenUpgradeDialog(true);
@@ -28,7 +22,6 @@ const CreateBoardComponent = ({
       startTransition(async () => {
         await createBoardWithDefaultColumns({
           title: 'New Board',
-          userId: user.id,
         });
         toast.success('board created successfully');
       });

@@ -2,8 +2,10 @@
 import { revalidatePath } from 'next/cache';
 import { Board } from '../supabase/models';
 import { supabase } from '../supabase/supabase';
+import { auth } from '@clerk/nextjs/server';
 
-export const getUserBoards = async (userId: string): Promise<Board[]> => {
+export const getUserBoards = async (): Promise<Board[]> => {
+  const { userId } = await auth();
   const { data, error } = await supabase
     .from('boards')
     .select('*')
