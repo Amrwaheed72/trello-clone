@@ -164,7 +164,6 @@ const Home = async () => {
         variants={footerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true }}
         className="bg-gray-900 py-12 text-white"
       >
         <div className="container mx-auto px-4">

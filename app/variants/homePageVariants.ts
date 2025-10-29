@@ -8,7 +8,7 @@ export const cardContainerVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      staggerChildren: 0.2,
+      staggerChildren: 0.3,
     },
   },
 };
@@ -27,11 +27,11 @@ export const footerVariants = {
   visible: { opacity: 1, transition: { when: 'beforeChildren' } },
 };
 export const childFooterVariantsLeft = {
-  hidden: { x: '-100%', opacity: 0 },
+  hidden: { x: '-50%', opacity: 0 },
   visible: { x: '0%', opacity: 1 },
 };
 
 export const childFooterVariantsRight = {
-  hidden: { x: '100%', opacity: 0 },
+  hidden: { x: '5%', opacity: 0 },
   visible: { x: '0%', opacity: 1 },
 };
