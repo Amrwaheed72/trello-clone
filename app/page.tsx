@@ -19,6 +19,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { childVariants, containerVariants } from './variants/homePageVariants';
 const Home = async () => {
   const { userId } = await auth();
   const features = [
@@ -43,29 +44,15 @@ const Home = async () => {
       description: 'Enterprise-grade security with Clerk authentication',
     },
   ];
-  const variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-    exit: {
-      opacity: 0,
-      y: -10,
-      transition: {
-        duration: 0.2,
-      },
-    },
-  };
   return (
-    <motion.div
-      variants={variants}
-      className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:bg-gradient-to-br dark:from-blue-950 dark:via-black dark:to-purple-950"
-    >
-      <HomeNavbar />
-      <section className="container mx-auto px-4 py-20 text-center">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:bg-gradient-to-br dark:from-blue-950 dark:via-black dark:to-purple-950">
+      <HomeNavbar test-id="home-navbar" />
+      <motion.section
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="container mx-auto px-4 py-20 text-center"
+      >
         <div className="mx-auto max-w-4xl">
           <h1 className="mb-6 text-5xl font-bold md:text-6xl">
             Organize work and life,
@@ -92,10 +79,15 @@ const Home = async () => {
             </div>
           )}
         </div>
-      </section>
+      </motion.section>
 
       {/* Features Section */}
-      <section className="container mx-auto px-4 py-20">
+      <motion.section
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="container mx-auto px-4 py-20"
+      >
         <div className="mb-16 text-center">
           <h2 className="mb-4 text-3xl font-bold md:text-4xl">
             Everything you need to stay organized
@@ -105,29 +97,38 @@ const Home = async () => {
           </p>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          className="grid gap-8 md:grid-cols-2 lg:grid-cols-4"
+        >
           {features.map((feature, index) => (
-            <Card
-              key={index}
-              className="border-0 shadow-lg transition-shadow hover:shadow-xl"
-            >
-              <CardHeader className="text-center">
-                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100">
-                  <feature.icon className="h-6 w-6 text-blue-600" />
-                </div>
-                <CardTitle className="text-lg">{feature.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  {feature.description}
-                </CardDescription>
-              </CardContent>
-            </Card>
+            <motion.div variants={childVariants} key={index} className="">
+              <Card className="border-0 shadow-lg transition-shadow hover:shadow-xl">
+                <CardHeader className="text-center">
+                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100">
+                    <feature.icon className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <CardTitle className="text-lg">{feature.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-center">
+                    {feature.description}
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            </motion.div>
           ))}
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
-      <section className="bg-blue-600 py-20">
+      <motion.section
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="bg-blue-600 py-20"
+      >
         <div className="container mx-auto px-4 text-center">
           <h2 className="mb-4 text-3xl font-bold text-white md:text-4xl">
             Ready to get started?
@@ -146,24 +147,34 @@ const Home = async () => {
             </SignUpButton>
           )}
         </div>
-      </section>
+      </motion.section>
 
       {/* Footer */}
       <footer className="bg-gray-900 py-12 text-white">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center justify-between md:flex-row">
-            <div className="mb-4 flex items-center space-x-2 md:mb-0">
+            <motion.div
+              initial={{ x: -500 }}
+              animate={{ x: 0 }}
+              transition={{ duration: 1, type: 'spring', stiffness: 300 }}
+              className="mb-4 flex items-center space-x-2 md:mb-0"
+            >
               <Trello className="h-6 w-6 text-blue-400" />
               <span className="text-xl font-bold">Planify</span>
-            </div>
-            <div className="flex items-center space-x-6 text-sm text-gray-400">
+            </motion.div>
+            <motion.div
+              initial={{ x: 500 }}
+              animate={{ x: 0 }}
+              transition={{ duration: 1, type: 'spring', stiffness: 300 }}
+              className="flex items-center space-x-6 text-sm text-gray-400"
+            >
               <span>© 2024 Planify. All rights reserved.</span>
               <span>Built with Next.js & Clerk</span>
-            </div>
+            </motion.div>
           </div>
         </div>
       </footer>
-    </motion.div>
+    </div>
   );
 };
 export default Home;

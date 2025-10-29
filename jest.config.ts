@@ -1,19 +1,19 @@
-import type { Config } from 'jest';
+import nextJest from 'next/jest.js';
 
-const config: Config = {
+const createJestConfig = nextJest({
+  dir: './',
+});
+
+const config = {
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.tsx'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
-
-    // ✅ Mock out Next.js built-ins to stop the compat/router issue
-    '^next/link$': '<rootDir>/__mocks__/nextLinkMock.tsx',
-    '^next/navigation$': '<rootDir>/__mocks__/nextNavigationMock.tsx',
   },
-  transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
-  },
-  testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
+  transformIgnorePatterns: [
+    // 👇 tell Jest NOT to ignore Clerk (transpile its ESM)
+    'node_modules/(?!(.*\\.mjs$)|(@clerk)/)',
+  ],
 };
 
-export default config;
+export default createJestConfig(config);
