@@ -19,7 +19,15 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { childVariants, containerVariants } from './variants/homePageVariants';
+import {
+  cardChildVariants,
+  cardContainerVariants,
+  childFooterVariantsLeft,
+  childFooterVariantsRight,
+  featuresVariants,
+  flagVariants,
+  footerVariants,
+} from './variants/homePageVariants';
 const Home = async () => {
   const { userId } = await auth();
   const features = [
@@ -48,9 +56,9 @@ const Home = async () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:bg-gradient-to-br dark:from-blue-950 dark:via-black dark:to-purple-950">
       <HomeNavbar test-id="home-navbar" />
       <motion.section
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        variants={featuresVariants}
+        initial="hidden"
+        whileInView="visible"
         className="container mx-auto px-4 py-20 text-center"
       >
         <div className="mx-auto max-w-4xl">
@@ -83,8 +91,9 @@ const Home = async () => {
 
       {/* Features Section */}
       <motion.section
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        variants={featuresVariants}
+        initial="hidden"
+        whileInView="visible"
         transition={{ duration: 0.5 }}
         className="container mx-auto px-4 py-20"
       >
@@ -98,13 +107,13 @@ const Home = async () => {
         </div>
 
         <motion.div
-          variants={containerVariants}
+          variants={cardContainerVariants}
           initial="hidden"
           whileInView="visible"
           className="grid gap-8 md:grid-cols-2 lg:grid-cols-4"
         >
           {features.map((feature, index) => (
-            <motion.div variants={childVariants} key={index} className="">
+            <motion.div variants={cardChildVariants} key={index} className="">
               <Card className="border-0 shadow-lg transition-shadow hover:shadow-xl">
                 <CardHeader className="text-center">
                   <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100">
@@ -124,8 +133,9 @@ const Home = async () => {
       </motion.section>
 
       <motion.section
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        variants={flagVariants}
+        initial="hidden"
+        whileInView="visible"
         transition={{ duration: 0.5 }}
         className="bg-blue-600 py-20"
       >
@@ -150,22 +160,25 @@ const Home = async () => {
       </motion.section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 py-12 text-white">
+      <motion.footer
+        variants={footerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        className="bg-gray-900 py-12 text-white"
+      >
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center justify-between md:flex-row">
             <motion.div
-              initial={{ x: -500 }}
-              animate={{ x: 0 }}
-              transition={{ duration: 1, type: 'spring', stiffness: 300 }}
+              variants={childFooterVariantsLeft}
               className="mb-4 flex items-center space-x-2 md:mb-0"
             >
               <Trello className="h-6 w-6 text-blue-400" />
               <span className="text-xl font-bold">Planify</span>
             </motion.div>
+
             <motion.div
-              initial={{ x: 500 }}
-              animate={{ x: 0 }}
-              transition={{ duration: 1, type: 'spring', stiffness: 300 }}
+              variants={childFooterVariantsRight}
               className="flex items-center space-x-6 text-sm text-gray-400"
             >
               <span>© 2024 Planify. All rights reserved.</span>
@@ -173,7 +186,7 @@ const Home = async () => {
             </motion.div>
           </div>
         </div>
-      </footer>
+      </motion.footer>
     </div>
   );
 };
