@@ -117,7 +117,7 @@ const useDragnDrop = ({
 
     try {
       await moveTask(taskId, targetColumn.id, targetColumn.tasks.length,boardId);
-      toast.success('Task moved successfully!');
+      // toast.success('Task moved successfully!');
     } catch (err) {
       console.error(err);
       toast.error('Could not move the task');

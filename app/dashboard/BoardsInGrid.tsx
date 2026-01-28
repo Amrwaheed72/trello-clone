@@ -1,6 +1,5 @@
 import Link from 'next/link';
 
-import { Plus } from 'lucide-react';
 import { Board } from '@/app/services/supabase/models';
 import {
   Card,

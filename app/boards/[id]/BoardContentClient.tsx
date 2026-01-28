@@ -63,7 +63,7 @@ const BoardContentClient = ({
   );
 
   const filteredColumns = useMemo(() => {
-    return columnsWithTasks.map((column) => ({
+    return columns.map((column) => ({
       ...column,
       tasks: column.tasks.filter((task) => {
         if (
@@ -84,7 +84,7 @@ const BoardContentClient = ({
         return true;
       }),
     }));
-  }, [columnsWithTasks, filters]);
+  }, [columns, filters]);
   return (
     <>
       <main className="container mx-auto px-2 py-4 sm:px-4 sm:py-6">
