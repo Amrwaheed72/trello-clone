@@ -13,7 +13,7 @@ import { Badge } from '@/components/ui/badge';
 
 interface BoardsClientComponentProps {
   boards: Board[];
-  viewMode:string
+  viewMode: string;
 }
 
 const BoardsInGrid = ({ boards }: BoardsClientComponentProps) => {
@@ -49,14 +49,14 @@ const BoardsInGrid = ({ boards }: BoardsClientComponentProps) => {
           </Card>
         </Link>
       ))}
-      <Card className="group cursor-pointer border-2 border-dashed border-gray-300 transition-colors hover:border-blue-400">
+      {/* <Card className="group cursor-pointer border-2 border-dashed border-gray-300 transition-colors hover:border-blue-400">
         <CardContent className="flex h-full flex-col items-center justify-center p-4 sm:p-6">
           <Plus className="mb-2 h-6 w-6 text-gray-400 transition-all group-hover:scale-125 group-hover:text-blue-400 sm:h-8 sm:w-8" />
           <p className="text-sm font-medium text-gray-600 transition-colors group-hover:text-blue-400 sm:text-base">
             Create New Board
           </p>
         </CardContent>
-      </Card>
+      </Card> */}
     </div>
   );
 };

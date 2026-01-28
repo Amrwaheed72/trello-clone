@@ -33,7 +33,7 @@ const BoardNavbar = ({ boardTitle, boardColor, boardId }: Props) => {
             </Link>
             <div className="hidden h-4 w-px bg-gray-300 sm:block sm:h-6 dark:bg-gray-600" />
             <div className="flex min-w-0 items-center justify-center space-x-1 sm:space-x-2">
-              <Trello className="h-5 w-5 text-blue-600 sm:h-7 sm:w-7" />
+              <Trello className="h-5 w-5 text-blue-600 sm:h-7 sm:w-7 rotate-90" />
               <div className="min-w-0 items-center space-x-1 text-lg sm:space-x-2">
                 <span className="truncate text-sm font-bold sm:text-lg">
                   {boardTitle}

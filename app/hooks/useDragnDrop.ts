@@ -1,4 +1,3 @@
-import { useRouter } from 'next/navigation';
 import { DragEndEvent, DragOverEvent, DragStartEvent } from '@dnd-kit/core';
 import { toast } from 'sonner';
 import { ColumnsWithTasks, Task } from '../services/supabase/models';
