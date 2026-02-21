@@ -1,8 +1,6 @@
 import { auth, currentUser } from '@clerk/nextjs/server';
-import { Suspense } from 'react';
 import { getUserBoards } from '@/app/services/actions/boardActions';
 import dynamic from 'next/dynamic';
-import { Spinner } from '@/components/ui/spinner';
 import SearchInput from './SearchInput';
 import CreateBoardComponent from './CreateBoardComponent';
 import DashboardStats from './DashboardStats';
@@ -37,15 +35,7 @@ const Page = async () => {
           <p>Here is what&lsquo;s happening with your boards today.</p>
         </div>
         {/* stats */}
-        <Suspense
-          fallback={
-            <div className="flex items-center justify-center">
-              <Spinner size="xl" variant="ring" />
-            </div>
-          }
-        >
-          <DashboardStats />
-        </Suspense>
+        <DashboardStats />
         {/* Boards */}
         <div className="mb-6 sm:mb-8">
           <div className="mb-4 flex flex-col space-y-4 sm:mb-6 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
@@ -70,15 +60,7 @@ const Page = async () => {
             </div>
           </div>
           <SearchInput />
-          <Suspense
-            fallback={
-              <div className="flex items-center justify-center">
-                <Spinner size="xl" variant="ring" />
-              </div>
-            }
-          >
-            <BoardsComponent />
-          </Suspense>
+          <BoardsComponent />
         </div>
         <UpgradeDialog />
       </main>

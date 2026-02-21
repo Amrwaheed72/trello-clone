@@ -1,7 +1,5 @@
 import BoardNavbar from './BoardNavbar';
 import BoardContent from './BoardContent';
-import { Suspense } from 'react';
-import { Spinner } from '@/components/ui/spinner';
 import NotFound from './not-found';
 import { getBoard } from '@/app/services/actions/boardActions';
 
@@ -28,15 +26,7 @@ const Page = async ({ params }: Params) => {
         boardColor={board.color}
         boardId={board.id}
       />
-      <Suspense
-        fallback={
-          <div className="flex h-[50vh] items-center justify-center">
-            <Spinner variant="ring" size="xl" />
-          </div>
-        }
-      >
-        <BoardContent id={id} />
-      </Suspense>
+      <BoardContent id={id} />
     </div>
   );
 };

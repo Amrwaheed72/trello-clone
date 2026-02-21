@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import {
   DragOverlay,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
@@ -21,17 +22,11 @@ import dynamic from 'next/dynamic';
 import TaskComponent from './TaskComponent';
 import Column from './Column';
 import TaskOverlay from './TaskOverlay';
+import DndWrapper from './DndWrapper';
+import DeleteDialog from '@/components/DeleteDialog';
+import AddTaskDialog from './AddTaskDialog';
+import AddColumnDialog from './AddColumnDialog';
 
-const DndWrapper = dynamic(() => import('./DndWrapper'), { ssr: false });
-const AddColumnDialog = dynamic(() => import('./AddColumnDialog'), {
-  ssr: false,
-});
-const AddTaskDialog = dynamic(() => import('@/app/boards/[id]/AddTaskDialog'), {
-  ssr: false,
-});
-const DeleteDialog = dynamic(() => import('@/components/DeleteDialog'), {
-  ssr: false,
-});
 interface BoardClientViewProps {
   columnsWithTasks: ColumnsWithTasks[];
   tasks: Task[];
@@ -58,6 +53,12 @@ const BoardContentClient = ({
     useSensor(PointerSensor, {
       activationConstraint: {
         distance: 8,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 250,
+        tolerance: 5,
       },
     }),
   );
