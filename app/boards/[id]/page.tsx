@@ -6,13 +6,6 @@ import { getBoard } from '@/app/services/actions/boardActions';
 interface Params {
   params: Promise<{ id: string }>;
 }
-export const generateMetadata = async ({ params }: Params) => {
-  const { id } = await params;
-  const { title } = await getBoard(id);
-  return {
-    title: `${title}`,
-  };
-};
 const Page = async ({ params }: Params) => {
   const { id } = await params;
   const board = await getBoard(id);
