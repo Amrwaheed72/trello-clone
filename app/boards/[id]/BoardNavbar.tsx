@@ -4,14 +4,8 @@ import { Button } from '@/components/ui/button';
 import { UserButton } from '@clerk/nextjs';
 import { ArrowLeft, Filter, MoreHorizontal, Trello } from 'lucide-react';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
-
-const EditBoardDialog = dynamic(() => import('./EditBoardDialog'), {
-  ssr: false,
-});
-const FilterBoardDialog = dynamic(() => import('./FilterBoardDialog'), {
-  ssr: false,
-});
+import EditBoardDialog from './EditBoardDialog';
+import FilterBoardDialog from './FilterBoardDialog';
 interface Props {
   boardTitle: string;
   boardColor: string;

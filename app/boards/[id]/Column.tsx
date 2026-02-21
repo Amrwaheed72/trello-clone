@@ -5,13 +5,8 @@ import { Button } from '../../../components/ui/button';
 import { MoreHorizontalIcon, Trash } from 'lucide-react';
 import { useDroppable } from '@dnd-kit/core';
 import { memo } from 'react';
-import dynamic from 'next/dynamic';
-const DeleteDialog = dynamic(() => import('@/components/DeleteDialog'), {
-  ssr: false,
-});
-const EditColumnDialog = dynamic(() => import('./EditColumnDialog'), {
-  ssr: false,
-});
+import DeleteDialog from '@/components/DeleteDialog';
+import EditColumnDialog from './EditColumnDialog';
 interface ColProps {
   column: ColumnsWithTasks;
   children: React.ReactNode;

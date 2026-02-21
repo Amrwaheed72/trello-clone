@@ -5,14 +5,8 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import dynamic from 'next/dynamic';
-
-const DeleteDialog = dynamic(() => import('@/components/DeleteDialog'), {
-  ssr: false,
-});
-const EditTaskDialog = dynamic(() => import('./EditTaskDialog'), {
-  ssr: false,
-});
+import DeleteDialog from '@/components/DeleteDialog';
+import EditTaskDialog from './EditTaskDialog';
 
 const TaskComponent = ({ task, boardId }: { task: Task; boardId: string }) => {
   const {

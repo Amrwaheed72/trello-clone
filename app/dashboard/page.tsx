@@ -1,4 +1,4 @@
-import { auth, currentUser } from '@clerk/nextjs/server';
+import { auth } from '@clerk/nextjs/server';
 import { getUserBoards } from '@/app/services/actions/boardActions';
 import dynamic from 'next/dynamic';
 import SearchInput from './SearchInput';
@@ -6,7 +6,9 @@ import CreateBoardComponent from './CreateBoardComponent';
 import DashboardStats from './DashboardStats';
 import ChangeViewButtons from '@/components/ChangeViewButtons';
 import BoardsComponent from './BoardsComponent';
-import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
+import { Spinner } from '@/components/ui/spinner';
+import UserInfo from './UserInfo';
 
 const UpgradeDialog = dynamic(() => import('@/components/UpgradeDialog'));
 
@@ -19,23 +21,17 @@ const Page = async () => {
   const hasFreePlan = has({ plan: 'free_user' });
   // const hasProPlan = has({ plan: 'pro_user' });
   // const hasEnterprisePlan = has({ plan: 'enterprise' });
-  const user = await currentUser();
-  if (!user) redirect('/');
   const boards = await getUserBoards();
   const canCreateBoard = !hasFreePlan || boards.length < 1;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:bg-gradient-to-br dark:from-blue-950 dark:via-black dark:to-purple-950">
       <main className="container mx-auto px-4 py-6 sm:py-8">
-        <div className="mb-6 flex flex-col gap-4 sm:mb-8">
-          <h1 className="mb-2 text-2xl font-bold sm:text-3xl">
-            Welcome back,
-            {user?.firstName ?? user?.emailAddresses[0].emailAddress}! 👋
-          </h1>
-          <p>Here is what&lsquo;s happening with your boards today.</p>
-        </div>
+        <UserInfo />
         {/* stats */}
-        <DashboardStats />
+        <Suspense fallback={<Spinner variant="ring" size="lg" />}>
+          <DashboardStats />
+        </Suspense>
         {/* Boards */}
         <div className="mb-6 sm:mb-8">
           <div className="mb-4 flex flex-col space-y-4 sm:mb-6 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
@@ -60,7 +56,9 @@ const Page = async () => {
             </div>
           </div>
           <SearchInput />
-          <BoardsComponent />
+          <Suspense fallback={<Spinner variant="ring" size="xl" />}>
+            <BoardsComponent />
+          </Suspense>
         </div>
         <UpgradeDialog />
       </main>

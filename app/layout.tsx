@@ -1,17 +1,11 @@
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Cairo } from 'next/font/google';
 import './globals.css';
 import { Toaster } from '@/components/ui/sonner';
-
-import Providers from './Providers';
 import ClientLayoutWrapper from './ClientLayoutWrapper';
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+const cairo = Cairo({
+  variable: '--font-cairo',
+  subsets: ['arabic'],
+  weight: ['400', '500', '600'],
 });
 
 export const metadata = {
@@ -29,9 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" dir="ltr">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={` ${cairo.variable} antialiased`}>
         <ClientLayoutWrapper>
           <Toaster position="top-right" closeButton={true} richColors />
           <main>{children}</main>

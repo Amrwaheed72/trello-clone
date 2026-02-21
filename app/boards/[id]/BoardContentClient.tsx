@@ -18,7 +18,6 @@ import { ColumnsWithTasks, Task } from '@/app/services/supabase/models';
 import { Plus, Trash } from 'lucide-react';
 import { useFilterStore } from '@/app/store/FilterStore';
 import useDragnDrop from '@/app/hooks/useDragnDrop';
-import dynamic from 'next/dynamic';
 import TaskComponent from './TaskComponent';
 import Column from './Column';
 import TaskOverlay from './TaskOverlay';
@@ -52,7 +51,7 @@ const BoardContentClient = ({
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 8,
+        distance: 2,
       },
     }),
     useSensor(TouchSensor, {
@@ -110,7 +109,6 @@ const BoardContentClient = ({
             </AddTaskDialog>
           </div>
         </div>
-        {/* i made a dndWrapper to avoid the hydration error by importing it as a dynamic import with ssr: false */}
         <DndWrapper
           sensors={sensors}
           onDragStart={handleDragStart}
