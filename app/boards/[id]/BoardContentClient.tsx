@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 
 import {
   DragOverlay,
-  PointerSensor,
+  MouseSensor,
   TouchSensor,
   useSensor,
   useSensors,
@@ -49,7 +49,7 @@ const BoardContentClient = ({
   });
 
   const sensors = useSensors(
-    useSensor(PointerSensor, {
+    useSensor(MouseSensor, {
       activationConstraint: {
         distance: 2,
       },
